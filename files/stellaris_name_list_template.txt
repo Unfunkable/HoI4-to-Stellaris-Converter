@@ -37,14 +37,6 @@
 			sequential_name = "Robotic Protectors %R%"
 		}
 		
-		android_army = {
-			sequential_name = "Android Infantry %R%"
-		}
-
-		android_defense_army = {
-			sequential_name = "Android Protectors %R%"
-		}
-		
 		psionic_army = { 
 			sequential_name = "Psionic Infantry %R%"
 		}

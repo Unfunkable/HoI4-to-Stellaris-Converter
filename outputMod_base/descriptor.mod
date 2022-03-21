@@ -1,5 +1,4 @@
 name="Converter Test Output"
-path="mod/outputMod"
 tags={
 	"Diplomacy"
 	"Events"

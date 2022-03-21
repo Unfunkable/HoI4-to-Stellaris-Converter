@@ -10,9 +10,9 @@ MaxRGB = 256
 
 
 def ColourToRGBArray(colour):
-    return [int(colour.redQuantum() / MaxRGB),
-            int(colour.greenQuantum() / MaxRGB),
-            int(colour.blueQuantum() / MaxRGB)]
+    return [int(colour.quantumRed() / MaxRGB),
+            int(colour.quantumGreen() / MaxRGB),
+            int(colour.quantumBlue() / MaxRGB)]
 
 
 def ColourSet(image):
@@ -49,8 +49,9 @@ def CompileFlag(sourcepath, destFolder):
 
     image = PythonMagick.Image(sourcepath)
     image2 = PythonMagick.Image(sourcepath)
-    image.transform("115x73")
+    image.sample('!115x73')
     image.enhance()
+    image.flop
 
     dropshadow.fillColor(PythonMagick.Color(0, 0, 0, 25 * MaxRGB))
     dropshadow.draw(PythonMagick.DrawableRectangle((128 / 2) - (115 / 2) - 1, (128 / 2) - (73 / 2) - 1,
@@ -68,7 +69,8 @@ def CompileFlag(sourcepath, destFolder):
 
     tiny = PythonMagick.Image(dropshadow)
     tiny.type = imagetype
-    tiny.transform("24x24")
+    tiny.sample("!24x24")
+    tiny.flop
     tiny.write(destFolder + "small/" + filename + ".dds")
 
     mapflag = PythonMagick.Image(PythonMagick.Geometry(256, 256), nonecolor)
@@ -105,7 +107,7 @@ def CompileFlag(sourcepath, destFolder):
                                            actualIntensity, actualIntensity, 1 * MaxRGB)
             image2.pixelColor(x, y, newColour)
 
-    image2.transform("186x118")
+    image2.sample("!186x118")
 
     dropshadow2 = PythonMagick.Image(PythonMagick.Geometry(256, 256), nonecolor)
     dropshadow2.type = imagetype

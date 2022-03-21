@@ -1,14 +1,13 @@
-		every_planet = {
+		every_galaxy_planet = {
 			limit = { has_planet_flag = &PLANET_ID& }
-
             change_planet_size = &PLANET_SIZE_DELTA&
             change_pc = &PLANET_PC_TYPE&
             reroll_planet = yes
-
 			create_country = {
 				name = NAME_&OWNER_LONGTAG&
 				species = root
 				name_list = "&OWNER_TAG&_names"
+				type = default
 				ethos = {
                     &ETHICS&
 				}
@@ -31,8 +30,6 @@
 						"null"
 						"null"
 					}
-					type = default
-					ftl = warp
 				}
 			}
 			last_created_country = {
@@ -44,7 +41,6 @@
                     days = -1
                 }
 			}
-
 			create_colony = {
 				owner = last_created_country
 				species = root
@@ -53,19 +49,7 @@
 				}
                 name_list = "&OWNER_TAG&_names"
 			}
-			random_tile = {
-				limit = {
-					has_blocker = no
-					has_building = no
-					has_grown_pop = no
-					has_growing_pop = no
-				}
-				set_building = "building_hydroponics_farm_1"
-					create_pop = {
-                        species = root
-						ethos = owner
-					}
-			}
+
 
 &NEW_HUMANS&
 

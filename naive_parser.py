@@ -282,15 +282,7 @@ class Parser:
             rulingParty = drill(savefile, "countries", country, "politics", "ruling_party")
             governments[country] = rulingParty
 
-            ideology = drill(
-                savefile,
-                "countries",
-                country,
-                "politics",
-                "parties",
-                rulingParty,
-                "country_leader",
-                "ideology")
+            ideology = unquote(drill(savefile, "countries", country, "politics", "parties", rulingParty, "country_leader", "", "ideology"))
             ideologies[country] = ideology
 
         self.factions = {}

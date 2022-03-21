@@ -24,7 +24,7 @@ def getCountryNames():
     ymlData = re.sub(r'\n ', r'\n', ymlData)
 
     ymlData = ymlData.encode("ascii", errors="ignore")
-    countryNames = yaml.load(ymlData)
+    countryNames = yaml.safe_load(ymlData)
 
 #    if isinstance(countryNames, str):
 #        # I have to do everything myself around here
@@ -57,6 +57,6 @@ def getCityNames():
     ymlData = re.sub(r'\n ', r'\n', ymlData)
 
     ymlData = ymlData.encode("ascii", errors="ignore")
-    cityNames = yaml.load(ymlData)
+    cityNames = yaml.safe_load(ymlData)
 
     return list(cityNames.values())

@@ -1,0 +1,13 @@
+
+gov_generated_on_game_start = {
+	ruler_title = " "
+	ruler_title_female = " "
+
+	possible = {
+		has_authority = auth_dictatorial
+	}
+
+	weight = {
+		base = 0.0001
+	}
+}

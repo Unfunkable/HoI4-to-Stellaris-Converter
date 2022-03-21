@@ -92,7 +92,7 @@ class Universe:
         self.savefile = savefile
         self.hoi4path = Config().getHoi4Path()
         with open("files/Events.yml") as stream:
-            self.eventStrings = yaml.load(stream)
+            self.eventStrings = yaml.safe_load(stream)
 
     def Load(self):
         parser = naive_parser.Parser(self.savefile)
