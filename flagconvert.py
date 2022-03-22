@@ -51,7 +51,8 @@ def CompileFlag(sourcepath, destFolder):
     image2 = PythonMagick.Image(sourcepath)
     image.sample('!115x73')
     image.enhance()
-    image.flop
+    image.flip()
+    image2.flip()
 
     dropshadow.fillColor(PythonMagick.Color(0, 0, 0, 25 * MaxRGB))
     dropshadow.draw(PythonMagick.DrawableRectangle((128 / 2) - (115 / 2) - 1, (128 / 2) - (73 / 2) - 1,
@@ -70,7 +71,6 @@ def CompileFlag(sourcepath, destFolder):
     tiny = PythonMagick.Image(dropshadow)
     tiny.type = imagetype
     tiny.sample("!24x24")
-    tiny.flop
     tiny.write(destFolder + "small/" + filename + ".dds")
 
     mapflag = PythonMagick.Image(PythonMagick.Geometry(256, 256), nonecolor)

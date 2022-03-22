@@ -18,7 +18,6 @@ import logToFile
 class Converter:
     def __init__(self):
         Config().Init()
-
     def ConvertEverything(self):
         self.makeFolders()
         self.getUniverse()

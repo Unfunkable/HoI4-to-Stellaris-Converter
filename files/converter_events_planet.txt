@@ -8,13 +8,9 @@
 				species = root
 				name_list = "&OWNER_TAG&_names"
 				type = default
-				ethos = {
-                    &ETHICS&
-				}
+				ethos = { &ETHICS& }
 				authority = &AUTHORITY&
-				civics = {
-                    &CIVICS&
-				}
+				civics = { &CIVICS& }
 				flag = {
 					icon = {
 						category = "convertedflags"
@@ -24,12 +20,7 @@
 						category = "backgrounds"
 						file = "00_solid.dds"
 					}
-					colors = {
-                        "&COLOUR&"
-                        "&COLOUR&"
-						"null"
-						"null"
-					}
+					colors = { "&COLOUR&" "&COLOUR&" "null" "null" }
 				}
 			}
 			last_created_country = {
@@ -44,10 +35,22 @@
 			create_colony = {
 				owner = last_created_country
 				species = root
-				ethos = {
-                    &ETHICS&
-				}
+				ethos = { &ETHICS& }
                 name_list = "&OWNER_TAG&_names"
+			}
+			add_district = district_city
+			add_district = district_generator
+			add_district = district_mining
+			add_district = district_industrial
+			add_building = planetary_administration
+			add_building = building_bureaucratic_1
+			add_building = building_research_lab_1
+			while = {
+				count = 9
+				create_pop = { 
+					species = owner_main_species 
+					ethos = { &ETHICS& } 
+				}
 			}
 
 
@@ -56,10 +59,21 @@
 &STARBASE&
 
 			last_created_country = { 
-				add_minerals = &MINERALS& 
-				add_energy = &ENERGY&
-				add_food = &FOOD&
-				add_influence = &INFLUENCE&
+				add_resource = { 
+					minerals = &MINERALS& 
+					energy = &ENERGY&
+					food = &FOOD&
+					influence = &INFLUENCE&
+				}
+				while = {
+					count = 3
+					create_leader = {
+						class = scientist
+						species = owner_main_species
+						name = random
+						skill = 1
+					}
+				}
 			}
 		}
 
