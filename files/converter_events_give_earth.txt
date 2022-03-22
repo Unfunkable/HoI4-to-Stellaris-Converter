@@ -24,9 +24,8 @@
                     "null"
                     "null"
                 }
-                type = default
-                ftl = warp
             }
+            type = default
         }
         last_created_country = {
             name_list = "&OWNER_TAG&_names"
@@ -58,8 +57,10 @@
             initial_module = "projectile_weapon"
         }
         last_created_country = { 
-            add_minerals = &MINERALS& 
-            add_energy = &ENERGY&
-            add_food = &FOOD&
-            add_influence = &INFLUENCE&
+            add_resources = {
+                minerals = &MINERALS& 
+                energy = &ENERGY&
+                food = &FOOD&
+                influence = &INFLUENCE&
+            }
         }

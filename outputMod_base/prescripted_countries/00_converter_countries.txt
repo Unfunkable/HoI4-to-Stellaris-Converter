@@ -33,7 +33,6 @@ converter_humans = {
 	flags = { converter_humans custom_start_screen }
 	
 	weapon = "tech_missiles_1"
-	ftl = warp
 	
 	planet_name = "NAME_Earth"
 	planet_class = "pc_continental"
