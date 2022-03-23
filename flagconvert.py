@@ -1,30 +1,38 @@
 #!/usr/bin/python
 
+### This entire script is a mess for now, but it works ok, at least.
+
 import os
 import sys
 import math
 import numpy
-import PythonMagick
+import shutil
+
+from wand.image import Image
+from wand.color import Color
+from wand.drawing import Drawing
 
 MaxRGB = 256
 
 
-def ColourToRGBArray(colour):
-    return [int(colour.quantumRed() / MaxRGB),
-            int(colour.quantumGreen() / MaxRGB),
-            int(colour.quantumBlue() / MaxRGB)]
+def colorToRGBArray(color):
+    return [int(color.red_quantum() / MaxRGB),
+            int(color.green_quantum() / MaxRGB),
+            int(color.blue_quantum() / MaxRGB)]
 
 
-def ColourSet(image):
-    colourset = {}
-    for x in range(image.size().width()):
-        for y in range(image.size().height()):
-            colour = str(ColourToRGBArray(image.pixelColor(x, y)))
-            if colour not in colourset:
-                colourset[colour] = 1
+def colorSet(image):
+    colorset = {}
+    for x in range(image.width):
+        for y in range(image.height):
+            color = (image[x, y].string)
+            color.removeprefix("srgb(")
+            print(color)
+            if color not in colorset:
+                colorset[color] = 1
             else:
-                colourset[colour] += 1
-    return colourset
+                colorset[color] += 1
+    return colorset
 
 
 def CompileFlag(sourcepath, destFolder):
@@ -37,103 +45,102 @@ def CompileFlag(sourcepath, destFolder):
         print("WARNING: Could not find \"" + sourcepath + "\".")
         return
 
-    image = PythonMagick.Image(sourcepath)
+    image = Image(filename = sourcepath)
     imagetype = image.type
 
-    nonecolor = PythonMagick.Color(1 * MaxRGB, 0, 0, 255 * MaxRGB)
-    canvas = PythonMagick.Image(PythonMagick.Geometry(128, 128), nonecolor)
+    nonecolor = Color('rgba(256, 0, 0, 0)')
+    canvas = Image(width=128,height=128,background=nonecolor)
     canvas.type = imagetype
 
-    dropshadow = PythonMagick.Image(PythonMagick.Geometry(128, 128), nonecolor)
+    dropshadow = Image(width=128,height=128,background=nonecolor)
     dropshadow.type = imagetype
 
-    image = PythonMagick.Image(sourcepath)
-    image2 = PythonMagick.Image(sourcepath)
-    image.resize('!115x73')
-    image.flip()
-    image2.flip()
+    image = Image(filename=sourcepath)
+    image2 = image
+    image.resize(115,73)
 
-    dropshadow.fillColor(PythonMagick.Color(0, 0, 0, 25 * MaxRGB))
-    dropshadow.draw(PythonMagick.DrawableRectangle((128 / 2) - (115 / 2) - 1, (128 / 2) - (73 / 2) - 1,
-                                                   (128 / 2) + (115 / 2) + 1, (128 / 2) + (73 / 2) + 1))
-    dropshadow.blur(5, 5)
+    dropshadow.colorize(Color('rgba(0, 0, 0, 0)'),'rgba(0, 0, 0, 1')
+    with dropshadow as img:
+        with Drawing() as draw:
+            draw.rectangle(left=5.5,top=26.5,height=122.5,width=101.5)
+            draw(img)
+            img.blur(5,5)
+            img.composite(image, operator='over')
 
-    x = int(128 / 2)
-    y = int(128 / 2)
-    geom = PythonMagick.Geometry(0, 0, int(128 / 2) - int(115 / 2), int(128 / 2) - int(73 / 2))
-    op = PythonMagick.CompositeOperator.OverCompositeOp
-    dropshadow.composite(image, geom, op)
+    geom = Image(width=128, height=128)
+    geom.composite(image, 7, 28, 'over')
+    geom.flip()
+    dropshadow = geom
     dropshadow.type = imagetype
 
-    dropshadow.write(destFolder + filename + ".dds")
+    dropshadow.save(filename=filename + ".dds")
+    shutil.move(filename + ".dds", os.path.join(os.getcwd(),"outputMod/flags/convertedflags/"))
 
-    tiny = PythonMagick.Image(dropshadow)
+    tiny = Image(dropshadow)
     tiny.type = imagetype
-    tiny.resize("!24x24")
-    tiny.write(destFolder + "small/" + filename + ".dds")
+    tiny.resize(24,24)
+    tiny.save(filename=filename + ".dds")
+    shutil.move(filename + ".dds", os.path.join(os.getcwd(),"outputMod/flags/convertedflags/small/"))
 
-    mapflag = PythonMagick.Image(PythonMagick.Geometry(256, 256), nonecolor)
+    #mapflag = Image(Drawing(256, 256), nonecolor)
 
-    image2.resize("!186x118")
-    image2.colorSpace(PythonMagick.ColorspaceType.GRAYColorspace)
-    image2.write(destFolder + "map/" + filename + ".dds")
+    colorFrequencies = colorSet(image2)
+    sortedcolors = [(k, colorFrequencies[k]) for k in sorted(colorFrequencies, key=colorFrequencies.get, reverse=True)]
 
-    colourFrequencies = ColourSet(image2)
-    sortedColours = [(k, colourFrequencies[k]) for k in sorted(colourFrequencies, key=colourFrequencies.get, reverse=True)]
+    ### Commented out temporarily until I can figure out how to get it to work via wand. ###
 
-    maxIntensity = 0
-    minIntensity = 255
-    for i in range(10):
-        if i >= len(sortedColours):
-            break
-        sortedColour = sortedColours[i][0][1:-1].split(',')
-        intensity = int(sortedColour[0]) + int(1.2 * float(sortedColour[1])) + \
-            int(0.5 * float(sortedColour[2]))
+    # maxIntensity = 0
+    # minIntensity = 255
+    # for i in range(10):
+    #     if i >= len(sortedcolors):
+    #         break
+    #     sortedcolor = sortedcolors[i][0][1:-1].split(',')
+    #     intensity = int(sortedcolor[0]) + int(1.2 * float(sortedcolor[1])) + \
+    #         int(0.5 * float(sortedcolor[2]))
 
-        if intensity > maxIntensity:
-            maxIntensity = intensity
-        if intensity < minIntensity:
-            minIntensity = intensity
+    #     if intensity > maxIntensity:
+    #         maxIntensity = intensity
+    #     if intensity < minIntensity:
+    #         minIntensity = intensity
 
-    for x in range(image2.size().width()):
-        for y in range(image2.size().height()):
-            c = ColourToRGBArray(image2.pixelColor(x, y))
-            intensity = c[0] + (1.2 * float(c[1])) + (0.5 * float(c[2]))
-            actualIntensity = (intensity - minIntensity) / (maxIntensity - minIntensity)
-            if (actualIntensity < 0.0):
-                actualIntensity = 0
-            elif (actualIntensity > 1.0):
-                actualIntensity = 255 * MaxRGB
-            else:
-                actualIntensity = int(actualIntensity * 255 * MaxRGB)
-            newColour = PythonMagick.Color(min(actualIntensity + MaxRGB, 255 * MaxRGB),
-                                           actualIntensity, actualIntensity, 1 * MaxRGB)
-            image2.pixelColor(x, y, newColour)
+    # for x in range(image2.width):
+    #     for y in range(image2.height):
+    #         c = colorToRGBArray(image2.pixelColor(x, y))
+    #         intensity = c[0] + (1.2 * float(c[1])) + (0.5 * float(c[2]))
+    #         actualIntensity = (intensity - minIntensity) / (maxIntensity - minIntensity)
+    #         if (actualIntensity < 0.0):
+    #             actualIntensity = 0
+    #         elif (actualIntensity > 1.0):
+    #             actualIntensity = 255 * MaxRGB
+    #         else:
+    #             actualIntensity = int(actualIntensity * 255 * MaxRGB)
+    #         newcolor = Color(min(actualIntensity + MaxRGB, 255 * MaxRGB), actualIntensity, actualIntensity, 1 * MaxRGB)
+    #         image2.pixelColor(x, y, newcolor)
 
-    #image2.resize("!186x118")
-    #image2.colorSpace(PythonMagick.ColorspaceType.GRAYColorspace)
+    image2.resize(186,118)
 
-    dropshadow2 = PythonMagick.Image(PythonMagick.Geometry(256, 256), nonecolor)
-    dropshadow2.type = imagetype
-    dropshadow2.fillColor(PythonMagick.Color(0, 0, 0, 25 * MaxRGB))
-    dropshadow2.draw(PythonMagick.DrawableRectangle((256 / 2) - (186 / 2) - 1, (256 / 2) - (118 / 2) - 1,
-                                                    (256 / 2) + (186 / 2) + 1, (256 / 2) + (118 / 2) + 1))
-    dropshadow2.blur(10, 10)
+    # dropshadow2 = Image(Drawing(256, 256), nonecolor)
+    # dropshadow2.type = imagetype
+    # dropshadow2.fillColor(Color('rgba(0, 0, 0, 6400'))
+    # dropshadow2.draw(wand.DrawableRectangle((256 / 2) - (186 / 2) - 1, (256 / 2) - (118 / 2) - 1,
+    #                                                 (256 / 2) + (186 / 2) + 1, (256 / 2) + (118 / 2) + 1))
+    # dropshadow2.blur(10, 10)
 
-    x = int(256 / 2)
-    y = int(256 / 2)
-    geom = PythonMagick.Geometry(0, 0, int(256 / 2) - int(186 / 2), int(256 / 2) - int(118 / 2))
-    op = PythonMagick.CompositeOperator.OverCompositeOp
-    dropshadow2.composite(image2, geom, op)
-    dropshadow2.type = imagetype
+    geom = Image(width=256, height=256)
+    geom.composite(image2, 35, 69, 'over')
+    geom.type = 'grayscale'
+    geom.flip()
+    # dropshadow2 = geom
+    # dropshadow2.type = imagetype
 
-    dropshadow2.fillColor(PythonMagick.Color(0, 0, 0, 255 * MaxRGB))
-    dropshadow2.strokeColor(PythonMagick.Color(255 * MaxRGB, 255 * MaxRGB, 255 * MaxRGB, 1 * MaxRGB))
-    dropshadow2.strokeWidth(2)
-    dropshadow2.draw(PythonMagick.DrawableRectangle((256 / 2) - (186 / 2) - 1, (256 / 2) - (118 / 2) - 1,
-                                                    (256 / 2) + (186 / 2) + 1, (256 / 2) + (118 / 2) + 1))
+    # dropshadow2.fillColor(Color('rgba(0, 0, 0, 1)'))
+    # dropshadow2.strokeColor(Color('rgba(255, 255, 255, 0'))
+    # dropshadow2.strokeWidth(2)
+    # dropshadow2.draw(wand.DrawableRectangle((256 / 2) - (186 / 2) - 1, (256 / 2) - (118 / 2) - 1,
+    #                                                 (256 / 2) + (186 / 2) + 1, (256 / 2) + (118 / 2) + 1))'
 
-    #image2.write(destFolder + "map/" + filename + ".dds")
+    geom.save(filename=filename+".dds")
+    shutil.move(filename + ".dds", os.path.join(os.getcwd(),"outputMod/flags/convertedflags/map/"))
 
 
 if __name__ == "__main__":
