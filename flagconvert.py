@@ -49,8 +49,7 @@ def CompileFlag(sourcepath, destFolder):
 
     image = PythonMagick.Image(sourcepath)
     image2 = PythonMagick.Image(sourcepath)
-    image.sample('!115x73')
-    image.enhance()
+    image.resize('!115x73')
     image.flip()
     image2.flip()
 
@@ -70,10 +69,14 @@ def CompileFlag(sourcepath, destFolder):
 
     tiny = PythonMagick.Image(dropshadow)
     tiny.type = imagetype
-    tiny.sample("!24x24")
+    tiny.resize("!24x24")
     tiny.write(destFolder + "small/" + filename + ".dds")
 
     mapflag = PythonMagick.Image(PythonMagick.Geometry(256, 256), nonecolor)
+
+    image2.resize("!186x118")
+    image2.colorSpace(PythonMagick.ColorspaceType.GRAYColorspace)
+    image2.write(destFolder + "map/" + filename + ".dds")
 
     colourFrequencies = ColourSet(image2)
     sortedColours = [(k, colourFrequencies[k]) for k in sorted(colourFrequencies, key=colourFrequencies.get, reverse=True)]
@@ -107,7 +110,8 @@ def CompileFlag(sourcepath, destFolder):
                                            actualIntensity, actualIntensity, 1 * MaxRGB)
             image2.pixelColor(x, y, newColour)
 
-    image2.sample("!186x118")
+    #image2.resize("!186x118")
+    #image2.colorSpace(PythonMagick.ColorspaceType.GRAYColorspace)
 
     dropshadow2 = PythonMagick.Image(PythonMagick.Geometry(256, 256), nonecolor)
     dropshadow2.type = imagetype
@@ -129,7 +133,7 @@ def CompileFlag(sourcepath, destFolder):
     dropshadow2.draw(PythonMagick.DrawableRectangle((256 / 2) - (186 / 2) - 1, (256 / 2) - (118 / 2) - 1,
                                                     (256 / 2) + (186 / 2) + 1, (256 / 2) + (118 / 2) + 1))
 
-    dropshadow2.write(destFolder + "map/" + filename + ".dds")
+    #image2.write(destFolder + "map/" + filename + ".dds")
 
 
 if __name__ == "__main__":
