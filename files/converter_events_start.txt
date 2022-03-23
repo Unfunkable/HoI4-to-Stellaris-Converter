@@ -261,3 +261,28 @@ planet_event = {
         }
     }
 }
+
+### Makes converted empires know about each other on game start.
+country_event = {
+    id = converter.1006
+    hide_window = yes
+    title = "Discover other humans"
+    desc = "They should know about each other"
+    trigger = { 
+        has_country_flag = converted_empire 
+        NOT = {
+            has_country_flag = discovery_finished
+        }
+    }
+    immediate = {
+        every_country = {
+            limit = { has_country_flag = converted_empire }
+            establish_communications_no_message = root
+            establish_contact = {
+                who = root
+                location = from
+            }
+        }
+        set_country_flag = discovery_finished
+    }
+}

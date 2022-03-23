@@ -8,6 +8,7 @@
 				species = root
 				name_list = "&OWNER_TAG&_names"
 				type = default
+				day_zero_contact = no
 				ethos = { &ETHICS& }
 				authority = &AUTHORITY&
 				civics = { &CIVICS& }
@@ -27,6 +28,7 @@
 			    name_list = "&OWNER_TAG&_names"
 				save_global_event_target_as = &OWNER_LONGTAG&
 				set_country_flag = &OWNER_LONGTAG&
+				set_country_flag = converted_empire
                 add_modifier = {
                     modifier = "&MODIFIER&"
                     days = -1
@@ -41,6 +43,7 @@
 			add_district = district_city
 			add_district = district_generator
 			add_district = district_mining
+			add_district = district_farming
 			add_district = district_industrial
 			add_building = planetary_administration
 			add_building = building_bureaucratic_1
