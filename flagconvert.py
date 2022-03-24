@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-### This entire script is a mess for now, but it works ok, at least.
+# This entire script is a mess for now, but it works ok, at least.
 
 import os
 import sys
@@ -27,7 +27,6 @@ def colorSet(image):
         for y in range(image.height):
             color = (image[x, y].string)
             color.removeprefix("srgb(")
-            print(color)
             if color not in colorset:
                 colorset[color] = 1
             else:
@@ -45,26 +44,26 @@ def CompileFlag(sourcepath, destFolder):
         print("WARNING: Could not find \"" + sourcepath + "\".")
         return
 
-    image = Image(filename = sourcepath)
+    image = Image(filename=sourcepath)
     imagetype = image.type
 
     nonecolor = Color('rgba(256, 0, 0, 0)')
-    canvas = Image(width=128,height=128,background=nonecolor)
+    canvas = Image(width=128, height=128, background=nonecolor)
     canvas.type = imagetype
 
-    dropshadow = Image(width=128,height=128,background=nonecolor)
+    dropshadow = Image(width=128, height=128, background=nonecolor)
     dropshadow.type = imagetype
 
     image = Image(filename=sourcepath)
     image2 = image
-    image.resize(115,73)
+    image.resize(115, 73)
 
-    dropshadow.colorize(Color('rgba(0, 0, 0, 0)'),'rgba(0, 0, 0, 1')
+    dropshadow.colorize(Color('rgba(0, 0, 0, 0)'), 'rgba(0, 0, 0, 1')
     with dropshadow as img:
         with Drawing() as draw:
-            draw.rectangle(left=5.5,top=26.5,height=122.5,width=101.5)
+            draw.rectangle(left=5.5, top=26.5, height=122.5, width=101.5)
             draw(img)
-            img.blur(5,5)
+            img.blur(5, 5)
             img.composite(image, operator='over')
 
     geom = Image(width=128, height=128)
@@ -74,18 +73,21 @@ def CompileFlag(sourcepath, destFolder):
     dropshadow.type = imagetype
 
     dropshadow.save(filename=filename + ".dds")
-    shutil.move(filename + ".dds", os.path.join(os.getcwd(),"outputMod/flags/convertedflags/"))
+    shutil.move(filename + ".dds", os.path.join(os.getcwd(),
+                "outputMod/flags/convertedflags/"))
 
     tiny = Image(dropshadow)
     tiny.type = imagetype
-    tiny.resize(24,24)
+    tiny.resize(24, 24)
     tiny.save(filename=filename + ".dds")
-    shutil.move(filename + ".dds", os.path.join(os.getcwd(),"outputMod/flags/convertedflags/small/"))
+    shutil.move(filename + ".dds", os.path.join(os.getcwd(),
+                "outputMod/flags/convertedflags/small/"))
 
     #mapflag = Image(Drawing(256, 256), nonecolor)
 
     colorFrequencies = colorSet(image2)
-    sortedcolors = [(k, colorFrequencies[k]) for k in sorted(colorFrequencies, key=colorFrequencies.get, reverse=True)]
+    sortedcolors = [(k, colorFrequencies[k]) for k in sorted(
+        colorFrequencies, key=colorFrequencies.get, reverse=True)]
 
     ### Commented out temporarily until I can figure out how to get it to work via wand. ###
 
@@ -117,7 +119,7 @@ def CompileFlag(sourcepath, destFolder):
     #         newcolor = Color(min(actualIntensity + MaxRGB, 255 * MaxRGB), actualIntensity, actualIntensity, 1 * MaxRGB)
     #         image2.pixelColor(x, y, newcolor)
 
-    image2.resize(186,118)
+    image2.resize(186, 118)
 
     # dropshadow2 = Image(Drawing(256, 256), nonecolor)
     # dropshadow2.type = imagetype
@@ -140,7 +142,8 @@ def CompileFlag(sourcepath, destFolder):
     #                                                 (256 / 2) + (186 / 2) + 1, (256 / 2) + (118 / 2) + 1))'
 
     geom.save(filename=filename+".dds")
-    shutil.move(filename + ".dds", os.path.join(os.getcwd(),"outputMod/flags/convertedflags/map/"))
+    shutil.move(filename + ".dds", os.path.join(os.getcwd(),
+                "outputMod/flags/convertedflags/map/"))
 
 
 if __name__ == "__main__":

@@ -9,9 +9,9 @@ from config import Config
 
 
 def getCountryNames():
-    countryNameYmlPath = Config().getModdedHoi4File("localisation/countries_mod_l_english.yml")
+    countryNameYmlPath = Config().getModdedHoi4File("localisation/english/countries_mod_l_english.yml")
     if not os.path.exists(countryNameYmlPath):
-        countryNameYmlPath = Config().getModdedHoi4File("localisation/countries_l_english.yml")
+        countryNameYmlPath = Config().getModdedHoi4File("localisation/english/countries_l_english.yml")
 
     try:
         ymlFile = open(countryNameYmlPath, encoding="utf-8")
@@ -43,7 +43,7 @@ def getCountryNames():
 
 
 def getCityNames():
-    countryNameYmlPath = Config().getModdedHoi4File("localisation/victory_points_l_english.yml")
+    countryNameYmlPath = Config().getModdedHoi4File("localisation/english/victory_points_l_english.yml")
 
     try:
         ymlData = open(countryNameYmlPath).read()
