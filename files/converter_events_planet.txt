@@ -28,6 +28,7 @@
 			    name_list = "&OWNER_TAG&_names"
 				save_global_event_target_as = &OWNER_LONGTAG&
 				set_country_flag = &OWNER_LONGTAG&
+				set_country_flag = needs_discovery
 				set_country_flag = converted_empire
                 add_modifier = {
                     modifier = "&MODIFIER&"
@@ -45,7 +46,7 @@
 			add_district = district_mining
 			add_district = district_farming
 			add_district = district_industrial
-			add_building = planetary_administration
+			add_building = building_capital
 			add_building = building_bureaucratic_1
 			add_building = building_research_lab_1
 			while = {
