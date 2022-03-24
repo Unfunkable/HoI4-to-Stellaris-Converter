@@ -157,9 +157,110 @@ planet_event = {
     }
 }
 
-### Adds a starbase to a planet's system
+### Adds a UN neutral zone in the Sol system
 planet_event = {
     id = converter.1004
+    picture = GFX_evt_desert
+    title = "Space"
+    desc = "Spaaaaaace."
+    hide_window = yes
+    fire_only_once = yes
+
+    trigger = {
+        has_planet_flag = un_bureaucracy
+        NOT = {
+            has_planet_flag = but_not_yet
+        }
+    }
+
+    mean_time_to_happen = {
+        days = 1
+    }
+
+    immediate = {
+        save_global_event_target_as = un_earth
+        set_planet_flag = needs_a_starbase
+
+        create_country = {
+            name = "United Nations Trust Territory"
+            authority = auth_oligarchic
+            day_zero_contact = no
+            civics = {
+                civic = civic_diplomatic_corps
+            }
+            species = root
+            ethos = {
+                ethic = "ethic_xenophile"
+                ethic = "ethic_egalitarian"
+            }
+            flag = {
+                icon = {
+                    category = "human"
+                    file = "flag_human_9.dds"
+                }
+                background= {
+                    category = "backgrounds"
+                    file = "circle.dds"
+                }
+                colors={
+                    "light_blue"
+                    "light_blue"
+                    "null"
+                    "null"
+                }
+            }
+            type = default
+        }
+        last_created_country = {
+            set_ai_personality = united_nations
+            set_graphical_culture = industrial_01
+            set_country_flag = trust_territory
+            set_male_ruler_title = "Secretary-General"
+            set_female_ruler_title = "Secretary-General"
+            add_modifier = { modifier = trust_territory_cant_expand }
+        }
+        create_colony = {
+            owner = last_created_country
+            species = ROOT
+            ethos = {
+                ethic = "ethic_xenophile"
+                ethic = "ethic_egalitarian"
+            }
+        }
+        change_pc = &EARTH_PC_TYPE&
+        set_planet_entity = { entity = "&EARTH_ENTITY&" }
+        event_target:un_earth = {
+            set_name = "Earth"
+        }
+        solar_system = {
+            create_starbase = {
+                size = starbase_starport
+                module = shipyard
+                owner = last_created_country
+            }
+        }
+
+        last_created_country = {
+            # Spawn ships
+            country_event = { id = game_start.9 }
+            # Populate home system
+            country_event = { id = game_start.33 }
+        }
+        while = {
+            count = 2
+            add_district = district_city
+            add_district = district_generator
+            add_district = district_mining
+            add_district = district_farming
+            add_district = district_industrial
+        }  
+        add_building = building_major_capital
+    }
+}
+
+### Adds a starbase to a planet's system
+planet_event = {
+    id = converter.1005
     hide_window = yes
     title = "Earth needs a starbase"
     desc = "Starbase."
@@ -187,90 +288,18 @@ planet_event = {
     }
 }
 
-### Adds an early-space-age human species
-planet_event = {
-    id = converter.1005
-    picture = GFX_evt_desert
-    title = "Space"
-    desc = "Spaaaaaace."
-    hide_window = yes
-    fire_only_once = yes
-
-    trigger = {
-        has_planet_flag = un_bureaucracy
-        NOT = {
-            has_planet_flag = but_not_yet
-        }
-    }
-
-    mean_time_to_happen = {
-        days = 1
-    }
-
-    immediate = {
-        save_global_event_target_as = un_earth
-
-        create_country = {
-            name = random
-            authority = random
-            civics = {
-                civic = civic_increasing_urbanization
-                civic = civic_atmospheric_pollution
-            }
-            species = root
-            ethos = {
-                ethic = "ethic_xenophile"
-                ethic = "ethic_fanatic_egalitarian"
-            }
-            flag = {
-                icon = {
-                    category = "human"
-                    file = "flag_human_9.dds"
-                }
-                background= {
-                    category = "backgrounds"
-                    file = "circle.dds"
-                }
-                colors={
-                    "dark_blue"
-                    "green"
-                    "null"
-                    "null"
-                }
-            }
-            type = primitive
-        }
-        last_created_country = {
-            set_graphical_culture = industrial_01
-            set_country_flag = early_space_age
-            set_country_flag = humans_early_space_age
-            set_primitive_age = early_space_age
-        }
-        create_colony = {
-            owner = last_created_country
-            species = ROOT
-            ethos = {
-                ethic = "ethic_xenophile"
-                ethic = "ethic_fanatic_egalitarian"
-            }
-        }
-        change_pc = &EARTH_PC_TYPE&
-        set_planet_entity = { entity = "&EARTH_ENTITY&" }
-        event_target:un_earth = {
-            set_name = "Earth"
-        }
-    }
-}
-
 ### Makes converted empires know about each other on game start.
 country_event = {
     id = converter.1006
     hide_window = yes
     title = "Discover other humans"
     desc = "They should know about each other"
+    fire_only_once = no
+	is_triggered_only = no
+    mean_time_to_happen = { days = 2 }
     trigger = { 
-        has_country_flag = converted_empire 
-        NOT = {
+        has_country_flag = converted_empire
+        NOT ={
             has_country_flag = discovery_finished
         }
     }
@@ -278,11 +307,61 @@ country_event = {
         every_country = {
             limit = { has_country_flag = converted_empire }
             establish_communications_no_message = root
-            establish_contact = {
-                who = root
-                location = from
-            }
+			add_intel = {
+				amount = 40
+				who = root
+			}
         }
         set_country_flag = discovery_finished
+    }
+}
+
+### Makes the UN know about everyone, because the previous event doesn't make them.
+country_event = {
+    id = converter.1007
+    hide_window = yes
+    title = "UN Discovery"
+    desc = "when the"
+    fire_only_once = yes
+    is_triggered_only = no
+    mean_time_to_happen = { days = 3 }
+    trigger = {
+        has_country_flag = trust_territory
+    }
+    immediate = {
+        every_country ={
+            limit = { has_country_flag = converted_empire }
+            establish_communications_no_message = root
+            establish_contact = {
+                who = root
+                location = this
+            }
+            add_intel = {
+                amount = 40
+                who = root
+            }
+        }
+    }
+}
+
+country_event = {
+    id = converter.1008
+    hide_window = yes
+    title = "Guarantee UN"
+    desc = "As apart of the treaty, every Earth nation will guarantee the independence of the UN Trust Territory"
+    fire_only_once = yes
+    is_triggered_only = no
+    mean_time_to_happen = { days = 4 }
+    trigger = {
+        has_country_flag = trust_territory
+    }
+    immediate = {
+        every_country = {
+            limit = { has_country_flag = converted_empire }
+			THIS = {
+
+				guarantee_country = root
+			}
+        }
     }
 }
