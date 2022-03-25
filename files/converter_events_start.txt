@@ -182,7 +182,7 @@ planet_event = {
         set_planet_flag = needs_a_starbase
 
         create_country = {
-            name = "United Nations Trust Territory"
+            name = "United Nations"
             type = international_zone
             authority = auth_oligarchic
             day_zero_contact = no

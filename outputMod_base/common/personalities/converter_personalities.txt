@@ -1,14 +1,14 @@
 
 united_nations = {
-	aggressiveness = -1000
+	aggressiveness = 0
 	trade_willingness = 1.0
-	bravery = -1000
+	bravery = 0
 	combat_bravery = 1.0
 
 	military_spending = 0.9
 	colony_spending = 1.1
 
-	federation_acceptance = -1000 #10
+	federation_acceptance = -1000 
 	nap_acceptance = 50
 	commercial_pact_acceptance = 20
 	research_agreement_acceptance = 10
@@ -41,16 +41,16 @@ united_nations = {
 		robot_exploiter = yes
 		robot_liberator = yes
 		propagator = no
-		multispecies = yes
+		multispecies = no
 		crisis_fighter = yes
 		wants_tribute = no
 	}
 
 	allow = {
-		has_country_flag = trust_territory
+		is_country_type = international_zone
 	}
 
 	weight_modifier = {
-		weight = 0
+		weight = 1000
 	}
 }
