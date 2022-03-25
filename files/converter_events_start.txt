@@ -183,6 +183,7 @@ planet_event = {
 
         create_country = {
             name = "United Nations Trust Territory"
+            type = international_zone
             authority = auth_oligarchic
             day_zero_contact = no
             civics = {
@@ -209,7 +210,6 @@ planet_event = {
                     "null"
                 }
             }
-            type = default
         }
         last_created_country = {
             set_ai_personality = united_nations
