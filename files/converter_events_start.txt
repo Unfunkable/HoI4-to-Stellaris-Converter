@@ -214,10 +214,10 @@ planet_event = {
         last_created_country = {
             set_ai_personality = united_nations
             set_graphical_culture = industrial_01
-            set_country_flag = trust_territory
+            set_country_flag = international_zone
             set_male_ruler_title = "Secretary-General"
             set_female_ruler_title = "Secretary-General"
-            add_modifier = { modifier = trust_territory_cant_expand }
+            save_global_event_target_as = un_international_zone
         }
         create_colony = {
             owner = last_created_country
@@ -326,7 +326,7 @@ country_event = {
     is_triggered_only = no
     mean_time_to_happen = { days = 3 }
     trigger = {
-        has_country_flag = trust_territory
+        has_country_flag = international_zone
     }
     immediate = {
         every_country ={
@@ -353,7 +353,7 @@ country_event = {
     is_triggered_only = no
     mean_time_to_happen = { days = 4 }
     trigger = {
-        has_country_flag = trust_territory
+        has_country_flag = international_zone
     }
     immediate = {
         every_country = {
@@ -362,6 +362,49 @@ country_event = {
 
 				guarantee_country = root
 			}
+        }
+    }
+}
+
+# Calls all humans to war if the UN is attacked, because federations break guaruntees.
+country_event = {
+    id = converter.1009
+    hide_window = no
+    title = un_war_event_title
+    desc = un_war_event_desc
+    fire_only_once = no
+    is_triggered_only = yes
+    trigger = {
+        any_country = { is_at_war_with = global_event_target:un_international_zone }
+        ROOT = {
+            has_country_flag = converted_empire
+            NOT = { has_country_flag = international_zone }
+            NOT = { is_at_war_with = global_event_target:un_international_zone }
+        }
+    }
+    immediate = {
+        #nothing probably
+    }
+    option = {
+        un_war_event_join_war = {
+            text = un_war_event_join_war_desc
+            trigger = {
+                join_war = global_event_target:un_international_zone
+            }
+            ai_chance = {
+                factor = 100
+            }
+        }
+        un_war_event_abstain = {
+            text = { un_war_event_abstain_desc }
+            trigger = {
+                add_resource = {
+                    unity = -1000
+                }
+            }
+            ai_chance = {
+                factor = 0
+            }
         }
     }
 }

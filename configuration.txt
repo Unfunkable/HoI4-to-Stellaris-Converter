@@ -1,13 +1,13 @@
 configuration = {
  
     # The path to the save file to be converted.
-    savefile = "D:\Paradox Interactive\Hearts of Iron IV\save games\postwar_1948_06_16_01.hoi4"
+    savefile = "C:\Users\faris\Documents\Paradox Interactive\Hearts of Iron IV\save games\ENG_1939_08_14_12.hoi4"
 
     # The path to your Hearts of Iron 4 installation, if you're not using a mod - or the path to your mod files, if you are.
-    HoI4directory = "D:\Steam\steamapps\common\Hearts of Iron IV"
+    HoI4directory = "C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV"
 
     # The path to your Stellaris mod folder, to copy the new mod into.
-    StellarisModdirectory = "D:\Paradox Interactive\Stellaris\mod"
+    StellarisModdirectory = "C:\Users\faris\Documents\Paradox Interactive\Stellaris\mod\"
 
     # Whether you'd like to include the results from a HoI4 to DEFCON converter game. Valid values: "yes" or "no".
     useDefconResults = "no"

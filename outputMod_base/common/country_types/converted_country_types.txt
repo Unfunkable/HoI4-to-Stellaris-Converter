@@ -19,11 +19,10 @@ international_zone = {
 	can_use_invalid_technology = no
 	can_receive_envoys = yes
 
-	faction = {
-		needs_colony = no
-		auto_delete = no
-		hostile_when_attacked = yes
-	}
+	# faction = {
+	# 	needs_colony = yes
+	# 	auto_delete = no
+	# }
 
 	ai = {
 		enabled = yes
@@ -371,7 +370,49 @@ international_zone = {
 		standard_event_module = {}
 		standard_economy_module = {}
 		standard_leader_module = {}
-		standard_diplomacy_module = { contact_rule = does_first_contact_sites }
+		exclusive_diplomacy_module = { 
+			contact_rule = does_first_contact_sites
+			can_receive = {
+				action_declare_war
+				action_offer_peace
+				action_offer_trade_deal
+				action_cancel_trade_deal
+				action_insult
+				action_improve_relation
+				action_harm_relation
+				action_break_commercial_pact
+				action_break_guarantee
+				action_embassy
+				action_form_commercial_pact
+				action_form_non_aggression_pact
+				action_form_research_agreement
+				action_guarantee_independence
+				action_recall_embassy
+				action_offer_peace_diplomacy_view
+				action_make_claims_diplomacy_view
+				action_break_non_aggression_pact
+				action_break_research_agreement
+				action_make_rival
+				action_end_rivalry
+				
+			}
+			can_send = {
+				action_offer_peace
+				action_offer_trade_deal
+				action_cancel_trade_deal
+				action_open_borders
+				action_close_borders
+				action_improve_relation
+				action_harm_relation
+				action_insult
+				action_break_commercial_pact
+				action_embassy
+				action_form_non_aggression_pact
+				action_form_commercial_pact
+				action_form_research_agreement
+				action_offer_peace_diplomacy_view
+			}
+		}
 		standard_technology_module = {}
 		standard_trade_routes_module = {}
 		standard_pop_factions_module = {}
