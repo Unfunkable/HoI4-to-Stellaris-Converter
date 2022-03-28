@@ -366,45 +366,63 @@ country_event = {
     }
 }
 
-# Calls all humans to war if the UN is attacked, because federations break guaruntees.
+#If the UN gets into a war, it calls all human empires to defend it.
 country_event = {
     id = converter.1009
-    hide_window = no
-    title = un_war_event_title
-    desc = un_war_event_desc
+    hide_window = yes
+    is_triggered_only = yes
+    fire_only_once = no
+    trigger = {
+        has_country_flag = international_zone
+    }
+    immediate = {
+        every_country = {
+            limit = {
+                has_country_flag = converted_empire
+                NOR = { 
+                    has_country_flag = international_zone
+                    is_at_war_with = event_target:un_international_zone
+                }
+            }
+            country_event = {
+                id = converter.1010
+                days = 1
+            }
+        }
+    }
+}
+
+# Calls all humans to war if the UN is attacked, because federations break guaruntees.
+country_event = {
+    id = converter.1010
+    title = converter.1010.title
+    desc = converter.1010.desc
+    picture = GFX_evt_small_space_battle
+    show_sound = event_air_raid_siren
+    auto_opens = yes
+    location = root
     fire_only_once = no
     is_triggered_only = yes
     trigger = {
-        any_country = { is_at_war_with = global_event_target:un_international_zone }
-        ROOT = {
-            has_country_flag = converted_empire
-            NOT = { has_country_flag = international_zone }
-            NOT = { is_at_war_with = global_event_target:un_international_zone }
-        }
+        #nothing
     }
     immediate = {
-        #nothing probably
+        #nothing
     }
     option = {
-        un_war_event_join_war = {
-            text = un_war_event_join_war_desc
-            trigger = {
-                join_war = global_event_target:un_international_zone
-            }
-            ai_chance = {
-                factor = 100
-            }
+        name = converter.1010.a
+        join_war = event_target:un_international_zone
+        ai_chance = {
+            factor = 100
         }
-        un_war_event_abstain = {
-            text = { un_war_event_abstain_desc }
-            trigger = {
-                add_resource = {
-                    unity = -1000
-                }
-            }
-            ai_chance = {
-                factor = 0
-            }
+    }
+    option = {
+        name = converter.1010.b
+        add_resource = {
+            unity = -1000
+        }
+        ai_chance = {
+            factor = 0
         }
     }
 }
