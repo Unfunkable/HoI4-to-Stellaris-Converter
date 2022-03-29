@@ -113,10 +113,12 @@ class Events:
             modifier += empire.government
         humancount = empire.planetPopulation - 3
 
-        minerals = "1000"
-        energy = "1000"
-        food = "150"
-        influence = "500"
+        minerals = "100"
+        energy = "100"
+        food = "200"
+        influence = "100"
+        alloys = "100"
+        goods = "100"
 
         ethicsString = ""
         for ethic in government.ethics:
@@ -149,6 +151,8 @@ class Events:
         planet = planet.replace("&ENERGY&", energy)
         planet = planet.replace("&FOOD&", food)
         planet = planet.replace("&INFLUENCE&", influence)
+        planet = planet.replace("&ALLOYS&", alloys)
+        planet = planet.replace("&GOODS&", goods)
 
         return planet
 

@@ -68,6 +68,8 @@
 					energy = &ENERGY&
 					food = &FOOD&
 					influence = &INFLUENCE&
+					alloys = &ALLOYS&
+					goods = &GOODS&
 				}
 				while = {
 					count = 3
