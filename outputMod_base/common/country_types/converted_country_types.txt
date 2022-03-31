@@ -20,18 +20,18 @@ international_zone = {
 	can_use_invalid_technology = no
 	can_receive_envoys = yes
 
-	faction = {							#these values are copied to the country and can be changed during the game
-		neutral = no						#if yes, fleets will never attack anything and will never be attacked
-		hostile = no						#if yes, fleets will attack everything on sight ( except neutral fleets )
-		follow = yes							#if yes, fleets will follow the fleets of allies
-		auto_delete = no					#if yes, country will be automatically be deleted when considered dead ( usually when out of colonies and colony ships ). Should be yes in most cases but can be useful to turn off for some countries that are created by events.
-		needs_border_access = yes			#decides if a country needs to have explicit border access from another country to enter its borders.
-		generate_borders = yes				#decides if a country generates borders or not
-		needs_colony = yes					#decides if a country needs a colony ( or a colony ship ) to be considered alive.
-		primitive = no						#primitive countries can have observation stations build by others in orbit of their planets
-		hostile_when_attacked = yes			#toggles if country turns hostile against attacker.
-		show_borders_in_us = yes			#if no, borders for countries of this type will not be shown if in uncharted space
-		intel_effects_surveyed = yes			# toggle if the intel system is allowed to change any surveyed planets to unsurveyed depending on intel level with this country
+	faction = {							
+		neutral = no						
+		hostile = no						
+		follow = yes							
+		auto_delete = no					
+		needs_border_access = yes			
+		generate_borders = yes				
+		needs_colony = yes					
+		primitive = no						
+		hostile_when_attacked = yes			
+		show_borders_in_us = yes			
+		intel_effects_surveyed = yes			
 	}
 
 	ai = {
@@ -40,15 +40,15 @@ international_zone = {
 		min_navy_for_wars = 0.5
 		min_assault_armies_for_wars = @armies_for_declaring_war
 		colonizer = no
-		internal_policies = no
+		internal_policies = yes
 		modification = yes
 		government = yes
 		traditions = yes
-		ascension_perks = yes
+		ascension_perks = no
 		construction = yes
 		follow = yes
 		can_use_market = yes
-		espionage = yes
+		espionage = no
 		modules = {
 			military_minister_module
 			foreign_minister_module
