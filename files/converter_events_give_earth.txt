@@ -57,10 +57,32 @@
             initial_module = "projectile_weapon"
         }
         last_created_country = { 
-            add_resources = {
+            add_resource = { 
                 minerals = &MINERALS& 
                 energy = &ENERGY&
                 food = &FOOD&
                 influence = &INFLUENCE&
+                alloys = &ALLOYS&
+                consumer_goods = &GOODS&
+            }
+            while = {
+                count = 3
+                create_leader = {
+                    class = scientist
+                    species = owner_main_species
+                    name = random
+                    skill = 1
+                }
             }
         }
+        event_target:un_earth = {
+            while { 
+                count = 2
+                add_district = district_city
+                add_district = district_generator
+                add_district = district_mining
+                add_district = district_farming
+                add_district = district_industrial
+            }
+        }  
+        add_building = building_major_capital

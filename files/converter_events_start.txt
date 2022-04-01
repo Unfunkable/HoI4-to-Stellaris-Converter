@@ -50,6 +50,7 @@ planet_event = {
 
     immediate = {
         save_global_event_target_as = un_earth
+        set_planet_flag = un_earth
 
         #event_target:&EARTH_OWNER_LONGTAG& = {
         #    every_owned_starbase = {
@@ -425,4 +426,33 @@ country_event = {
             factor = 0
         }
     }
+}
+
+### Adds buildings and districts to earth
+planet_event = {
+    id = converter.1011
+    hide_window = yes
+    title = "earth"
+    desc = "buildings"
+    fire_only_once = yes
+    mean_time_to_happen = { days = 3 }
+    trigger = {
+        has_planet_flag = un_earth
+    }
+    immediate = {
+        every_planet = {
+            limit = { has_planet_flag = un_earth }
+            remove_all_buildings = yes
+            add_building = building_major_capital
+            while = {
+                count = 2
+                add_district = district_industrial
+                add_district = district_city
+                add_district = district_farming
+            }
+            add_building = building_bureaucratic_1
+            add_building = building_research_lab_1
+            add_building = building_commercial_zone
+        }
+    }  
 }
