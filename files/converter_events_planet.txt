@@ -69,7 +69,7 @@
 					food = &FOOD&
 					influence = &INFLUENCE&
 					alloys = &ALLOYS&
-					goods = &GOODS&
+					consumer_goods = &GOODS&
 				}
 				while = {
 					count = 3
