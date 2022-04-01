@@ -3,7 +3,7 @@ configuration = {
     # The path to the save file to be converted.
     savefile = "D:\Users\faris\Documents\Paradox Interactive\Hearts of Iron IV\save games\postwar.hoi4"
 
-    # The path to your Hearts of Iron 4 installation, if you're not using a mod - or the path to your mod files, if you are.
+    # The path to your Hearts of Iron 4 installation, if you're not using a total conversion mod - or the path to your mod files, if you are.
     HoI4directory = "C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV"
 
     # The path to your Stellaris mod folder, to copy the new mod into.
