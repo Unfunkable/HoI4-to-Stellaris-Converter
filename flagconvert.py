@@ -21,17 +21,17 @@ def colorToRGBArray(color):
             int(color.blue_quantum() / MaxRGB)]
 
 
-def colorSet(image):
-    colorset = {}
-    for x in range(image.width):
-        for y in range(image.height):
-            color = (image[x, y].string)
-            color.removeprefix("srgb(")
-            if color not in colorset:
-                colorset[color] = 1
-            else:
-                colorset[color] += 1
-    return colorset
+# def colorSet(image):
+#     colorset = {}
+#     for x in range(image.width):
+#         for y in range(image.height):
+#             color = (image[x, y].string)
+#             color.removeprefix("srgb(")
+#             if color not in colorset:
+#                 colorset[color] = 1
+#             else:
+#                 colorset[color] += 1
+#     return colorset
 
 
 def CompileFlag(sourcepath, destFolder):
@@ -85,9 +85,9 @@ def CompileFlag(sourcepath, destFolder):
 
     #mapflag = Image(Drawing(256, 256), nonecolor)
 
-    colorFrequencies = colorSet(image2)
-    sortedcolors = [(k, colorFrequencies[k]) for k in sorted(
-        colorFrequencies, key=colorFrequencies.get, reverse=True)]
+    # colorFrequencies = colorSet(image2)
+    # sortedcolors = [(k, colorFrequencies[k]) for k in sorted(
+    #     colorFrequencies, key=colorFrequencies.get, reverse=True)]
 
     ### Commented out temporarily until I can figure out how to get it to work via wand. ###
 
