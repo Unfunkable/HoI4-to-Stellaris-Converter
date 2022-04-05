@@ -68,7 +68,8 @@ def CompileFlag(sourcepath, destFolder):
 
     geom = Image(width=128, height=128)
     geom.composite(image, 7, 28, 'over')
-    geom.flip()
+    if os.name == "nt":
+        geom.flip()
     dropshadow = geom
     dropshadow.type = imagetype
 
@@ -131,7 +132,8 @@ def CompileFlag(sourcepath, destFolder):
     geom = Image(width=256, height=256)
     geom.composite(image2, 35, 69, 'over')
     geom.type = 'grayscale'
-    geom.flip()
+    if os.name == "nt":
+        geom.flip()
     # dropshadow2 = geom
     # dropshadow2.type = imagetype
 
