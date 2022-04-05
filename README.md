@@ -21,6 +21,7 @@ Is this necessary? Probably not, but in case "Prosperous Unification" doesn't ac
 - No converter frontend support. This is allegedly simple, so I'll look into it when I can.
 - Megacampaigns starting from Imperator: Rome have not been tested.
 - It's recommended to play with a higher hyperlane density, as converted empires can get blocked quite easily otherwise.
+- DEFCON to Stellaris conversion exists, however it looks like the DEFCON to HoI4 converter isn't working.
 ---
 
 ### Mods included:
