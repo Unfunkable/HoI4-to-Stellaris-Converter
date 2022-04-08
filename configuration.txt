@@ -1,43 +1,41 @@
-configuration = {
- 
-    # The path to the save file to be converted.
-    savefile = "D:\Users\faris\Documents\Paradox Interactive\Hearts of Iron IV\save games\postwar.hoi4"
 
-    # The path to your Hearts of Iron 4 installation, if you're not using a total conversion mod - or the path to your mod files, if you are.
-    HoI4directory = "C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV"
+# The path to the save file to be converted.
+savefile = "D:\Users\faris\Documents\Paradox Interactive\Hearts of Iron IV\save games\PRU_1949_11_27_01Debug.hoi4"
 
-    # The path to your Stellaris mod folder, to copy the new mod into.
-    StellarisModdirectory = "D:\Users\faris\Documents\Paradox Interactive\Stellaris\mod"
+# The path to your Hearts of Iron 4 installation, if you're not using a total conversion mod - or the path to your mod files, if you are.
+HoI4directory = "C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV"
 
-    # Whether you'd like to include the results from a HoI4 to DEFCON converter game. Valid values: "yes" or "no".
-    useDefconResults = "no"
+# The path to your Stellaris mod folder, to copy the new mod into.
+StellarisModdirectory = "D:\Users\faris\Documents\Paradox Interactive\Stellaris\mod"
 
-    # The results from DEFCON, if you've also been using the HoI4 to DEFCON converter. Each entry can be the name of a faction, or a country tag.
-    # NOTE: The HoI4 to DEFCON converter does not currently seem to be functional, so I (funk) have not been able to test this.
-    defconResults = {
-        allies = {
-            kills = 121.3
-            deaths = 70.7
-            collateral = 0.0
-            survivors = 19.3
-            nukes = 4
-            score = 171
-        }
-        comintern = {
-            kills = 87.9
-            deaths = 74.7
-            collateral = 0.1
-            survivors = 25.3
-            nukes = 2
-            score = 100
-        }
-        axis = {
-            kills = 21.3
-            deaths = 85.2
-            collateral = 0.0
-            survivors = 14.8
-            nukes = 5
-            score = -42
-        }
+# Whether you'd like to include the results from a HoI4 to DEFCON converter game. Valid values: "yes" or "no".
+useDefconResults = "no"
+
+# The results from DEFCON, if you've also been using the HoI4 to DEFCON converter. Each entry can be the name of a faction, or a country tag.
+# NOTE: The HoI4 to DEFCON converter does not currently seem to be functional, so I (funk) have not been able to test this.
+defconResults = {
+    allies = {
+        kills = 121.3
+        deaths = 70.7
+        collateral = 0.0
+        survivors = 19.3
+        nukes = 4
+        score = 171
+    }
+    comintern = {
+        kills = 87.9
+        deaths = 74.7
+        collateral = 0.1
+        survivors = 25.3
+        nukes = 2
+        score = 100
+    }
+    axis = {
+        kills = 21.3
+        deaths = 85.2
+        collateral = 0.0
+        survivors = 14.8
+        nukes = 5
+        score = -42
     }
 }

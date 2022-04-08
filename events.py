@@ -68,7 +68,7 @@ class Events:
         event = event.replace("&OPINION_PENALTIES&", opinionPenalties)
         event = event.replace("&OPTIONS&", optionsString)
 
-        open("outputMod/events/converter_events.txt", "w").write(event)
+        open("output/outputMod/events/converter_events.txt", "w").write(event)
 
     def makePlanet(self, empire, idnumber):
         if idnumber > 6:

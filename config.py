@@ -26,22 +26,22 @@ class Config(BorgSingleton):
         
         print("Running from: "+self.converterDir)
 
-        self.savefileName = naive_parser.unquote(naive_parser.drill(config, "savefile"))
-        self.hoi4Path = naive_parser.unquote(naive_parser.drill(config, "HoI4directory"))
-        self.hoi4ModPath = naive_parser.unquote(naive_parser.drill(config, "HoI4ModDirectory"))
-        self.stellarisModPath = naive_parser.unquote(naive_parser.drill(config, "StellarisModdirectory"))
+        self.savefileName = naive_parser.unquote(naive_parser.drill(self.configfile, "savefile"))
+        self.hoi4Path = naive_parser.unquote(naive_parser.drill(self.configfile, "HoI4directory"))
+        self.hoi4ModPath = naive_parser.unquote(naive_parser.drill(self.configfile, "HoI4ModDirectory"))
+        self.stellarisModPath = naive_parser.unquote(naive_parser.drill(self.configfile, "StellarisModdirectory"))
 
-        self.useDefconResults = naive_parser.unquote(naive_parser.drill(config, "useDefconResults"))
+        self.useDefconResults = naive_parser.unquote(naive_parser.drill(self.configfile, "useDefconResults"))
         if self.useDefconResults == "y" or self.useDefconResults == "yes":
-            self.defconResults = naive_parser.unquote(naive_parser.drill(config, "defconResults"))
+            self.defconResults = naive_parser.unquote(naive_parser.drill(self.configfile, "defconResults"))
         else:
             self.defconResults = False
 
         self.modName = "outputMod"
 
-        self.baseModPath = self.converterDir + self.modName + "_base/"
-        self.outputPath = self.converterDir + self.modName + "/"
-        self.outputModFile = self.converterDir + self.modName + ".mod"
+        self.baseModPath = self.converterDir + "outputMod_base/"
+        self.outputPath = self.converterDir + "output/" + self.modName + "/"
+        self.outputModFile = self.converterDir + "output/" + self.modName + ".mod"
         if self.stellarisModPath:
             self.stellarisModPath = self.makeSanePath(self.stellarisModPath)
             self.finalPath = self.stellarisModPath + self.modName + "/"

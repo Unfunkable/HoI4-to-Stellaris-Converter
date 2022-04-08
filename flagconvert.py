@@ -75,14 +75,14 @@ def CompileFlag(sourcepath, destFolder):
 
     dropshadow.save(filename=filename + ".dds")
     shutil.move(filename + ".dds", os.path.join(os.getcwd(),
-                "outputMod/flags/convertedflags/"))
+                "output/outputMod/flags/convertedflags/"))
 
     tiny = Image(dropshadow)
     tiny.type = imagetype
     tiny.resize(24, 24)
     tiny.save(filename=filename + ".dds")
     shutil.move(filename + ".dds", os.path.join(os.getcwd(),
-                "outputMod/flags/convertedflags/small/"))
+                "output/outputMod/flags/convertedflags/small/"))
 
     #mapflag = Image(Drawing(256, 256), nonecolor)
 
@@ -145,7 +145,7 @@ def CompileFlag(sourcepath, destFolder):
 
     geom.save(filename=filename+".dds")
     shutil.move(filename + ".dds", os.path.join(os.getcwd(),
-                "outputMod/flags/convertedflags/map/"))
+                "output/outputMod/flags/convertedflags/map/"))
 
 
 if __name__ == "__main__":

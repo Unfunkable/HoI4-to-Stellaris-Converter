@@ -72,7 +72,7 @@ class Converter:
         topNations = Config().getParser().getTopNations()
         for topNation in topNations:
             print("Creating name list for " + topNation.tag + "...")
-            destNameListFolder = "outputMod/common/name_lists/"
+            destNameListFolder = "output/outputMod/common/name_lists/"
             makeNameList.MakeNameList(topNation.tag, destNameListFolder)
 
     def convertLocalisation(self):
