@@ -258,11 +258,10 @@ class Parser:
         for puppetpair in self.puppets:
             overlord = puppetpair[0]
             vassal = puppetpair[1]
-
-            if overlord not in self.pops:
+            if overlord not in self.pops or overlord not in self.factories:
                 continue
-            if vassal not in self.pops:
-                continue
+            if vassal not in self.pops or vassal not in self.factories:
+                continue # Otherwise, countries without vassals or factories will throw a KeyError.
             self.pops[overlord] += 0.25 * self.pops[vassal]
             self.factories[overlord] += 0.25 * self.factories[vassal]
             self.warscore[overlord] += 0.25 * self.warscore[vassal]
@@ -283,6 +282,8 @@ class Parser:
             governments[country] = rulingParty
 
             ideology = unquote(drill(savefile, "countries", country, "politics", "parties", rulingParty, "country_leader", "", "ideology"))
+            if not ideology:
+                ideology = unquote(drill(savefile, "countries", country, "politics", "parties", rulingParty, "country_leader", "ideology")) # Prior to HoI4 1.11, ideology is simply under the country_leader rather than being an extra step down.
             ideologies[country] = ideology
 
         self.factions = {}
