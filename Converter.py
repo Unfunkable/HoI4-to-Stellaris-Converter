@@ -27,25 +27,12 @@ class Converter:
         self.convertLocalisation()
         self.convertEvents()
 
-    def CopyMod(self):
-        createdModPath = Config().getOutputPath()
-        finalPath = Config().getFinalPath()
-        createdModFile = Config().getOutputModFile()
-        finalModFile = Config().getFinalModFile()
-        if not finalPath:
-            return
-
-        shutil.rmtree(finalPath, True)
-        print("Copying '" + createdModPath + "' to '" + finalPath + "'...")
-        shutil.copytree(createdModPath, finalPath)
-        print("Copying '" + createdModFile + "' to '", finalModFile + "'...")
-        shutil.copyfile(createdModFile, finalModFile)
-
     def makeFolders(self):
         print("Laying out folder structure...")
         converterDir = Config().getConverterDir()
         shutil.rmtree(Config().getOutputPath(), True)
         shutil.copytree(Config().getBaseModPath(), Config().getOutputPath())
+        shutil.copy(Config().getDescriptorFile(), Config().getOutputPath())
 
     def getUniverse(self):
         print("Creating the universe...")
@@ -72,7 +59,7 @@ class Converter:
         topNations = Config().getParser().getTopNations()
         for topNation in topNations:
             print("Creating name list for " + topNation.tag + "...")
-            destNameListFolder = "output/outputMod/common/name_lists/"
+            destNameListFolder = "output/"+ Config().getModName() + "/common/name_lists/"
             makeNameList.MakeNameList(topNation.tag, destNameListFolder)
 
     def convertLocalisation(self):
@@ -103,6 +90,5 @@ if __name__ == "__main__":
 
     converter = Converter()
     converter.ConvertEverything()
-    converter.CopyMod()
 
     print("ALL DONE!")

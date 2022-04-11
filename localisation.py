@@ -106,13 +106,13 @@ class Localisation:
         history = history.replace("\n", "\\n")
         localisation += ' START_SCREEN_CONVERTED:0 "{}"\n\n'.format(history)
 
-        open("output/outputMod/localisation/convertertest_l_english.yml", "w", encoding="utf-8-sig").write(localisation)
+        open("output/" + Config().getModName() + "/localisation/convertertest_l_english.yml", "w", encoding="utf-8-sig").write(localisation)
 
     def writeSyncedLocalisation(self):
         synced = "l_default:\n"
         for tag in self.empireNames:
             synced += ' NAME_{}: "{}"\n'.format(tag, self.empireNames[tag])
         synced += "\n"
-        syncedFile = open("output/outputMod/localisation_synced/converter_names.yml", "w", encoding="utf-8-sig")
+        syncedFile = open("output/" + Config().getModName() + "/localisation_synced/converter_names.yml", "w", encoding="utf-8-sig")
         # syncedFile.write(u'\ufeff')
         syncedFile.write(synced)

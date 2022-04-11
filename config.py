@@ -15,7 +15,6 @@ class Config(BorgSingleton):
         self.loaded = True
 
         self.configfile = naive_parser.ParseSaveFile("configuration.txt")
-        config = naive_parser.drill(self.configfile, "configuration")
 
         if getattr( sys, 'frozen', False ) :
             # running in a bundle
@@ -29,7 +28,7 @@ class Config(BorgSingleton):
         self.savefileName = naive_parser.unquote(naive_parser.drill(self.configfile, "savefile"))
         self.hoi4Path = naive_parser.unquote(naive_parser.drill(self.configfile, "HoI4directory"))
         self.hoi4ModPath = naive_parser.unquote(naive_parser.drill(self.configfile, "HoI4ModDirectory"))
-        self.stellarisModPath = naive_parser.unquote(naive_parser.drill(self.configfile, "StellarisModdirectory"))
+        self.stellarisModPath = naive_parser.unquote(naive_parser.drill(self.configfile, "targetGameModPath"))
 
         self.useDefconResults = naive_parser.unquote(naive_parser.drill(self.configfile, "useDefconResults"))
         if self.useDefconResults == "y" or self.useDefconResults == "yes":
@@ -37,11 +36,29 @@ class Config(BorgSingleton):
         else:
             self.defconResults = False
 
-        self.modName = "outputMod"
+        self.modName =  naive_parser.unquote(naive_parser.drill(self.configfile, "output_name"))
 
         self.baseModPath = self.converterDir + "outputMod_base/"
         self.outputPath = self.converterDir + "output/" + self.modName + "/"
-        self.outputModFile = self.converterDir + "output/" + self.modName + ".mod"
+        self.outputModFile = self.converterDir + "output/outputMod.mod"
+        self.outputDescriptor = self.converterDir + "files/descriptor.mod"
+
+        shutil.copyfile("files/outputMod.mod", "output/outputMod.mod")
+        # Renames the mod and the path inside the modfile, and then renames the modfile.
+        with open(self.outputModFile, "r") as tempfile:
+            filedata = tempfile.read()
+        filedata = filedata.replace("name=\"Converter Test Output\"", "name=\"" + self.modName + "\"")
+        filedata = filedata.replace("path=\"mod/outputMod\"", "path=\"mod/" + self.modName + "\"")
+        with open(self.outputModFile, "w") as tempfile:
+             tempfile.write(filedata)
+        os.replace("output/outputMod.mod", "output/" + self.modName + ".mod")
+        # Renames the mod inside the descriptor
+        with open(self.outputDescriptor, "r") as tempfile:
+            filedata = tempfile.read()
+        filedata = filedata.replace("name=\"Converter Test Output\"", "name=\"" + self.modName + "\"")
+        with open(self.outputDescriptor, "w") as tempfile:
+            tempfile.write(filedata)
+
         if self.stellarisModPath:
             self.stellarisModPath = self.makeSanePath(self.stellarisModPath)
             self.finalPath = self.stellarisModPath + self.modName + "/"
@@ -113,6 +130,8 @@ class Config(BorgSingleton):
     def getOutputModFile(self): return self.outputModFile
     def getFinalPath(self):     return self.finalPath
     def getFinalModFile(self):  return self.finalModFile
+    def getModName(self):       return self.modName
+    def getDescriptorFile(self):return self.outputDescriptor
 
     def getSaveData(self):      return self.savefile
     def getParser(self):        return self.parser

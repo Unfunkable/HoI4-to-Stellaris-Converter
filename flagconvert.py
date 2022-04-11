@@ -7,13 +7,13 @@ import sys
 import math
 import numpy
 import shutil
+from config import Config
 
 from wand.image import Image
 from wand.color import Color
 from wand.drawing import Drawing
 
 MaxRGB = 256
-
 
 def colorToRGBArray(color):
     return [int(color.red_quantum() / MaxRGB),
@@ -75,14 +75,14 @@ def CompileFlag(sourcepath, destFolder):
 
     dropshadow.save(filename=filename + ".dds")
     shutil.move(filename + ".dds", os.path.join(os.getcwd(),
-                "output/outputMod/flags/convertedflags/"))
+                "output/" + Config().getModName() + "/flags/convertedflags/"))
 
     tiny = Image(dropshadow)
     tiny.type = imagetype
     tiny.resize(24, 24)
     tiny.save(filename=filename + ".dds")
     shutil.move(filename + ".dds", os.path.join(os.getcwd(),
-                "output/outputMod/flags/convertedflags/small/"))
+                "output/" + Config().getModName() + "/flags/convertedflags/small/"))
 
     #mapflag = Image(Drawing(256, 256), nonecolor)
 
@@ -145,7 +145,7 @@ def CompileFlag(sourcepath, destFolder):
 
     geom.save(filename=filename+".dds")
     shutil.move(filename + ".dds", os.path.join(os.getcwd(),
-                "output/outputMod/flags/convertedflags/map/"))
+                "output/" + Config().getModName() +"/flags/convertedflags/map/"))
 
 
 if __name__ == "__main__":

@@ -1,18 +1,21 @@
 
 # The path to the save file to be converted.
-savefile = "D:\Users\faris\Documents\Paradox Interactive\Hearts of Iron IV\save games\PRU_1949_11_27_01Debug.hoi4"
+savefile = "C:\Users\faris\Documents\Paradox Interactive\Hearts of Iron IV\save games\ENG_1939_08_14_12.hoi4"
 
 # The path to your Hearts of Iron 4 installation, if you're not using a total conversion mod - or the path to your mod files, if you are.
 HoI4directory = "C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV"
 
 # The path to your Stellaris mod folder, to copy the new mod into.
-StellarisModdirectory = "D:\Users\faris\Documents\Paradox Interactive\Stellaris\mod"
+StellarisModdirectory = "C:\Users\faris\Documents\Paradox Interactive\Stellaris\mod"
+
+# The name of the converted mod.
+output_name = "ConverterOutput"
 
 # Whether you'd like to include the results from a HoI4 to DEFCON converter game. Valid values: "yes" or "no".
+# NOTE: The HoI4 to DEFCON converter does not currently seem to be functional, so I (funk) have not been able to test this.
 useDefconResults = "no"
 
 # The results from DEFCON, if you've also been using the HoI4 to DEFCON converter. Each entry can be the name of a faction, or a country tag.
-# NOTE: The HoI4 to DEFCON converter does not currently seem to be functional, so I (funk) have not been able to test this.
 defconResults = {
     allies = {
         kills = 121.3
