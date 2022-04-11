@@ -36,7 +36,8 @@ class Config(BorgSingleton):
         else:
             self.defconResults = False
 
-        self.modName =  naive_parser.unquote(naive_parser.drill(self.configfile, "output_name"))
+        self.modNameHuman = naive_parser.unquote(naive_parser.drill(self.configfile, "output_name"))
+        self.modName = self.modNameHuman.replace(" ", "_")
 
         self.baseModPath = self.converterDir + "outputMod_base/"
         self.outputPath = self.converterDir + "output/" + self.modName + "/"
@@ -47,7 +48,7 @@ class Config(BorgSingleton):
         # Renames the mod and the path inside the modfile, and then renames the modfile.
         with open(self.outputModFile, "r") as tempfile:
             filedata = tempfile.read()
-        filedata = filedata.replace("name=\"Converter Test Output\"", "name=\"" + self.modName + "\"")
+        filedata = filedata.replace("name=\"Converter Test Output\"", "name=\"" + self.modNameHuman + "\"")
         filedata = filedata.replace("path=\"mod/outputMod\"", "path=\"mod/" + self.modName + "\"")
         with open(self.outputModFile, "w") as tempfile:
              tempfile.write(filedata)
@@ -55,7 +56,7 @@ class Config(BorgSingleton):
         # Renames the mod inside the descriptor
         with open(self.outputDescriptor, "r") as tempfile:
             filedata = tempfile.read()
-        filedata = filedata.replace("name=\"Converter Test Output\"", "name=\"" + self.modName + "\"")
+        filedata = filedata.replace("name=\"Converter Test Output\"", "name=\"" + self.modNameHuman + "\"")
         with open(self.outputDescriptor, "w") as tempfile:
             tempfile.write(filedata)
 
