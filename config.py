@@ -2,6 +2,7 @@
 
 import os,sys,shutil
 import naive_parser
+from logToFile import Logger
 
 class BorgSingleton:
     _shared_state = {}
@@ -72,10 +73,14 @@ class Config(BorgSingleton):
             sys.exit(0)
 
     def Init(self):
+        Logger.log(self, "info", "Parsing save file...")
         print("Parsing save file...")
         self.savefile = naive_parser.ParseSaveFile(self.savefileName)
+        Logger.log(self, "info", "Reading save data...")
         print("Reading save data...")
         self.parser = naive_parser.Parser(self.savefile)
+        Logger.log(self, "info", "Save file parsed.")
+        Logger.log(self, "progress", "27%")
         print("Save file parsed.")
 
     def isSane(self):

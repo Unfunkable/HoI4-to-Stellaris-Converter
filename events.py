@@ -105,7 +105,7 @@ class Events:
 
         government = self.getGovernment(empire)
 
-        colour = empire.colour
+        color = empire.color
         modifier = "converted_" + str(empire.penalty) + "_"
         if empire.nuclear:
             modifier += "nuclear"
@@ -143,7 +143,7 @@ class Events:
         planet = planet.replace("&AUTHORITY&", government.authority)
         planet = planet.replace("&ETHICS&", ethicsString)
         planet = planet.replace("&CIVICS&", civicsString)
-        planet = planet.replace("&COLOUR&", colour)
+        planet = planet.replace("&COLOUR&", color)
         planet = planet.replace("&MODIFIER&", modifier)
         planet = planet.replace("&NEW_HUMANS&", humanString)
         planet = planet.replace("&STARBASE&", starbaseString)

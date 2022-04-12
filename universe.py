@@ -41,7 +41,7 @@ class Empire:
         self.ideology = self.nation.ideology
         self.climate = self.nation.climate
         self.nuclear = False
-        self.colour = "Red"
+        self.color = "Red"
 
         self.planetClass = "pc_arid"
         self.penalty = 0
@@ -261,12 +261,12 @@ class Universe:
         # for event in self.events:
         #    print(event)
 
-        colourMap = properties.getColours()
+        colorMap = properties.getColors()
 
         for empire in self.empires:
 
-            if empire.tag in colourMap:
-                empire.colour = colourMap[empire.tag]
+            if empire.tag in colorMap:
+                empire.color = colorMap[empire.tag]
 
             empire.GoIntoSpace()
 
