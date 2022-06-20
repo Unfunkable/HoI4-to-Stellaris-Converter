@@ -2,6 +2,7 @@
 
 import os,sys,shutil
 import naive_parser
+from logToFile import Logger
 
 class BorgSingleton:
     _shared_state = {}
@@ -15,7 +16,6 @@ class Config(BorgSingleton):
         self.loaded = True
 
         self.configfile = naive_parser.ParseSaveFile("configuration.txt")
-        config = naive_parser.drill(self.configfile, "configuration")
 
         if getattr( sys, 'frozen', False ) :
             # running in a bundle
@@ -26,22 +26,41 @@ class Config(BorgSingleton):
         
         print("Running from: "+self.converterDir)
 
-        self.savefileName = naive_parser.unquote(naive_parser.drill(config, "savefile"))
-        self.hoi4Path = naive_parser.unquote(naive_parser.drill(config, "HoI4directory"))
-        self.hoi4ModPath = naive_parser.unquote(naive_parser.drill(config, "HoI4ModDirectory"))
-        self.stellarisModPath = naive_parser.unquote(naive_parser.drill(config, "StellarisModdirectory"))
+        self.savefileName = naive_parser.unquote(naive_parser.drill(self.configfile, "savefile"))
+        self.hoi4Path = naive_parser.unquote(naive_parser.drill(self.configfile, "HoI4directory"))
+        self.hoi4ModPath = naive_parser.unquote(naive_parser.drill(self.configfile, "HoI4ModDirectory"))
+        self.stellarisModPath = naive_parser.unquote(naive_parser.drill(self.configfile, "targetGameModPath"))
 
-        self.useDefconResults = naive_parser.unquote(naive_parser.drill(config, "useDefconResults"))
+        self.useDefconResults = naive_parser.unquote(naive_parser.drill(self.configfile, "useDefconResults"))
         if self.useDefconResults == "y" or self.useDefconResults == "yes":
-            self.defconResults = naive_parser.unquote(naive_parser.drill(config, "defconResults"))
+            self.defconResults = naive_parser.unquote(naive_parser.drill(self.configfile, "defconResults"))
         else:
             self.defconResults = False
 
-        self.modName = "outputMod"
+        self.modNameHuman = naive_parser.unquote(naive_parser.drill(self.configfile, "output_name"))
+        self.modName = self.modNameHuman.replace(" ", "_")
 
-        self.baseModPath = self.converterDir + self.modName + "_base/"
-        self.outputPath = self.converterDir + self.modName + "/"
-        self.outputModFile = self.converterDir + self.modName + ".mod"
+        self.baseModPath = self.converterDir + "outputMod_base/"
+        self.outputPath = self.converterDir + "output/" + self.modName + "/"
+        self.outputModFile = self.converterDir + "output/outputMod.mod"
+        self.outputDescriptor = self.converterDir + "files/descriptor.mod"
+
+        shutil.copyfile("files/outputMod.mod", "output/outputMod.mod")
+        # Renames the mod and the path inside the modfile, and then renames the modfile.
+        with open(self.outputModFile, "r") as tempfile:
+            filedata = tempfile.read()
+        filedata = filedata.replace("name=\"ConverterOutput\"", "name=\"" + self.modNameHuman + "\"")
+        filedata = filedata.replace("path=\"mod/outputMod\"", "path=\"mod/" + self.modName + "\"")
+        with open(self.outputModFile, "w") as tempfile:
+             tempfile.write(filedata)
+        os.replace("output/outputMod.mod", "output/" + self.modName + ".mod")
+        # Renames the mod inside the descriptor
+        with open(self.outputDescriptor, "r") as tempfile:
+            filedata = tempfile.read()
+        filedata = filedata.replace("name=\"ConverterOutput\"", "name=\"" + self.modNameHuman + "\"")
+        with open(self.outputDescriptor, "w") as tempfile:
+            tempfile.write(filedata)
+
         if self.stellarisModPath:
             self.stellarisModPath = self.makeSanePath(self.stellarisModPath)
             self.finalPath = self.stellarisModPath + self.modName + "/"
@@ -54,10 +73,14 @@ class Config(BorgSingleton):
             sys.exit(0)
 
     def Init(self):
+        Logger.log(self, "info", "Parsing save file...")
         print("Parsing save file...")
         self.savefile = naive_parser.ParseSaveFile(self.savefileName)
+        Logger.log(self, "info", "Reading save data...")
         print("Reading save data...")
         self.parser = naive_parser.Parser(self.savefile)
+        Logger.log(self, "info", "Save file parsed.")
+        Logger.log(self, "progress", "27%")
         print("Save file parsed.")
 
     def isSane(self):
@@ -113,6 +136,8 @@ class Config(BorgSingleton):
     def getOutputModFile(self): return self.outputModFile
     def getFinalPath(self):     return self.finalPath
     def getFinalModFile(self):  return self.finalModFile
+    def getModName(self):       return self.modName
+    def getDescriptorFile(self):return self.outputDescriptor
 
     def getSaveData(self):      return self.savefile
     def getParser(self):        return self.parser

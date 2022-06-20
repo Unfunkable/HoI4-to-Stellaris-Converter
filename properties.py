@@ -10,7 +10,7 @@ import naive_parser
 import config
 
 
-def colourDistance(hsv1, hsv2):
+def colorDistance(hsv1, hsv2):
 
     hueDistance = min(abs(hsv2[0] - hsv1[0]), 1 - abs(hsv2[0] - hsv1[0]))
     satDistance = abs(hsv2[1] - hsv1[1])
@@ -19,14 +19,14 @@ def colourDistance(hsv1, hsv2):
     return math.sqrt(hueDistance * hueDistance + satDistance * satDistance + valDistance * valDistance)
 
 
-def getColours():
-    hoi4ColourData = naive_parser.ParseSaveFile(config.Config().getModdedHoi4File("common/countries/colors.txt"))
+def getColors():
+    hoi4ColorData = naive_parser.ParseSaveFile(config.Config().getModdedHoi4File("common/countries/colors.txt"))
     stellarisGreyData = {
         "grey": [0.65, 0.05, 0.35],
         "dark_grey": [0.65, 0.05, 0.22],
         "black": [0.5, 0.3, 0.05]
     }
-    stellarisColourData = {
+    stellarisColorData = {
         "grey": [0.65, 0.05, 0.35],
         "dark_grey": [0.65, 0.05, 0.22],
         "black": [0.5, 0.3, 0.05],
@@ -56,33 +56,35 @@ def getColours():
 
     hsvSet = {}
     nameSet = {}
-    for tag in hoi4ColourData:
-        colour = naive_parser.drill(hoi4ColourData, tag, "color", "")
-        rgb = ("." not in colour)
-        colour = [float(x) for x in colour.replace("  ", " ").split(" ")]
+    for tag in hoi4ColorData:
+        color = naive_parser.drill(hoi4ColorData, tag, "color", "")
+        rgb = ("." not in color)
+        if color == "":
+            color = "255 255 255"
+        color = [float(x) for x in color.replace("  ", " ").split(" ")]
 
         if rgb:
-            colour = list(colorsys.rgb_to_hsv(*colour))
-            colour[2] = colour[2] / 255
+            color = list(colorsys.rgb_to_hsv(*color))
+            color[2] = color[2] / 255
 
-        hsvSet[tag] = colour
+        hsvSet[tag] = color
 
         minDist = 9999
-        bestColour = "red"
+        bestColor = "red"
 
-        if colour[1] < 0.2:
-            colourData = stellarisGreyData
+        if color[1] < 0.2:
+            colorData = stellarisGreyData
         else:
-            colourData = stellarisColourData
+            colorData = stellarisColorData
 
-        for stellarisColour in colourData:
-            stellarisHsv = colourData[stellarisColour]
-            newDist = colourDistance(colour, stellarisHsv)
+        for stellarisColor in colorData:
+            stellarisHsv = colorData[stellarisColor]
+            newDist = colorDistance(color, stellarisHsv)
             if newDist < minDist:
                 minDist = newDist
-                bestColour = stellarisColour
+                bestColor = stellarisColor
 
-        nameSet[tag] = bestColour
+        nameSet[tag] = bestColor
 
     return nameSet
 

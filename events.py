@@ -68,7 +68,7 @@ class Events:
         event = event.replace("&OPINION_PENALTIES&", opinionPenalties)
         event = event.replace("&OPTIONS&", optionsString)
 
-        open("outputMod/events/converter_events.txt", "w").write(event)
+        open("output/" + Config().getModName() + "/events/converter_events.txt", "w").write(event)
 
     def makePlanet(self, empire, idnumber):
         if idnumber > 6:
@@ -105,7 +105,7 @@ class Events:
 
         government = self.getGovernment(empire)
 
-        colour = empire.colour
+        color = empire.color
         modifier = "converted_" + str(empire.penalty) + "_"
         if empire.nuclear:
             modifier += "nuclear"
@@ -143,7 +143,7 @@ class Events:
         planet = planet.replace("&AUTHORITY&", government.authority)
         planet = planet.replace("&ETHICS&", ethicsString)
         planet = planet.replace("&CIVICS&", civicsString)
-        planet = planet.replace("&COLOUR&", colour)
+        planet = planet.replace("&COLOUR&", color)
         planet = planet.replace("&MODIFIER&", modifier)
         planet = planet.replace("&NEW_HUMANS&", humanString)
         planet = planet.replace("&STARBASE&", starbaseString)

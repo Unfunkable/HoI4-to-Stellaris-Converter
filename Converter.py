@@ -12,7 +12,7 @@ import localisation
 import universe
 import events
 
-import logToFile
+from logToFile import Logger
 
 
 class Converter:
@@ -27,55 +27,54 @@ class Converter:
         self.convertLocalisation()
         self.convertEvents()
 
-    def CopyMod(self):
-        createdModPath = Config().getOutputPath()
-        finalPath = Config().getFinalPath()
-        createdModFile = Config().getOutputModFile()
-        finalModFile = Config().getFinalModFile()
-        if not finalPath:
-            return
-
-        shutil.rmtree(finalPath, True)
-        print("Copying '" + createdModPath + "' to '" + finalPath + "'...")
-        shutil.copytree(createdModPath, finalPath)
-        print("Copying '" + createdModFile + "' to '", finalModFile + "'...")
-        shutil.copyfile(createdModFile, finalModFile)
-
     def makeFolders(self):
+        Logger().log("info", "Laying out folder structure...")
         print("Laying out folder structure...")
         converterDir = Config().getConverterDir()
         shutil.rmtree(Config().getOutputPath(), True)
         shutil.copytree(Config().getBaseModPath(), Config().getOutputPath())
+        shutil.copy(Config().getDescriptorFile(), Config().getOutputPath())
+        Logger().log("progress", "36%")
 
     def getUniverse(self):
+        Logger().log("info", "Creating the universe...")
         print("Creating the universe...")
         self.universe = universe.Universe(Config().getSaveData())
+        Logger().log("progress", "45%")
+        Logger().log("info", "Establishing history...")
         print("Establishing history...")
         self.universe.Load()
+        Logger().log("progress", "54%")
 
     def convertFlags(self):
         hoi4flagpath = "gfx/flags/"
         topNations = Config().getParser().getTopNations()
 
         for topNation in topNations:
-            print("Creating flag for " + topNation.tag + "...")
-            sourcepath = hoi4flagpath + topNation.tag + "_" + topNation.government + ".tga"
+            Logger().log("info", f"Creating flag for {topNation.tag}...")
+            print(f"Creating flag for {topNation.tag}...")
+            sourcepath = f"{hoi4flagpath}{topNation.tag}_{topNation.government}.tga"
             sourceFlagTga = Config().getModdedHoi4File(sourcepath)
             if not sourceFlagTga:
                 basesourcepath = hoi4flagpath + topNation.tag + ".tga"
-                print("WARNING: Could not find \"" + sourcepath + "\". Falling back to \"" + basesourcepath + "\".")
+                Logger().log("warning", f"Could not find \"{sourcepath}\". Falling back to \"{basesourcepath}\"")
+                print(f"WARNING: Could not find \"{sourcepath}\". Falling back to \"{basesourcepath}\"")
                 sourceFlagTga = Config().getModdedHoi4File(basesourcepath)
-            destFlagFolder = Config().getOutputPath() + "flags/convertedflags/"
+            destFlagFolder = f"{Config().getOutputPath()}flags/convertedflags/"
             flagconvert.CompileFlag(sourceFlagTga, destFlagFolder)
+        Logger().log("progress", "63%")
 
     def convertNameLists(self):
         topNations = Config().getParser().getTopNations()
         for topNation in topNations:
-            print("Creating name list for " + topNation.tag + "...")
-            destNameListFolder = "outputMod/common/name_lists/"
+            Logger().log("info", f"Creating name list for {topNation.tag}...")
+            print(f"Creating name list for {topNation.tag}...")
+            destNameListFolder = f"output/{Config().getModName()}/common/name_lists/"
             makeNameList.MakeNameList(topNation.tag, destNameListFolder)
+        Logger().log("progress", "72%")
 
     def convertLocalisation(self):
+        Logger().log("info", "Converting localisation...")
         print("Converting localisation...")
 
         savefile = Config().getSaveData()
@@ -83,11 +82,15 @@ class Converter:
         hoi4path = Config().getHoi4Path()
 
         localiser = localisation.Localisation(self.universe)
+        Logger().log("progress", "81%")
+        Logger().log("info", "Writing localisation...")
         print("Writing localisation...")
         localiser.writeLocalisation()
         localiser.writeSyncedLocalisation()
+        Logger().log("progress", "90%")
 
     def convertEvents(self):
+        Logger().log("info", "Creating events...")
         print("Creating events...")
 
         savefile = Config().getSaveData()
@@ -96,13 +99,16 @@ class Converter:
 
         self.events = events.Events(self.universe)
         self.events.makeEvents()
+        Logger().log("progress", "99%")
 
 
 if __name__ == "__main__":
+    Logger().log("info", "Beginning conversion...")
     print("BEGINNING CONVERSION")
 
     converter = Converter()
     converter.ConvertEverything()
-    converter.CopyMod()
 
+    Logger().log("info", "Conversion successful")
+    Logger().log("progress", "100%")
     print("ALL DONE!")

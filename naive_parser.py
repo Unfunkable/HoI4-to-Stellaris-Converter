@@ -4,7 +4,9 @@ import sys
 import os
 import numpy
 import re
+from logToFile import Logger
 from collections import defaultdict
+from datetime import datetime
 
 import properties
 import config
@@ -90,6 +92,9 @@ def ParseSaveFile(path, debug=False):
         alllines = open(path, encoding="utf-8").read()
     except UnicodeDecodeError:
         import traceback
+        Logger().log("warning", "Savefile unicode decode error")
+        Logger().log("debug", traceback.format_exc())
+        Logger().log("info", "Carrying on regardless.")
         traceback.print_exc()
         print("Carrying on regardless.")
         alllines = open(path, encoding="utf-8", errors="ignore").read()
@@ -121,7 +126,10 @@ def ParseSaveData(alllines, debug=False):
     nextPercentMark = fivePercentMark
 
     if fivePercentMark > 1000:
+        Logger().log("info", "Parsing save data...")
+        Logger().log("progress", "9%")
         print("Parsing save data...")
+        
 
     for line in lines:
         i += 1
@@ -135,6 +143,7 @@ def ParseSaveData(alllines, debug=False):
         if i == 1:
             # First line weirdness
             if line[:7] == "HOI4bin":
+                Logger().log("error", "The HoI4 save file is compressed, and cannot be read. Please edit 'Documents/Paradox Interactive/Hearst of Iron IV/settings.txt' with a text editor, and change 'save_as_binary=yes' to 'save_as_binary=no'. Then save your HoI4 game again.")
                 print("ERROR: The HoI4 save file is compressed, and cannot be read. Please edit 'Documents/Paradox Interactive/Hearst of Iron IV/settings.txt' with a text editor, and change 'save_as_binary=yes' to 'save_as_binary=no'. Then save your HoI4 game again.")
                 print("Exiting.")
                 sys.exit(0)
@@ -384,6 +393,8 @@ class Parser:
         maxWealth = 0.0
         for nation in sorted(self.pops):
             if self.pops[nation] / popmax < 0.005:
+                continue
+            if nation not in self.factories:
                 continue
             wealth = (self.factories[nation] / factorymax) / (self.pops[nation] / popmax)
             if wealth > maxWealth:

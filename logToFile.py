@@ -1,20 +1,22 @@
 #!/usr/bin/python
 
+from distutils.log import debug
 import sys
+import logging
 
 
 class Logger(object):
-    def __init__(self):
-        self.terminal = sys.stdout
-        self.log = open("output.log", "a")
-
-    def write(self, message):
-        self.terminal.write(message)
-        self.log.write(message)
-
-    def flush(self):
-        pass
-
-
-sys.stdout = Logger()
-sys.stderr = sys.stdout
+    logging.addLevelName(15, "PROGRESS")
+    def log(self, level, message):
+        logging.basicConfig(filename='log.txt', filemode='a', format = "%(asctime)s [%(levelname)s] %(message)s", datefmt="%Y:%m:%d %H:%M:%S", level=logging.DEBUG)
+        match level:
+            case "info":
+                logging.info(message)
+            case "warning":
+                logging.warning(message)
+            case "error":
+                logging.error(message)
+            case "progress":
+                logging.log(15, message)
+            case _:
+                logging.debug(message)

@@ -1,4 +1,4 @@
-name="Converter Test Output"
+name="ConverterOutput"
 tags={
 	"Diplomacy"
 	"Events"
