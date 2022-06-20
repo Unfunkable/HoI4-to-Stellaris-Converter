@@ -1,6 +1,6 @@
 # HoI4 to Stellaris Converter
 
-The legendary work of PTSnoop, now updated for Stellaris 3.3.
+The legendary work of PTSnoop, now updated for modern Stellaris.
 
 Is this necessary? Probably not, but in case "Prosperous Unification" doesn't accurately describe the years of violent combat in your world: here it is.
 
