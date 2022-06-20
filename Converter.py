@@ -51,25 +51,25 @@ class Converter:
         topNations = Config().getParser().getTopNations()
 
         for topNation in topNations:
-            Logger().log("info", "Creating flag for " + topNation.tag + "...")
-            print("Creating flag for " + topNation.tag + "...")
-            sourcepath = hoi4flagpath + topNation.tag + "_" + topNation.government + ".tga"
+            Logger().log("info", f"Creating flag for {topNation.tag}...")
+            print(f"Creating flag for {topNation.tag}...")
+            sourcepath = f"{hoi4flagpath}{topNation.tag}_{topNation.government}.tga"
             sourceFlagTga = Config().getModdedHoi4File(sourcepath)
             if not sourceFlagTga:
                 basesourcepath = hoi4flagpath + topNation.tag + ".tga"
-                Logger().log("warning", "Could not find \"" + sourcepath + "\". Falling back to \"" + basesourcepath + "\".")
-                print("WARNING: Could not find \"" + sourcepath + "\". Falling back to \"" + basesourcepath + "\".")
+                Logger().log("warning", f"Could not find \"{sourcepath}\". Falling back to \"{basesourcepath}\"")
+                print(f"WARNING: Could not find \"{sourcepath}\". Falling back to \"{basesourcepath}\"")
                 sourceFlagTga = Config().getModdedHoi4File(basesourcepath)
-            destFlagFolder = Config().getOutputPath() + "flags/convertedflags/"
+            destFlagFolder = f"{Config().getOutputPath()}flags/convertedflags/"
             flagconvert.CompileFlag(sourceFlagTga, destFlagFolder)
         Logger().log("progress", "63%")
 
     def convertNameLists(self):
         topNations = Config().getParser().getTopNations()
         for topNation in topNations:
-            Logger().log("info", "Creating name list for " + topNation.tag + "...")
-            print("Creating name list for " + topNation.tag + "...")
-            destNameListFolder = "output/"+ Config().getModName() + "/common/name_lists/"
+            Logger().log("info", f"Creating name list for {topNation.tag}...")
+            print(f"Creating name list for {topNation.tag}...")
+            destNameListFolder = f"output/{Config().getModName()}/common/name_lists/"
             makeNameList.MakeNameList(topNation.tag, destNameListFolder)
         Logger().log("progress", "72%")
 

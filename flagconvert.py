@@ -7,8 +7,9 @@ import sys
 import math
 import numpy
 import shutil
-from config import Config
 
+from config import Config
+from logToFile import Logger
 from wand.image import Image
 from wand.color import Color
 from wand.drawing import Drawing
@@ -41,7 +42,8 @@ def CompileFlag(sourcepath, destFolder):
     filename = os.path.splitext(os.path.basename(sourcepath))[0]
 
     if not os.path.exists(sourcepath):
-        print("WARNING: Could not find \"" + sourcepath + "\".")
+        Logger.log("warning", f"Could not find \"{sourcepath}\"")
+        print(f"WARNING: Could not find \"{sourcepath}\"")
         return
 
     image = Image(filename=sourcepath)
@@ -75,14 +77,14 @@ def CompileFlag(sourcepath, destFolder):
 
     dropshadow.save(filename=filename + ".dds")
     shutil.move(filename + ".dds", os.path.join(os.getcwd(),
-                "output/" + Config().getModName() + "/flags/convertedflags/"))
+                f"output/{Config().getModName()}/flags/convertedflags/"))
 
     tiny = Image(dropshadow)
     tiny.type = imagetype
     tiny.resize(24, 24)
     tiny.save(filename=filename + ".dds")
     shutil.move(filename + ".dds", os.path.join(os.getcwd(),
-                "output/" + Config().getModName() + "/flags/convertedflags/small/"))
+                f"output/{Config().getModName()}/flags/convertedflags/small/"))
 
     #mapflag = Image(Drawing(256, 256), nonecolor)
 
@@ -145,7 +147,7 @@ def CompileFlag(sourcepath, destFolder):
 
     geom.save(filename=filename+".dds")
     shutil.move(filename + ".dds", os.path.join(os.getcwd(),
-                "output/" + Config().getModName() +"/flags/convertedflags/map/"))
+                f"output/{Config().getModName()}/flags/convertedflags/map/"))
 
 
 if __name__ == "__main__":
