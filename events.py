@@ -106,11 +106,16 @@ class Events:
         government = self.getGovernment(empire)
 
         color = empire.color
-        modifier = "converted_" + str(empire.penalty) + "_"
+        modifier = f"converted_{str(empire.penalty)}_"
         if empire.nuclear:
             modifier += "nuclear"
         else:
             modifier += empire.government
+        if empire.culture:
+            self.add_culture_modifier(empire.culture)
+            culture = f"add_modifier = {{ modifier = \"{empire.culture}\" days = -1 }}"
+        else:
+            culture = "none"
         humancount = empire.planetPopulation - 3
 
         minerals = "100"
@@ -145,6 +150,10 @@ class Events:
         planet = planet.replace("&CIVICS&", civicsString)
         planet = planet.replace("&COLOUR&", color)
         planet = planet.replace("&MODIFIER&", modifier)
+        if culture == "none":
+            planet = planet.replace("&CULTURE&", "")
+        else:
+            planet = planet.replace("&CULTURE&", culture) 
         planet = planet.replace("&NEW_HUMANS&", humanString)
         planet = planet.replace("&STARBASE&", starbaseString)
         planet = planet.replace("&MINERALS&", minerals)
@@ -179,3 +188,7 @@ class Events:
             government.civics = ["civic_parliamentary_system", "civic_environmentalist"]
 
         return government
+
+    def add_culture_modifier(self, culture):
+        static_modifier = f"{culture} = {{}} \n"
+        open(f"output/{Config().getModName()}/common/static_modifiers/converted_culture_modifiers.txt", "a").write(static_modifier)

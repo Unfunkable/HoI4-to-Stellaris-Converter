@@ -34,6 +34,7 @@
                     modifier = "&MODIFIER&"
                     days = -1
                 }
+				&CULTURE&
 			}
 			create_colony = {
 				owner = last_created_country

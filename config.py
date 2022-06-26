@@ -31,11 +31,13 @@ class Config(BorgSingleton):
         self.hoi4ModPath = naive_parser.unquote(naive_parser.drill(self.configfile, "HoI4ModDirectory"))
         self.stellarisModPath = naive_parser.unquote(naive_parser.drill(self.configfile, "targetGameModPath"))
 
-        self.useDefconResults = naive_parser.unquote(naive_parser.drill(self.configfile, "useDefconResults"))
-        if self.useDefconResults == "y" or self.useDefconResults == "yes":
-            self.defconResults = naive_parser.unquote(naive_parser.drill(self.configfile, "defconResults"))
-        else:
-            self.defconResults = False
+        self.defconResults = False # HoI4 to DEFCON is busted, so might as well keep this off to make fronter stuff easier for now.
+        
+        #self.useDefconResults = naive_parser.unquote(naive_parser.drill(self.configfile, "useDefconResults"))
+        # if self.useDefconResults == "y" or self.useDefconResults == "yes":
+        #     self.defconResults = naive_parser.unquote(naive_parser.drill(self.configfile, "defconResults"))
+        # else:
+        #     self.defconResults = False
 
         self.modNameHuman = naive_parser.unquote(naive_parser.drill(self.configfile, "output_name"))
         self.modName = self.modNameHuman.replace(" ", "_")
