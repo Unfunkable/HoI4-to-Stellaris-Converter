@@ -16,6 +16,7 @@ class Nation:
         self.tag = tag
         self.government = ""
         self.ideology = ""
+        self.culture = ""
         self.population = 0.0
         self.industry = 0.0
         self.warscore = 0.0
@@ -295,6 +296,19 @@ class Parser:
                 ideology = unquote(drill(savefile, "countries", country, "politics", "parties", rulingParty, "country_leader", "ideology")) # Prior to HoI4 1.11, ideology is simply under the country_leader rather than being an extra step down.
             ideologies[country] = ideology
 
+        # Read cultures from Vic2 to HoI4 games
+        cultures = {}
+        for country in drill(savefile, "countries"):
+            ideas = list(drill(savefile, "countries", country, "politics", "ideas").values())
+            ideas = str(ideas[0]).split(" ")
+            culture = ""
+            for idea in ideas:
+                if idea.startswith("culture_"):
+                    culture = idea
+            if not culture:
+                continue
+            cultures[country] = culture
+
         self.factions = {}
         for faction in savefile["faction"]:
             factionName = unquote(drill(faction, "name"))
@@ -361,6 +375,8 @@ class Parser:
             ndata.government = governments[nation]
             ndata.ideology = ideologies[nation]
             ndata.capital = capitals[nation]
+            if nation in cultures:
+                ndata.culture = cultures[nation]
             capitalId = int(ndata.capital)
             if capitalId in climateMap:
                 ndata.climate = climateMap[int(capitals[nation])]

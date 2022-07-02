@@ -29,6 +29,11 @@ Variable Earth Climates - This doesn't seem to exist on the Steam Workshop anymo
 
 ---
 
+### Licensing:
+Most files for the converter fall under GPL v3 as described in the LICENSE file, unless a notice at the start of a file specifies otherwise.
+
+---
+
 ### Screenshots:
 
 Imported save from 1939

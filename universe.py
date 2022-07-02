@@ -40,6 +40,7 @@ class Empire:
         self.government = self.nation.government
         self.ideology = self.nation.ideology
         self.climate = self.nation.climate
+        self.culture = self.nation.culture
         self.nuclear = False
         self.color = "Red"
 
