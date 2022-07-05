@@ -30,6 +30,8 @@ class Config(BorgSingleton):
         self.hoi4Path = naive_parser.unquote(naive_parser.drill(self.configfile, "HoI4directory"))
         self.hoi4ModPath = naive_parser.unquote(naive_parser.drill(self.configfile, "HoI4ModDirectory"))
         self.stellarisModPath = naive_parser.unquote(naive_parser.drill(self.configfile, "targetGameModPath"))
+        government_mapping = naive_parser.unquote(naive_parser.drill(self.configfile, "government_mapping"))
+        self.government_mapping_file = f"files/governments/{government_mapping}.txt"
 
         self.defconResults = False # HoI4 to DEFCON is busted, so might as well keep this off to make fronter stuff easier for now.
         
@@ -140,6 +142,7 @@ class Config(BorgSingleton):
     def getFinalModFile(self):  return self.finalModFile
     def getModName(self):       return self.modName
     def getDescriptorFile(self):return self.outputDescriptor
+    def get_government_mapping(self): return self.government_mapping_file
 
     def getSaveData(self):      return self.savefile
     def getParser(self):        return self.parser

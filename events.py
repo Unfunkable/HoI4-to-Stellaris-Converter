@@ -166,7 +166,7 @@ class Events:
         return planet
 
     def getGovernment(self, empire):
-        governmentSet = naive_parser.ParseSaveFile("files/governments.txt")
+        governmentSet = naive_parser.ParseSaveFile(Config().get_government_mapping())
 
         empire.ideology = empire.ideology.replace("_neutral", "")
         government = Dotdict({})
