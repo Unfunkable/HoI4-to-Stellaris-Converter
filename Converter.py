@@ -21,7 +21,6 @@ class Converter:
     def ConvertEverything(self):
         self.makeFolders()
         self.getUniverse()
-
         self.convertFlags()
         self.convertNameLists()
         self.convertLocalisation()

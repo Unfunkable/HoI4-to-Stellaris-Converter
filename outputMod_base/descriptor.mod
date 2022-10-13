@@ -1,8 +1,8 @@
-name="Converter Test Output"
+name="ConverterOutput"
 tags={
 	"Diplomacy"
 	"Events"
 	"Galaxy Generation"
 	"Leaders"
 }
-supported_version="3.4.*"
+supported_version="3.5.*"

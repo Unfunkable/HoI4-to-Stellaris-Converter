@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import errno
 import sys
 import os
 import numpy
@@ -99,6 +100,12 @@ def ParseSaveFile(path, debug=False):
         traceback.print_exc()
         print("Carrying on regardless.")
         alllines = open(path, encoding="utf-8", errors="ignore").read()
+    except OSError as error:
+        if error.errno == 2:
+            print(f"ERROR: No such file or directory \"{path}\"")
+            print("Exiting.")
+            Logger().log("error", f"No such file or directory \"{path}\"")
+            sys.exit(0)
 
     return ParseSaveData(alllines, debug)
 
