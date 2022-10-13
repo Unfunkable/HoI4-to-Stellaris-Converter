@@ -127,10 +127,10 @@ class Events:
 
         ethicsString = ""
         for ethic in government.ethics:
-            ethicsString += 'ethic = "{}"\n'.format(ethic)
+            ethicsString += 'ethic = "{}" '.format(ethic)
         civicsString = ""
         for civic in government.civics:
-            civicsString += 'civic = "{}"\n'.format(civic)
+            civicsString += 'civic = "{}" '.format(civic)
 
         humanString = ""
         for i in range(humancount):
