@@ -127,10 +127,10 @@ class Events:
 
         ethicsString = ""
         for ethic in government.ethics:
-            ethicsString += 'ethic = "{}"\n'.format(ethic)
+            ethicsString += 'ethic = "{}" '.format(ethic)
         civicsString = ""
         for civic in government.civics:
-            civicsString += 'civic = "{}"\n'.format(civic)
+            civicsString += 'civic = "{}" '.format(civic)
 
         humanString = ""
         for i in range(humancount):
@@ -166,7 +166,7 @@ class Events:
         return planet
 
     def getGovernment(self, empire):
-        governmentSet = naive_parser.ParseSaveFile("files/governments.txt")
+        governmentSet = naive_parser.ParseSaveFile(Config().get_government_mapping())
 
         empire.ideology = empire.ideology.replace("_neutral", "")
         government = Dotdict({})
