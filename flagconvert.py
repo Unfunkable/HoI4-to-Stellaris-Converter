@@ -42,7 +42,7 @@ def CompileFlag(sourcepath, destFolder):
     filename = os.path.splitext(os.path.basename(sourcepath))[0]
 
     if not os.path.exists(sourcepath):
-        Logger.log("warning", f"Could not find \"{sourcepath}\"")
+        Logger().log("warning", f"Could not find \"{sourcepath}\"")
         print(f"WARNING: Could not find \"{sourcepath}\"")
         return
 

@@ -137,7 +137,6 @@ def ParseSaveData(alllines, debug=False):
         Logger().log("info", "Parsing save data...")
         Logger().log("progress", "9%")
         print("Parsing save data...")
-        
 
     for line in lines:
         i += 1
@@ -192,9 +191,16 @@ def ParseSaveData(alllines, debug=False):
                 stack[-1][key].append(value)
 
         if end:
-            stack[-2][keystack[-1]].append(stack[-1])
-            stack.pop()
-            keystack.pop()
+            try:
+                stack[-2][keystack[-1]].append(stack[-1])
+                stack.pop()
+                keystack.pop()
+            # Having trouble figuring out what's going on here,
+            # it's only happening with newer versions of HoI4.
+            # For now I'll tactically ignore it, as it doesn't really affect conversion results.
+            except IndexError:
+                Logger().log("warning", "IndexError occured while parsing save data.")
+                print("WARNING: IndexError occured while parsing save data.")
 
     savefile = stack[0]
 

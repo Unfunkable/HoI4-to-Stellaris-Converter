@@ -72,15 +72,6 @@
 					alloys = &ALLOYS&
 					consumer_goods = &GOODS&
 				}
-				while = {
-					count = 3
-					create_leader = {
-						class = scientist
-						species = owner_main_species
-						name = random
-						skill = 1
-					}
-				}
 			}
 		}
 
