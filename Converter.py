@@ -14,7 +14,6 @@ import events
 
 from logToFile import Logger
 
-
 class Converter:
     def __init__(self):
         Config().Init()
@@ -105,8 +104,8 @@ if __name__ == "__main__":
     Logger().log("info", "Beginning conversion...")
     print("BEGINNING CONVERSION")
 
-    converter = Converter()
-    converter.ConvertEverything()
+    #converter = Converter()
+    Converter().ConvertEverything()
 
     Logger().log("info", "Conversion successful")
     Logger().log("progress", "100%")

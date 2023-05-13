@@ -64,8 +64,6 @@ converter_humans = {
 		texture=0
 		attachment=1
 		clothes=0
-		leader_class = ruler
+		leader_class = governor
 	}
 }
-
-
