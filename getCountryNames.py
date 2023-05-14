@@ -1,34 +1,37 @@
 #!/usr/bin/python3
 
 import os
-import sys
 import re
 import yaml
-import naive_parser
 from config import Config
 
 
-def getCountryNames():
-    countryNameYmlPath = Config().getModdedHoi4File("localisation/english/countries_mod_l_english.yml")
-    if not os.path.exists(countryNameYmlPath):
-        countryNameYmlPath = Config().getModdedHoi4File("localisation/english/countries_l_english.yml")
-        if not os.path.exists(countryNameYmlPath): # Prior to HoI4 1.11, localization files for all languages are simply in the localisation/ folder
-            countryNameYmlPath = Config().getModdedHoi4File("localisation/countries_mod_l_english.yml")
-            if not os.path.exists(countryNameYmlPath):
-                countryNameYmlPath = Config().getModdedHoi4File("localisation/countries_l_english.yml")
+def get_country_names():
+    country_name_yml_path = Config().get_modded_hoi4_file(
+        "localisation/english/countries_mod_l_english.yml")
+    if not os.path.exists(country_name_yml_path):
+        country_name_yml_path = Config().get_modded_hoi4_file(
+            "localisation/english/countries_l_english.yml")
+        # Prior to HoI4 1.11, localization files for all languages are simply in the localisation/ folder
+        if not os.path.exists(country_name_yml_path):
+            country_name_yml_path = Config().get_modded_hoi4_file(
+                "localisation/countries_mod_l_english.yml")
+            if not os.path.exists(country_name_yml_path):
+                country_name_yml_path = Config().get_modded_hoi4_file(
+                    "localisation/countries_l_english.yml")
 
     try:
-        ymlFile = open(countryNameYmlPath, encoding="utf-8")
+        yml_file = open(country_name_yml_path, encoding="utf-8")
     except BaseException:
-        ymlFile = open(countryNameYmlPath)
-    ymlData = ymlFile.read()
-    ymlData = "\n".join(ymlData.split("\n")[1:])[1:]
+        yml_file = open(country_name_yml_path)
+    yml_data = yml_file.read()
+    yml_data = "\n".join(yml_data.split("\n")[1:])[1:]
 
-    ymlData = re.sub(r':[0-9]*', r':', ymlData)
-    ymlData = re.sub(r'\n ', r'\n', ymlData)
+    yml_data = re.sub(r':[0-9]*', r':', yml_data)
+    yml_data = re.sub(r'\n ', r'\n', yml_data)
 
-    ymlData = ymlData.encode("ascii", errors="ignore")
-    countryNames = yaml.safe_load(ymlData)
+    yml_data = yml_data.encode("ascii", errors="ignore")
+    country_names = yaml.safe_load(yml_data)
 
 #    if isinstance(countryNames, str):
 #        # I have to do everything myself around here
@@ -43,26 +46,29 @@ def getCountryNames():
 #                print(name)
 #                countryNames[tag] = name
 
-    return countryNames
+    return country_names
 
 
-def getCityNames():
-    countryNameYmlPath = Config().getModdedHoi4File("localisation/english/victory_points_l_english.yml")
-    if not os.path.exists(countryNameYmlPath):
-        countryNameYmlPath = Config().getModdedHoi4File("localisation/victory_points_l_english.yml") # Prior to HoI4 1.11, localization files for all languages are simply in the localisation/ folder
+def get_city_names():
+    country_name_yml_path = Config().get_modded_hoi4_file(
+        "localisation/english/victory_points_l_english.yml")
+    if not os.path.exists(country_name_yml_path):
+        # Prior to HoI4 1.11, localization files for all languages are simply in the localisation/ folder
+        country_name_yml_path = Config().get_modded_hoi4_file(
+            "localisation/victory_points_l_english.yml")
 
     try:
-        ymlData = open(countryNameYmlPath).read()
+        yml_data = open(country_name_yml_path).read()
     except BaseException:
-        data = open(countryNameYmlPath, 'rb').read()
-        ymlData = data.decode("utf8", "ignore")
+        data = open(country_name_yml_path, 'rb').read()
+        yml_data = data.decode("utf8", "ignore")
 
-    ymlData = "\n".join(ymlData.split("\n")[1:])[1:]
+    yml_data = "\n".join(yml_data.split("\n")[1:])[1:]
 
-    ymlData = re.sub(r':[0-9]*', r':', ymlData)
-    ymlData = re.sub(r'\n ', r'\n', ymlData)
+    yml_data = re.sub(r':[0-9]*', r':', yml_data)
+    yml_data = re.sub(r'\n ', r'\n', yml_data)
 
-    ymlData = ymlData.encode("ascii", errors="ignore")
-    cityNames = yaml.safe_load(ymlData)
+    yml_data = yml_data.encode("ascii", errors="ignore")
+    city_names = yaml.safe_load(yml_data)
 
-    return list(cityNames.values())
+    return list(city_names.values())

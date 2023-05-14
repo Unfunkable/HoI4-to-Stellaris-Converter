@@ -3,23 +3,21 @@
 # This entire script is a mess for now, but it works ok, at least.
 
 import os
-import sys
-import math
-import numpy
 import shutil
-
-from config import Config
-from logToFile import Logger
 from wand.image import Image
 from wand.color import Color
 from wand.drawing import Drawing
 
-MaxRGB = 256
+from config import Config
+from logToFile import Logger
 
-def colorToRGBArray(color):
-    return [int(color.red_quantum() / MaxRGB),
-            int(color.green_quantum() / MaxRGB),
-            int(color.blue_quantum() / MaxRGB)]
+MAX_RGB = 256
+
+
+def color_to_rgb_array(color):
+    return [int(color.red_quantum() / MAX_RGB),
+            int(color.green_quantum() / MAX_RGB),
+            int(color.blue_quantum() / MAX_RGB)]
 
 
 # def colorSet(image):
@@ -35,15 +33,14 @@ def colorToRGBArray(color):
 #     return colorset
 
 
-def CompileFlag(sourcepath, destFolder):
+def compile_flag(sourcepath, dest_folder):
 
-    if not destFolder:
-        destFolder = "output/"
+    if not dest_folder:
+        dest_folder = "output/"
     filename = os.path.splitext(os.path.basename(sourcepath))[0]
 
     if not os.path.exists(sourcepath):
         Logger().log("warning", f"Could not find \"{sourcepath}\"")
-        print(f"WARNING: Could not find \"{sourcepath}\"")
         return
 
     image = Image(filename=sourcepath)
@@ -77,14 +74,14 @@ def CompileFlag(sourcepath, destFolder):
 
     dropshadow.save(filename=filename + ".dds")
     shutil.move(filename + ".dds", os.path.join(os.getcwd(),
-                f"output/{Config().getModName()}/flags/convertedflags/"))
+                f"output/{Config().get_mod_name()}/flags/convertedflags/"))
 
     tiny = Image(dropshadow)
     tiny.type = imagetype
     tiny.resize(24, 24)
     tiny.save(filename=filename + ".dds")
     shutil.move(filename + ".dds", os.path.join(os.getcwd(),
-                f"output/{Config().getModName()}/flags/convertedflags/small/"))
+                f"output/{Config().get_mod_name()}/flags/convertedflags/small/"))
 
     #mapflag = Image(Drawing(256, 256), nonecolor)
 
@@ -147,10 +144,4 @@ def CompileFlag(sourcepath, destFolder):
 
     geom.save(filename=filename+".dds")
     shutil.move(filename + ".dds", os.path.join(os.getcwd(),
-                f"output/{Config().getModName()}/flags/convertedflags/map/"))
-
-
-if __name__ == "__main__":
-    SetUpFolders()
-    for filename in os.listdir("hoi4samples"):
-        CompileFlag("hoi4samples/" + filename)
+                f"output/{Config().get_mod_name()}/flags/convertedflags/map/"))

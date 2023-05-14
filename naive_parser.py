@@ -1,16 +1,14 @@
 #!/usr/bin/python3
 
-import errno
 import sys
-import os
-import numpy
-import re
-from logToFile import Logger
 from collections import defaultdict
-from datetime import datetime
+import re
+import numpy
+from logToFile import Logger
 
 import properties
 import config
+
 
 class Nation:
     def __init__(self, tag):
@@ -26,7 +24,7 @@ class Nation:
         self.capital = ""
         self.climate = "pc_arid"
 
-    def longTag(self):
+    def long_tag(self):
         return self.tag + "_" + self.government
 
     def __str__(self):
@@ -89,7 +87,7 @@ def splitstrings(string):
     return splits
 
 
-def ParseSaveFile(path, debug=False):
+def parse_save_file(path, debug=False):
     try:
         alllines = open(path, encoding="utf-8").read()
     except UnicodeDecodeError:
@@ -97,20 +95,16 @@ def ParseSaveFile(path, debug=False):
         Logger().log("warning", "Savefile unicode decode error")
         Logger().log("debug", traceback.format_exc())
         Logger().log("info", "Carrying on regardless.")
-        traceback.print_exc()
-        print("Carrying on regardless.")
         alllines = open(path, encoding="utf-8", errors="ignore").read()
     except OSError as error:
         if error.errno == 2:
-            print(f"ERROR: No such file or directory \"{path}\"")
-            print("Exiting.")
             Logger().log("error", f"No such file or directory \"{path}\"")
             sys.exit(0)
 
-    return ParseSaveData(alllines, debug)
+    return parse_save_data(alllines, debug)
 
 
-def ParseSaveData(alllines, debug=False):
+def parse_save_data(alllines, debug=False):
 
     # Comments are troublesome
     # alllines = re.sub(r"#[^\n]*?\n",r"\n",alllines)
@@ -119,7 +113,8 @@ def ParseSaveData(alllines, debug=False):
     alllines = re.sub(r"=\n *{", r"={", alllines)
 
     lines = alllines.split("\n")
-    lines = [item for item in lines if len(trim(item)) > 0 and trim(item)[0] != "#"]
+    lines = [item for item in lines if len(
+        trim(item)) > 0 and trim(item)[0] != "#"]
     alllines = "\n".join(lines)
 
     alllines = alllines.replace("}", "\n}\n").replace("{", "{\n")
@@ -130,20 +125,19 @@ def ParseSaveData(alllines, debug=False):
 
     i = 0
 
-    fivePercentMark = len(lines) // 20
-    nextPercentMark = fivePercentMark
+    five_percent_mark = len(lines) // 20
+    next_percent_mark = five_percent_mark
 
-    if fivePercentMark > 1000:
+    if five_percent_mark > 1000:
         Logger().log("info", "Parsing save data...")
         Logger().log("progress", "9%")
-        print("Parsing save data...")
 
     for line in lines:
         i += 1
 
-        if i > nextPercentMark and fivePercentMark > 5000:
-            print(str((5 * i) // fivePercentMark) + "%")
-            nextPercentMark += fivePercentMark
+        if i > next_percent_mark and five_percent_mark > 5000:
+            print(str((5 * i) // five_percent_mark) + "%")
+            next_percent_mark += five_percent_mark
 
         line = trim(line.replace("\n", "").replace("\t", ""))
 
@@ -151,8 +145,6 @@ def ParseSaveData(alllines, debug=False):
             # First line weirdness
             if line[:7] == "HOI4bin":
                 Logger().log("error", "The HoI4 save file is compressed, and cannot be read. Please edit 'Documents/Paradox Interactive/Hearst of Iron IV/settings.txt' with a text editor, and change 'save_as_binary=yes' to 'save_as_binary=no'. Then save your HoI4 game again.")
-                print("ERROR: The HoI4 save file is compressed, and cannot be read. Please edit 'Documents/Paradox Interactive/Hearst of Iron IV/settings.txt' with a text editor, and change 'save_as_binary=yes' to 'save_as_binary=no'. Then save your HoI4 game again.")
-                print("Exiting.")
                 sys.exit(0)
             if line == "HOI4txt":
                 continue
@@ -200,7 +192,6 @@ def ParseSaveData(alllines, debug=False):
             # For now I'll tactically ignore it, as it doesn't really affect conversion results.
             except IndexError:
                 Logger().log("warning", "IndexError occured while parsing save data.")
-                print("WARNING: IndexError occured while parsing save data.")
 
     savefile = stack[0]
 
@@ -214,22 +205,23 @@ class Parser:
         self.pops = {}
         self.factories = {}
         self.warscore = {}
-        self.stateCount = {}
-        self.totalStateCount = 0
+        self.state_count = {}
+        self.total_state_count = 0
 
         states = drill(savefile, "states")
         for state in states:
-            self.totalStateCount += 1
+            self.total_state_count += 1
             owner = unquote(drill(savefile, "states", state, "owner"))
-            manpower = drill(savefile, "states", state, "manpower_pool", "total")
+            manpower = drill(savefile, "states", state,
+                             "manpower_pool", "total")
             if owner in self.pops:
                 self.pops[unquote(owner)] += int(manpower)
             else:
                 self.pops[unquote(owner)] = int(manpower)
-            if owner in self.stateCount:
-                self.stateCount[unquote(owner)] += 1
+            if owner in self.state_count:
+                self.state_count[unquote(owner)] += 1
             else:
-                self.stateCount[unquote(owner)] = 1
+                self.state_count[unquote(owner)] = 1
 
             buildingtypes = drill(savefile, "states", state, "buildings")
             for buildingtype in buildingtypes:
@@ -254,7 +246,8 @@ class Parser:
             wars = savefile["previous_peace"]
             for war in wars:
                 for winner in drill(war, "winners"):
-                    score = int(drill(war, "winners", winner, "original_score"))
+                    score = int(
+                        drill(war, "winners", winner, "original_score"))
                     if winner in self.warscore:
                         self.warscore[unquote(winner)] += int(score)
                     else:
@@ -270,7 +263,8 @@ class Parser:
         self.puppets = []
 
         for country in drill(savefile, "countries"):
-            relation1 = drill(savefile, "countries", country, "diplomacy", "active_relations")
+            relation1 = drill(savefile, "countries", country,
+                              "diplomacy", "active_relations")
             for relation in relation1:
                 relationdata = drill(relation1, relation)
                 if "puppet" in relationdata:
@@ -284,7 +278,8 @@ class Parser:
             if overlord not in self.pops or overlord not in self.factories:
                 continue
             if vassal not in self.pops or vassal not in self.factories:
-                continue # Otherwise, countries without vassals or factories will throw a KeyError.
+                # Otherwise, countries without vassals or factories will throw a KeyError.
+                continue
             self.pops[overlord] += 0.25 * self.pops[vassal]
             self.factories[overlord] += 0.25 * self.factories[vassal]
             self.warscore[overlord] += 0.25 * self.warscore[vassal]
@@ -295,24 +290,29 @@ class Parser:
 
         capitals = {}
         for country in drill(savefile, "countries"):
-            capitalProvince = drill(savefile, "countries", country, "capital")
-            capitals[country] = capitalProvince
+            capital_province = drill(savefile, "countries", country, "capital")
+            capitals[country] = capital_province
 
         governments = {}
         ideologies = {}
         for country in drill(savefile, "countries"):
-            rulingParty = drill(savefile, "countries", country, "politics", "ruling_party")
-            governments[country] = rulingParty
+            ruling_party = drill(savefile, "countries",
+                                 country, "politics", "ruling_party")
+            governments[country] = ruling_party
 
-            ideology = unquote(drill(savefile, "countries", country, "politics", "parties", rulingParty, "country_leader", "", "ideology"))
+            ideology = unquote(drill(savefile, "countries", country, "politics",
+                               "parties", ruling_party, "country_leader", "", "ideology"))
             if not ideology:
-                ideology = unquote(drill(savefile, "countries", country, "politics", "parties", rulingParty, "country_leader", "ideology")) # Prior to HoI4 1.11, ideology is simply under the country_leader rather than being an extra step down.
+                # Prior to HoI4 1.11, ideology is simply under the country_leader rather than being an extra step down.
+                ideology = unquote(drill(savefile, "countries", country, "politics",
+                                   "parties", ruling_party, "country_leader", "ideology"))
             ideologies[country] = ideology
 
         # Read cultures from Vic2 to HoI4 games
         cultures = {}
         for country in drill(savefile, "countries"):
-            ideas = list(drill(savefile, "countries", country, "politics", "ideas").values())
+            ideas = list(drill(savefile, "countries", country,
+                         "politics", "ideas").values())
             ideas = str(ideas[0]).split(" ")
             culture = ""
             for idea in ideas:
@@ -324,13 +324,15 @@ class Parser:
 
         self.factions = {}
         for faction in savefile["faction"]:
-            factionName = unquote(drill(faction, "name"))
-            factionMembers = drill(faction, "members", "").split(" ")
-            self.factions[factionName.lower()] = factionMembers
+            faction_name = unquote(drill(faction, "name"))
+            faction_members = drill(faction, "members", "").split(" ")
+            self.factions[faction_name.lower()] = faction_members
 
         popmax = float(self.pops[max(self.pops, key=self.pops.get)])
-        factorymax = float(self.factories[max(self.factories, key=self.factories.get)])
-        scoremax = float(self.warscore[max(self.warscore, key=self.warscore.get)])
+        factorymax = float(
+            self.factories[max(self.factories, key=self.factories.get)])
+        scoremax = float(
+            self.warscore[max(self.warscore, key=self.warscore.get)])
 
         if (popmax < 1):
             popmax = 1
@@ -339,13 +341,14 @@ class Parser:
         if (scoremax < 1):
             scoremax = 1
 
-        self.defcon = config.Config().getDefconResults()
+        self.defcon = config.Config().get_defcon_results()
         if self.defcon:
             for dtag in self.defcon:
-                if not type(dtag) is str: continue
+                if not type(dtag) is str:
+                    continue
                 multiplier = float(drill(self.defcon, dtag, "survivors"))
                 multiplier /= 100.0
-                multiplier = 0.40 + (multiplier*0.60) # Let's not be too mean
+                multiplier = 0.40 + (multiplier*0.60)  # Let's not be too mean
                 if dtag in self.factories:
                     # nation tag
                     self.pops[dtag] *= multiplier
@@ -357,8 +360,8 @@ class Parser:
                         self.pops[factionTag] *= multiplier
                         self.factories[factionTag] *= multiplier
                 else:
-                    print("Warning: "+dtag+" not found. Please make sure you've spelled it correctly.")
-
+                    Logger().log(
+                        "warning", f"{dtag} not found. Please make sure you've spelled it correctly.")
 
         def tweakedsort(a):
             popproportion = float(self.pops[a]) / popmax
@@ -368,15 +371,15 @@ class Parser:
             factor *= 1.0 + (0.2 * scoreproportion)
             return factor
 
-        self.totalScore = 0.0
+        self.total_score = 0.0
         for nation in self.factories:
-            self.totalScore += tweakedsort(nation)
+            self.total_score += tweakedsort(nation)
 
-        climateMap = properties.getClimates()
+        climate_map = properties.get_climates()
 
-        self.topNations = []
-        self.smallNations = []
-        claimedStates = 0
+        self.top_nations = []
+        self.small_nations = []
+        claimed_states = 0
         for nation in sorted(self.factories, key=tweakedsort, reverse=True):
 
             ndata = Nation(nation)
@@ -390,23 +393,24 @@ class Parser:
             ndata.capital = capitals[nation]
             if nation in cultures:
                 ndata.culture = cultures[nation]
-            capitalId = int(ndata.capital)
-            if capitalId in climateMap:
-                ndata.climate = climateMap[int(capitals[nation])]
+            capital_id = int(ndata.capital)
+            if capital_id in climate_map:
+                ndata.climate = climate_map[int(capitals[nation])]
             else:
                 ndata.climate = "pc_arid"
 
-            oldtag = unquote(drill(savefile, "countries", nation, "original_tag"))
+            oldtag = unquote(
+                drill(savefile, "countries", nation, "original_tag"))
             if oldtag:
                 ndata.tag = oldtag
 
-            claimedStates += self.stateCount[nation]
-            if len(self.topNations) < 6 and (tweakedsort(nation) > 0.1 or claimedStates < self.totalStateCount/10):
-                self.topNations.append(ndata)
+            claimed_states += self.state_count[nation]
+            if len(self.top_nations) < 6 and (tweakedsort(nation) > 0.1 or claimed_states < self.total_state_count/10):
+                self.top_nations.append(ndata)
             else:
-                self.smallNations.append(ndata)
+                self.small_nations.append(ndata)
 
-        def getIndPerCapita(a):
+        def get_ind_per_capita(a):
             return 1000 * (self.factories[a] / self.pops[a])
 
         def gini_coeff(x):
@@ -417,44 +421,46 @@ class Parser:
             r = numpy.argsort(numpy.argsort(-x))  # calculates zero-based ranks
             return 1 - (2.0 * (r * x).sum() + s) / (n * s)
 
-        villageSize = 1000
-        giniVillage = []
-        maxWealth = 0.0
+        village_size = 1000
+        gini_village = []
+        max_wealth = 0.0
         for nation in sorted(self.pops):
             if self.pops[nation] / popmax < 0.005:
                 continue
             if nation not in self.factories:
                 continue
-            wealth = (self.factories[nation] / factorymax) / (self.pops[nation] / popmax)
-            if wealth > maxWealth:
-                maxWealth = wealth
-            villagerCount = int(numpy.floor(villageSize * self.pops[nation] / popmax))
-            for i in range(villagerCount):
-                giniVillage.append(wealth)
+            wealth = (self.factories[nation] /
+                      factorymax) / (self.pops[nation] / popmax)
+            if wealth > max_wealth:
+                max_wealth = wealth
+            villager_count = int(numpy.floor(
+                village_size * self.pops[nation] / popmax))
+            for i in range(villager_count):
+                gini_village.append(wealth)
 
-        giniArray = numpy.array(giniVillage)
-        giniArray = giniArray / maxWealth
-        giniArray.sort()
-        self.gini = gini_coeff(giniArray)
+        gini_array = numpy.array(gini_village)
+        gini_array = gini_array / max_wealth
+        gini_array.sort()
+        self.gini = gini_coeff(gini_array)
 
-    def getTopNations(self):
-        return self.topNations
+    def get_top_nations(self):
+        return self.top_nations
 
-    def getSmallNations(self):
-        return self.smallNations
+    def get_small_nations(self):
+        return self.small_nations
 
-    def getTotalScore(self):
-        return self.totalScore
+    def get_total_score(self):
+        return self.total_score
 
-    def getGiniCoeff(self):
+    def get_gini_coeff(self):
         return self.gini
 
 
 if __name__ == "__main__":
-    savefile = ParseSaveFile("postwar_1948_06_16_01.hoi4")
+    savefile = parse_save_file("postwar_1948_06_16_01.hoi4")
     parsedfile = Parser(savefile)
-    topNations = parsedfile.getTopNations()
-    gini = parsedfile.getGiniCoeff()
-    for topNation in topNations:
-        print(topNation)
+    top_nations = parsedfile.get_top_nations()
+    gini = parsedfile.get_gini_coeff()
+    for top_nation in top_nations:
+        print(top_nation)
     print("Gini Coefficient: " + str(gini))

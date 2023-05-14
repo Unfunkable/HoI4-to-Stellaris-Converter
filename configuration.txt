@@ -1,6 +1,6 @@
 
 # The path to the save file to be converted.
-savefile = "C:\Users\faris\Documents\Paradox Interactive\Hearts of Iron IV\save games\ENG_1939_08_14_12.hoi4"
+savefile = "D:\Users\faris\Documents\Paradox Interactive\Hearts of Iron IV\save games\stellaris38.hoi4"
 
 # The path to your Hearts of Iron 4 installation, if you're not using a total conversion mod - or the path to your mod files, if you are.
 HoI4directory = "C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV"

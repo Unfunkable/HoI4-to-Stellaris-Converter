@@ -1,32 +1,33 @@
 #!/usr/bin/python
 
 import os
-import sys
 import math
 import re
 import colorsys
 
 import naive_parser
 import config
+from logToFile import Logger
 
 
-def colorDistance(hsv1, hsv2):
+def color_distance(hsv1, hsv2):
 
-    hueDistance = min(abs(hsv2[0] - hsv1[0]), 1 - abs(hsv2[0] - hsv1[0]))
-    satDistance = abs(hsv2[1] - hsv1[1])
-    valDistance = abs(hsv2[2] - hsv1[2])
+    hue_distance = min(abs(hsv2[0] - hsv1[0]), 1 - abs(hsv2[0] - hsv1[0]))
+    sat_distance = abs(hsv2[1] - hsv1[1])
+    val_distance = abs(hsv2[2] - hsv1[2])
 
-    return math.sqrt(hueDistance * hueDistance + satDistance * satDistance + valDistance * valDistance)
+    return math.sqrt(hue_distance * hue_distance + sat_distance * sat_distance + val_distance * val_distance)
 
 
-def getColors():
-    hoi4ColorData = naive_parser.ParseSaveFile(config.Config().getModdedHoi4File("common/countries/colors.txt"))
-    stellarisGreyData = {
+def get_colors():
+    hoi4_color_data = naive_parser.parse_save_file(
+        config.Config().get_modded_hoi4_file("common/countries/colors.txt"))
+    stellaris_grey_data = {
         "grey": [0.65, 0.05, 0.35],
         "dark_grey": [0.65, 0.05, 0.22],
         "black": [0.5, 0.3, 0.05]
     }
-    stellarisColorData = {
+    stellaris_color_data = {
         "grey": [0.65, 0.05, 0.35],
         "dark_grey": [0.65, 0.05, 0.22],
         "black": [0.5, 0.3, 0.05],
@@ -54,10 +55,10 @@ def getColors():
         "dark_green": [0.33, 0.6, 0.27],
     }
 
-    hsvSet = {}
-    nameSet = {}
-    for tag in hoi4ColorData:
-        color = naive_parser.drill(hoi4ColorData, tag, "color", "")
+    hsv_set = {}
+    name_set = {}
+    for tag in hoi4_color_data:
+        color = naive_parser.drill(hoi4_color_data, tag, "color", "")
         rgb = ("." not in color)
         if color == "":
             color = "255 255 255"
@@ -67,119 +68,129 @@ def getColors():
             color = list(colorsys.rgb_to_hsv(*color))
             color[2] = color[2] / 255
 
-        hsvSet[tag] = color
+        hsv_set[tag] = color
 
-        minDist = 9999
-        bestColor = "red"
+        min_dist = 9999
+        best_color = "red"
 
         if color[1] < 0.2:
-            colorData = stellarisGreyData
+            color_data = stellaris_grey_data
         else:
-            colorData = stellarisColorData
+            color_data = stellaris_color_data
 
-        for stellarisColor in colorData:
-            stellarisHsv = colorData[stellarisColor]
-            newDist = colorDistance(color, stellarisHsv)
-            if newDist < minDist:
-                minDist = newDist
-                bestColor = stellarisColor
+        for stellaris_color in color_data:
+            stellaris_hsv = color_data[stellaris_color]
+            new_dist = color_distance(color, stellaris_hsv)
+            if new_dist < min_dist:
+                min_dist = new_dist
+                best_color = stellaris_color
 
-        nameSet[tag] = bestColor
+        name_set[tag] = best_color
 
-    return nameSet
+    return name_set
 
 
-def getStates():
-    stateMap = {}
+def get_states():
+    state_map = {}
 
-    statepath = config.Config().getModdedHoi4File("history/states/")
+    statepath = config.Config().get_modded_hoi4_file("history/states/")
     for filename in os.listdir(statepath):
-        stateData = open(statepath + filename).read()
+        state_data = open(statepath + filename).read()
 
-        stateData = stateData.replace("=\n{", "={")
-        stateData = stateData.replace("=\n\t{", "={")
-        stateData = stateData.replace("=\n\t\t{", "={")
-        stateData = stateData.replace("=\n\t\t\t{", "={")
-        stateData = stateData.replace("=\n\t\t\t\t{", "={")
+        state_data = state_data.replace("=\n{", "={")
+        state_data = state_data.replace("=\n\t{", "={")
+        state_data = state_data.replace("=\n\t\t{", "={")
+        state_data = state_data.replace("=\n\t\t\t{", "={")
+        state_data = state_data.replace("=\n\t\t\t\t{", "={")
 
-        stateData = re.sub(r"#[^\n]*?\n", r"\n", stateData)
+        state_data = re.sub(r"#[^\n]*?\n", r"\n", state_data)
 
-        if not stateData:
+        if not state_data:
             continue
 
-        state = naive_parser.ParseSaveData(stateData)
+        state = naive_parser.parse_save_data(state_data)
 
         if 0 == len(state.keys()):
-            print("WARNING: \"" + statepath + filename + "\" could not be parsed. Skipping.")
+            Logger().log(
+                "warning", f"\"{statepath}{filename} +\" could not be parsed. Skipping.")
             continue
-        stateId = int(naive_parser.drill(state, "state", "id"))
-        provinces = naive_parser.drill(state, "state", "provinces", "").split(" ")
+        state_id = int(naive_parser.drill(state, "state", "id"))
+        provinces = naive_parser.drill(
+            state, "state", "provinces", "").split(" ")
 
-        provinceIds = []
+        province_ids = []
         for province in provinces:
             if not province:
                 continue
-            provinceIds.append(int(province))
+            province_ids.append(int(province))
 
-        for province in provinceIds:
-            stateMap[province] = stateId
+        for province in province_ids:
+            state_map[province] = state_id
 
-    return stateMap
+    return state_map
 
 
-def getClimates():
+def get_climates():
 
-    climateMap = {}
-    stateMap = getStates()
+    climate_map = {}
+    state_map = get_states()
 
-    strategicRegionsPath = config.Config().getModdedHoi4File("map/strategicregions/")
-    for filename in os.listdir(strategicRegionsPath):
-        climateData = naive_parser.ParseSaveFile(strategicRegionsPath + filename)
-        provinces = naive_parser.drill(climateData, "strategic_region", "provinces", "").split(" ")
-        periodses = naive_parser.drill(climateData, "strategic_region", "weather")
+    strategic_regions_path = config.Config().get_modded_hoi4_file("map/strategicregions/")
+    for filename in os.listdir(strategic_regions_path):
+        climate_data = naive_parser.parse_save_file(
+            strategic_regions_path + filename)
+        provinces = naive_parser.drill(
+            climate_data, "strategic_region", "provinces", "").split(" ")
+        periodses = naive_parser.drill(
+            climate_data, "strategic_region", "weather")
         if "period" not in periodses:
             continue
         periods = periodses["period"]
-        yearTemperatures = []
-        yearRain = []
-        yearSnow = []
-        yearSand = []
+        year_temperatures = []
+        year_rain = []
+        year_snow = []
+        year_sand = []
 
         if len(periods) == 0:
             continue
 
         for period in periods:
-            temperatureRange = naive_parser.drill(period, "temperature", "").split(" ")
-            maxTemp = temperatureRange[1].replace("\"", "")
-            minTemp = temperatureRange[0].replace("\"", "")
-            temperature = float(maxTemp) - float(minTemp)
-            yearTemperatures.append(temperature)
+            temperature_range = naive_parser.drill(
+                period, "temperature", "").split(" ")
+            max_temp = temperature_range[1].replace("\"", "")
+            min_temp = temperature_range[0].replace("\"", "")
+            temperature = float(max_temp) - float(min_temp)
+            year_temperatures.append(temperature)
 
-            lightRain = naive_parser.unquote(naive_parser.drill(period, "rain_light"))
-            heavyRain = naive_parser.unquote(naive_parser.drill(period, "rain_heavy"))
+            light_rain = naive_parser.unquote(
+                naive_parser.drill(period, "rain_light"))
+            heavy_rain = naive_parser.unquote(
+                naive_parser.drill(period, "rain_heavy"))
             snow = naive_parser.unquote(naive_parser.drill(period, "snow"))
-            blizzard = naive_parser.unquote(naive_parser.drill(period, "blizzard"))
-            sandstorm = naive_parser.unquote(naive_parser.drill(period, "sandstorm"))
+            blizzard = naive_parser.unquote(
+                naive_parser.drill(period, "blizzard"))
+            sandstorm = naive_parser.unquote(
+                naive_parser.drill(period, "sandstorm"))
 
-            yearRain.append(float(lightRain) + float(heavyRain) * 2)
-            yearSnow.append(float(snow) + float(blizzard) * 3)
-            yearSand.append(float(sandstorm))
+            year_rain.append(float(light_rain) + float(heavy_rain) * 2)
+            year_snow.append(float(snow) + float(blizzard) * 3)
+            year_sand.append(float(sandstorm))
 
-        averageTemperature = sum(yearTemperatures) / len(yearTemperatures)
-        averageRain = sum(yearRain) / len(yearRain)
-        averageSnow = sum(yearSnow) / len(yearSnow)
-        averageSand = sum(yearSand) / len(yearSand)
+        avg_temp = sum(year_temperatures) / len(year_temperatures)
+        avg_rain = sum(year_rain) / len(year_rain)
+        avg_snow = sum(year_snow) / len(year_snow)
+        avg_sand = sum(year_sand) / len(year_sand)
 
         climate = "pc_arid"
-        if averageSand > 0.05:
+        if avg_sand > 0.05:
             climate = "pc_desert"
-        elif averageSnow > 0.3:
+        elif avg_snow > 0.3:
             climate = "pc_arctic"
-        elif averageSnow > 0.1:
+        elif avg_snow > 0.1:
             climate = "pc_tundra"
-        elif averageTemperature > 10.0:
+        elif avg_temp > 10.0:
             climate = "pc_arid"
-        elif averageTemperature < 4.7:
+        elif avg_temp < 4.7:
             climate = "pc_savannah"
         else:
             climate = "pc_alpine"
@@ -188,12 +199,12 @@ def getClimates():
             if not province:
                 continue
             provinceId = int(province)
-            if provinceId in stateMap:
-                stateId = stateMap[provinceId]
-                climateMap[stateId] = climate
+            if provinceId in state_map:
+                stateId = state_map[provinceId]
+                climate_map[stateId] = climate
 
-    return climateMap
+    return climate_map
 
 
 if __name__ == "__main__":
-    c = getStates()
+    c = get_states()

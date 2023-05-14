@@ -1,11 +1,7 @@
 #!/usr/bin/python3
-
-import os
-import sys
 import shutil
 
 from config import Config
-import naive_parser
 import makeNameList
 import flagconvert
 import localisation
@@ -14,86 +10,72 @@ import events
 
 from logToFile import Logger
 
+
 class Converter:
     def __init__(self):
-        Config().Init()
-    def ConvertEverything(self):
-        self.makeFolders()
-        self.getUniverse()
-        self.convertFlags()
-        self.convertNameLists()
-        self.convertLocalisation()
-        self.convertEvents()
+        Config().init()
 
-    def makeFolders(self):
+    def convert_everything(self):
+        self.make_folders()
+        self.get_universe()
+        self.convert_flags()
+        self.convert_name_lists()
+        self.convert_localisation()
+        self.convert_events()
+
+    def make_folders(self):
         Logger().log("info", "Laying out folder structure...")
-        print("Laying out folder structure...")
-        converterDir = Config().getConverterDir()
-        shutil.rmtree(Config().getOutputPath(), True)
-        shutil.copytree(Config().getBaseModPath(), Config().getOutputPath())
-        shutil.copy(Config().getDescriptorFile(), Config().getOutputPath())
+        shutil.rmtree(Config().get_output_path(), True)
+        shutil.copytree(Config().get_base_mod_path(),
+                        Config().get_output_path())
+        shutil.copy(Config().get_descriptor_file(), Config().get_output_path())
         Logger().log("progress", "36%")
 
-    def getUniverse(self):
+    def get_universe(self):
         Logger().log("info", "Creating the universe...")
-        print("Creating the universe...")
-        self.universe = universe.Universe(Config().getSaveData())
+        self.universe = universe.Universe(Config().get_save_data())
         Logger().log("progress", "45%")
         Logger().log("info", "Establishing history...")
-        print("Establishing history...")
-        self.universe.Load()
+        self.universe.load()
         Logger().log("progress", "54%")
 
-    def convertFlags(self):
+    def convert_flags(self):
         hoi4flagpath = "gfx/flags/"
-        topNations = Config().getParser().getTopNations()
+        top_nations = Config().get_parser().get_top_nations()
 
-        for topNation in topNations:
-            Logger().log("info", f"Creating flag for {topNation.tag}...")
-            print(f"Creating flag for {topNation.tag}...")
-            sourcepath = f"{hoi4flagpath}{topNation.tag}_{topNation.government}.tga"
-            sourceFlagTga = Config().getModdedHoi4File(sourcepath)
-            if not sourceFlagTga:
-                basesourcepath = hoi4flagpath + topNation.tag + ".tga"
-                Logger().log("warning", f"Could not find \"{sourcepath}\". Falling back to \"{basesourcepath}\"")
-                print(f"WARNING: Could not find \"{sourcepath}\". Falling back to \"{basesourcepath}\"")
-                sourceFlagTga = Config().getModdedHoi4File(basesourcepath)
-            destFlagFolder = f"{Config().getOutputPath()}flags/convertedflags/"
-            flagconvert.CompileFlag(sourceFlagTga, destFlagFolder)
+        for top_nation in top_nations:
+            Logger().log("info", f"Creating flag for {top_nation.tag}...")
+            sourcepath = f"{hoi4flagpath}{top_nation.tag}_{top_nation.government}.tga"
+            source_flag_tga = Config().get_modded_hoi4_file(sourcepath)
+            if not source_flag_tga:
+                basesourcepath = hoi4flagpath + top_nation.tag + ".tga"
+                Logger().log("warning",
+                             f"Could not find \"{sourcepath}\". Falling back to \"{basesourcepath}\"")
+                source_flag_tga = Config().get_modded_hoi4_file(basesourcepath)
+            dest_flag_folder = f"{Config().get_output_path()}flags/convertedflags/"
+            flagconvert.compile_flag(source_flag_tga, dest_flag_folder)
         Logger().log("progress", "63%")
 
-    def convertNameLists(self):
-        topNations = Config().getParser().getTopNations()
-        for topNation in topNations:
-            Logger().log("info", f"Creating name list for {topNation.tag}...")
-            print(f"Creating name list for {topNation.tag}...")
-            destNameListFolder = f"output/{Config().getModName()}/common/name_lists/"
-            makeNameList.MakeNameList(topNation.tag, destNameListFolder)
+    def convert_name_lists(self):
+        top_nations = Config().get_parser().get_top_nations()
+        for top_nation in top_nations:
+            Logger().log("info", f"Creating name list for {top_nation.tag}...")
+            dest_name_list_folder = f"output/{Config().get_mod_name()}/common/name_lists/"
+            makeNameList.make_name_list(top_nation.tag, dest_name_list_folder)
         Logger().log("progress", "72%")
 
-    def convertLocalisation(self):
+    def convert_localisation(self):
         Logger().log("info", "Converting localisation...")
-        print("Converting localisation...")
-
-        savefile = Config().getSaveData()
-        parser = Config().getParser()
-        hoi4path = Config().getHoi4Path()
 
         localiser = localisation.Localisation(self.universe)
         Logger().log("progress", "81%")
         Logger().log("info", "Writing localisation...")
-        print("Writing localisation...")
-        localiser.writeLocalisation()
-        localiser.writeSyncedLocalisation()
+        localiser.write_localisation()
+        localiser.write_synced_localisation()
         Logger().log("progress", "90%")
 
-    def convertEvents(self):
+    def convert_events(self):
         Logger().log("info", "Creating events...")
-        print("Creating events...")
-
-        savefile = Config().getSaveData()
-        parser = Config().getParser()
-        hoi4path = Config().getHoi4Path()
 
         self.events = events.Events(self.universe)
         self.events.makeEvents()
@@ -102,11 +84,9 @@ class Converter:
 
 if __name__ == "__main__":
     Logger().log("info", "Beginning conversion...")
-    print("BEGINNING CONVERSION")
 
     #converter = Converter()
-    Converter().ConvertEverything()
+    Converter().convert_everything()
 
     Logger().log("info", "Conversion successful")
     Logger().log("progress", "100%")
-    print("ALL DONE!")
