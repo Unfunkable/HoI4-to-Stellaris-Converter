@@ -1,33 +1,28 @@
 #!/usr/bin/python3
-
-import naive_parser
-import getCountryNames
-import universe
-import sys
 import numpy
-import codecs
+import getCountryNames
 from config import Config
 
 
 class Localisation:
     def __init__(self, theUniverse):
-        self.savefile = Config().getSaveData()
-        self.hoi4path = Config().getHoi4Path()
+        self.savefile = Config().get_save_data()
+        self.hoi4path = Config().get_hoi4_path()
         self.universe = theUniverse
-        self.parser = Config().getParser()
+        self.parser = Config().get_parser()
 
         self.localise()
 
     def localise(self):
 
-        self.empireNames = {}
+        self.empire_names = {}
 
-        countryNames = getCountryNames.getCountryNames()
+        country_names = getCountryNames.get_country_names()
         for empire in self.universe.empires:
-            longtag = empire.longTag()
-            empireName = countryNames[longtag]
-            empireName = empireName.replace("Empire", "Star Empire")
-            if " " not in empireName:
+            longtag = empire.long_tag()
+            empire_name = country_names[longtag]
+            empire_name = empire_name.replace("Empire", "Star Empire")
+            if " " not in empire_name:
                 if empire.government == "communism":
                     govs = [
                         "People's Republic of &",
@@ -75,44 +70,49 @@ class Localisation:
                         "&",
                         "Space &"]
 
-                countryName = empireName
-                countryAdj = countryNames[longtag + "_ADJ"]
-                empireName = numpy.random.choice(govs)
-                if "&" in empireName:
-                    empireName = empireName.replace("&", countryName)
-                elif "^" in empireName:
-                    empireName = empireName.replace("^", countryAdj)
+                country_name = empire_name
+                country_adj = country_names[longtag + "_ADJ"]
+                empire_name = numpy.random.choice(govs)
+                if "&" in empire_name:
+                    empire_name = empire_name.replace("&", country_name)
+                elif "^" in empire_name:
+                    empire_name = empire_name.replace("^", country_adj)
                 else:
-                    empireName = countryAdj + " " + empireName
-            self.empireNames[longtag] = empireName
+                    empire_name = country_adj + " " + empire_name
+            self.empire_names[longtag] = empire_name
 
-    def writeLocalisation(self):
-        base = open("files/convertertest_l_english.yml", encoding="utf-8").read()
+    def write_localisation(self):
+        base = open("files/convertertest_l_english.yml",
+                    encoding="utf-8").read()
         localisation = base
-        for tag in self.empireNames:
-            localisation += ' {}:0 "{}"\n'.format(tag, self.empireNames[tag])
+        for tag in self.empire_names:
+            localisation += ' {}:0 "{}"\n'.format(tag, self.empire_names[tag])
         localisation += "\n"
 
-        for tag in self.empireNames:
-            localisation += ' NAME_{}:0 "{}"\n'.format(tag, self.empireNames[tag])
+        for tag in self.empire_names:
+            localisation += ' NAME_{}:0 "{}"\n'.format(
+                tag, self.empire_names[tag])
         localisation += "\n"
 
-        for tag in self.empireNames:
+        for tag in self.empire_names:
             smalltag = tag.split("_")[0]
-            localisation += ' name_list_{}_names:0 "{}"\n'.format(smalltag, self.empireNames[tag])
+            localisation += ' name_list_{}_names:0 "{}"\n'.format(
+                smalltag, self.empire_names[tag])
         localisation += "\n"
 
-        history = self.universe.GetHistory()
+        history = self.universe.get_history()
         history = history.replace("\n", "\\n")
         localisation += ' START_SCREEN_CONVERTED:0 "{}"\n\n'.format(history)
 
-        open("output/" + Config().getModName() + "/localisation/convertertest_l_english.yml", "w", encoding="utf-8-sig").write(localisation)
+        open("output/" + Config().get_mod_name() + "/localisation/convertertest_l_english.yml",
+             "w", encoding="utf-8-sig").write(localisation)
 
-    def writeSyncedLocalisation(self):
+    def write_synced_localisation(self):
         synced = "l_default:\n"
-        for tag in self.empireNames:
-            synced += ' NAME_{}: "{}"\n'.format(tag, self.empireNames[tag])
+        for tag in self.empire_names:
+            synced += ' NAME_{}: "{}"\n'.format(tag, self.empire_names[tag])
         synced += "\n"
-        syncedFile = open("output/" + Config().getModName() + "/localisation_synced/converter_names.yml", "w", encoding="utf-8-sig")
+        synced_file = open("output/" + Config().get_mod_name() +
+                           "/localisation_synced/converter_names.yml", "w", encoding="utf-8-sig")
         # syncedFile.write(u'\ufeff')
-        syncedFile.write(synced)
+        synced_file.write(synced)
