@@ -11,11 +11,15 @@ class Logger(object):
         match level:
             case "info":
                 logging.info(message)
+                print(f"INFO: {message}")
             case "warning":
                 logging.warning(message)
+                print(f"WARNING: {message}")
             case "error":
                 logging.error(message)
+                print(f"ERROR: {message}")
             case "progress":
                 logging.log(15, message)
             case _:
                 logging.debug(message)
+                print(f"DEBUG: {message}")

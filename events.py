@@ -2,6 +2,7 @@
 
 import naive_parser
 from config import Config
+from logToFile import Logger
 
 
 class Dotdict(dict):
@@ -186,7 +187,7 @@ class Events:
                 government_set, "governments", empire.ideology, "civics", ""))
 
         else:
-            print("WARNING: Did not recognise " + empire.long_tag() + "'s \"" +
+            Logger().log("warning", "Did not recognise " + empire.long_tag() + "'s \"" +
                   empire.ideology + "\" ideology. Falling back to generic democracy.")
 
             government.authority = "auth_democratic"

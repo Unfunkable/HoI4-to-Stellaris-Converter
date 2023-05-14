@@ -32,7 +32,7 @@ class Config(BorgSingleton):
             self.converter_dir = self.make_sane_path(
                 os.path.dirname(os.path.realpath(__file__)))
 
-        print("Running from: "+self.converter_dir)
+        Logger().log("debug", "Running from: "+self.converter_dir)
 
         self.save_file_name = naive_parser.unquote(
             naive_parser.drill(self.configfile, "savefile"))
@@ -97,22 +97,19 @@ class Config(BorgSingleton):
 
     def init(self):
         Logger.log(self, "info", "Parsing save file...")
-        print("Parsing save file...")
         self.savefile = naive_parser.parse_save_file(self.save_file_name)
         Logger.log(self, "info", "Reading save data...")
-        print("Reading save data...")
         self.parser = naive_parser.Parser(self.savefile)
         Logger.log(self, "info", "Save file parsed.")
         Logger.log(self, "progress", "27%")
-        print("Save file parsed.")
 
     def is_sane(self):
         if self.save_file_name == "":
-            print("No Hearts Of Iron 4 save file specified.")
+            Logger().log("error", "No Hearts Of Iron 4 save file specified.")
             return False
 
         if self.hoi4_path == "":
-            print("No path to Hearts Of Iron 4 specified.")
+            Logger().log("error", "No path to Hearts Of Iron 4 specified.")
             return False
 
         # TODO: some more checking that we're actually pointing at a legit HoI4 installation etc
@@ -149,7 +146,7 @@ class Config(BorgSingleton):
         path_that_exists = self.hoi4_path + targetPath
         if os.path.exists(path_that_exists):
             return path_that_exists
-        print("Warning: Could not find HoI4 file "+targetPath)
+        Logger().log("warning", "Could not find HoI4 file "+targetPath)
         return ""
 
     def get_converter_dir(self): return self.converter_dir

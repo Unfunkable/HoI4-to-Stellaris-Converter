@@ -7,6 +7,7 @@ import colorsys
 
 import naive_parser
 import config
+from logToFile import Logger
 
 
 def color_distance(hsv1, hsv2):
@@ -110,8 +111,8 @@ def get_states():
         state = naive_parser.parse_save_data(state_data)
 
         if 0 == len(state.keys()):
-            print("WARNING: \"" + statepath + filename +
-                  "\" could not be parsed. Skipping.")
+            Logger().log(
+                "warning", f"\"{statepath}{filename} +\" could not be parsed. Skipping.")
             continue
         state_id = int(naive_parser.drill(state, "state", "id"))
         provinces = naive_parser.drill(

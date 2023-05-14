@@ -435,3 +435,94 @@ UnicodeDecodeError: 'utf-8' codec can't decode byte 0x9e in position 7764255: in
 2023:05:13 21:47:53 [PROGRESS] 99%
 2023:05:13 21:47:53 [INFO] Conversion successful
 2023:05:13 21:47:53 [PROGRESS] 100%
+2023:05:13 21:55:49 [INFO] Beginning conversion...
+2023:05:13 21:55:49 [INFO] Parsing save file...
+2023:05:13 21:57:08 [INFO] Beginning conversion...
+2023:05:13 21:57:08 [INFO] Parsing save file...
+2023:05:14 16:14:42 [INFO] Beginning conversion...
+2023:05:14 16:14:42 [DEBUG] Running from: D:/Users/faris/Documents/GitHub/expanded_empires/HoI4-to-Stellaris-Converter/
+2023:05:14 16:14:42 [INFO] Parsing save file...
+2023:05:14 16:14:53 [INFO] Parsing save data...
+2023:05:14 16:14:53 [PROGRESS] 9%
+2023:05:14 16:15:07 [WARNING] IndexError occured while parsing save data.
+2023:05:14 16:15:07 [WARNING] IndexError occured while parsing save data.
+2023:05:14 16:15:07 [INFO] Reading save data...
+2023:05:14 16:15:12 [INFO] Save file parsed.
+2023:05:14 16:15:12 [PROGRESS] 27%
+2023:05:14 16:15:12 [INFO] Laying out folder structure...
+2023:05:14 16:15:12 [PROGRESS] 36%
+2023:05:14 16:15:12 [INFO] Creating the universe...
+2023:05:14 16:15:12 [PROGRESS] 45%
+2023:05:14 16:15:12 [INFO] Establishing history...
+2023:05:14 16:15:13 [PROGRESS] 54%
+2023:05:14 16:15:13 [INFO] Creating flag for ENG...
+2023:05:14 16:15:13 [INFO] Creating flag for SOV...
+2023:05:14 16:15:13 [INFO] Creating flag for USA...
+2023:05:14 16:15:13 [INFO] Creating flag for FRA...
+2023:05:14 16:15:13 [INFO] Creating flag for CHI...
+2023:05:14 16:15:13 [PROGRESS] 63%
+2023:05:14 16:15:13 [INFO] Creating name list for ENG...
+2023:05:14 16:15:13 [WARNING] Could not find HoI4 file common/names/01_names.txt
+2023:05:14 16:15:13 [INFO] Reading names from C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/names/00_names.txt
+2023:05:14 16:15:13 [WARNING] Could not find HoI4 file common/units/names/01_names.txt
+2023:05:14 16:15:13 [INFO] Reading unique unit names from C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/units/names/00_ENG_names.txt
+2023:05:14 16:15:13 [DEBUG] 241
+2023:05:14 16:15:13 [INFO] Creating name list for SOV...
+2023:05:14 16:15:13 [WARNING] Could not find HoI4 file common/names/01_names.txt
+2023:05:14 16:15:13 [INFO] Reading names from C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/names/00_names.txt
+2023:05:14 16:15:13 [WARNING] Could not find HoI4 file common/units/names/01_names.txt
+2023:05:14 16:15:13 [INFO] Reading unique unit names from C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/units/names/00_SOV_names.txt
+2023:05:14 16:15:14 [DEBUG] 282
+2023:05:14 16:15:14 [INFO] Creating name list for USA...
+2023:05:14 16:15:14 [WARNING] Could not find HoI4 file common/names/01_names.txt
+2023:05:14 16:15:14 [INFO] Reading names from C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/names/00_names.txt
+2023:05:14 16:15:14 [WARNING] Could not find HoI4 file common/units/names/01_names.txt
+2023:05:14 16:15:14 [INFO] Reading unique unit names from C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/units/names/00_USA_names.txt
+2023:05:14 16:15:14 [DEBUG] 290
+2023:05:14 16:15:14 [INFO] Creating name list for FRA...
+2023:05:14 16:15:14 [WARNING] Could not find HoI4 file common/names/01_names.txt
+2023:05:14 16:15:14 [INFO] Reading names from C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/names/00_names.txt
+2023:05:14 16:15:14 [WARNING] Could not find HoI4 file common/units/names/01_names.txt
+2023:05:14 16:15:14 [INFO] Reading unique unit names from C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/units/names/00_FRA_names.txt
+2023:05:14 16:15:14 [DEBUG] 106
+2023:05:14 16:15:14 [INFO] Creating name list for CHI...
+2023:05:14 16:15:14 [WARNING] Could not find HoI4 file common/names/01_names.txt
+2023:05:14 16:15:14 [INFO] Reading names from C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/names/00_names.txt
+2023:05:14 16:15:14 [WARNING] Could not find HoI4 file common/units/names/01_names.txt
+2023:05:14 16:15:14 [WARNING] Could not find HoI4 file common/units/names/00_CHI_names.txt
+2023:05:14 16:15:14 [INFO] Reading unique unit names from C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/units/names/00_names.txt
+2023:05:14 16:15:14 [DEBUG] 92
+2023:05:14 16:15:14 [PROGRESS] 72%
+2023:05:14 16:15:14 [INFO] Converting localisation...
+2023:05:14 16:15:14 [WARNING] Could not find HoI4 file localisation/english/countries_mod_l_english.yml
+2023:05:14 16:15:15 [PROGRESS] 81%
+2023:05:14 16:15:15 [INFO] Writing localisation...
+2023:05:14 16:15:15 [WARNING] Could not find HoI4 file localisation/english/countries_mod_l_english.yml
+2023:05:14 16:15:16 [DEBUG] Squabbling 
+2023:05:14 16:15:16 [DEBUG] Random03 
+2023:05:14 16:15:16 [DEBUG] Random04 
+2023:05:14 16:15:16 [DEBUG] Random05 
+2023:05:14 16:15:16 [DEBUG] Random08 
+2023:05:14 16:15:16 [DEBUG] Random09 
+2023:05:14 16:15:16 [DEBUG] Random10 
+2023:05:14 16:15:16 [DEBUG] CleanIndustrialization1 
+2023:05:14 16:15:16 [DEBUG] CleanIndustrialization2 
+2023:05:14 16:15:16 [DEBUG] Migrations 
+2023:05:14 16:15:16 [DEBUG] Launches 
+2023:05:14 16:15:16 [INFO] 1940s: The Earth remains divided. No single government has managed to establish control over the planet. Tired of the increasingly-overbearing bureaucratic control of the United Nations, several nations begin to look outwards towards the stars.
+1950: Worldwide economic boom.
+1966: Stock market crash of 1966.
+1981: The Internet is released for use by the general public.
+1994: Advances in machine learning have largely stalled. Artificial intelligence is now widely believed to be impossible.
+2014: Earthquake-control technology is developed.
+2039: Global holodeck ban enacted.
+2062: The Banja Luka Accords are signed. All world nations agree to leave the rest of the world's remaining fossil fuels entirely untapped.
+2080s: Breakthroughs in clean energy technology bring billions of people out of poverty, while keeping the rise in global temperatures within 2°C.
+2110s: Economic and climate pressures, combined with widespread high-speed transport technology, lead to mass migrations all over the world. The idea that a racial or ethnic group should correspond to one geographical area is seen as laughably outdated.
+2154: The first Great Ark Ship is launched. Over the next decade, each of the major nations of the Earth will launch Ark Ships to promising-looking exoplanets, in the hope of spreading their influence throughout the galaxy.
+
+2023:05:14 16:15:16 [PROGRESS] 90%
+2023:05:14 16:15:16 [INFO] Creating events...
+2023:05:14 16:15:16 [PROGRESS] 99%
+2023:05:14 16:15:16 [INFO] Conversion successful
+2023:05:14 16:15:16 [PROGRESS] 100%

@@ -8,6 +8,7 @@ import naive_parser
 import getCountryNames
 import properties
 from config import Config
+from logToFile import Logger
 
 
 class Event:
@@ -457,7 +458,7 @@ class Universe:
             if year > end_year:
                 year = end_year - 1
             event = real_events[e]
-            print(event)
+            Logger().log("debug", event)
 
             replaces = {}
             replaces["&YEAR&"] = str(year)
@@ -508,7 +509,7 @@ class Universe:
         history_string = history_string.replace(". the", ". The")
         history_string = history_string.replace(": the", ": The")
 
-        print(history_string)
+        Logger().log("info", history_string)
         return history_string
 
     def get_earth_type_flag(self):

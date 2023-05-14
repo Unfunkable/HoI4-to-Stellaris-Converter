@@ -95,13 +95,9 @@ def parse_save_file(path, debug=False):
         Logger().log("warning", "Savefile unicode decode error")
         Logger().log("debug", traceback.format_exc())
         Logger().log("info", "Carrying on regardless.")
-        traceback.print_exc()
-        print("Carrying on regardless.")
         alllines = open(path, encoding="utf-8", errors="ignore").read()
     except OSError as error:
         if error.errno == 2:
-            print(f"ERROR: No such file or directory \"{path}\"")
-            print("Exiting.")
             Logger().log("error", f"No such file or directory \"{path}\"")
             sys.exit(0)
 
@@ -135,7 +131,6 @@ def parse_save_data(alllines, debug=False):
     if five_percent_mark > 1000:
         Logger().log("info", "Parsing save data...")
         Logger().log("progress", "9%")
-        print("Parsing save data...")
 
     for line in lines:
         i += 1
@@ -150,8 +145,6 @@ def parse_save_data(alllines, debug=False):
             # First line weirdness
             if line[:7] == "HOI4bin":
                 Logger().log("error", "The HoI4 save file is compressed, and cannot be read. Please edit 'Documents/Paradox Interactive/Hearst of Iron IV/settings.txt' with a text editor, and change 'save_as_binary=yes' to 'save_as_binary=no'. Then save your HoI4 game again.")
-                print("ERROR: The HoI4 save file is compressed, and cannot be read. Please edit 'Documents/Paradox Interactive/Hearst of Iron IV/settings.txt' with a text editor, and change 'save_as_binary=yes' to 'save_as_binary=no'. Then save your HoI4 game again.")
-                print("Exiting.")
                 sys.exit(0)
             if line == "HOI4txt":
                 continue
@@ -199,7 +192,6 @@ def parse_save_data(alllines, debug=False):
             # For now I'll tactically ignore it, as it doesn't really affect conversion results.
             except IndexError:
                 Logger().log("warning", "IndexError occured while parsing save data.")
-                print("WARNING: IndexError occured while parsing save data.")
 
     savefile = stack[0]
 
@@ -368,8 +360,8 @@ class Parser:
                         self.pops[factionTag] *= multiplier
                         self.factories[factionTag] *= multiplier
                 else:
-                    print(
-                        "Warning: "+dtag+" not found. Please make sure you've spelled it correctly.")
+                    Logger().log(
+                        "warning", f"{dtag} not found. Please make sure you've spelled it correctly.")
 
         def tweakedsort(a):
             popproportion = float(self.pops[a]) / popmax

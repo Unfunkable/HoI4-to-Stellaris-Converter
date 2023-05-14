@@ -4,6 +4,7 @@ import random
 import naive_parser
 import unicodedata
 from config import Config
+from logToFile import Logger
 
 
 def remove_accents(inputNames):
@@ -75,13 +76,13 @@ def make_name_list(tag, destFolder):
     names_path = Config().get_modded_hoi4_file("common/names/01_names.txt")
     if not names_path:
         names_path = Config().get_modded_hoi4_file("common/names/00_names.txt")
-    print("Reading names from " + names_path)
+    Logger().log("info", "Reading names from " + names_path)
     names = naive_parser.parse_save_file(names_path)
 
     mod_unit_names_path = Config().get_modded_hoi4_file(
         "common/units/names/01_names.txt")
     if mod_unit_names_path:
-        print("Reading unit names from modded " + mod_unit_names_path)
+        Logger().log("info", "Reading unit names from modded " + mod_unit_names_path)
         unitnames = naive_parser.parse_save_file(mod_unit_names_path)
         include_generic_unit_names = False
     else:
@@ -90,7 +91,7 @@ def make_name_list(tag, destFolder):
         if not special_unit_name_path:
             special_unit_name_path = Config().get_modded_hoi4_file(
                 "common/units/names/00_names.txt")
-        print("Reading unique unit names from " + special_unit_name_path)
+        Logger().log("info", "Reading unique unit names from " + special_unit_name_path)
         unitnames = naive_parser.parse_save_file(special_unit_name_path)
 
     malenames = stringlist_drill(names, tag, "male", "names")
@@ -137,7 +138,7 @@ def make_name_list(tag, destFolder):
         random.shuffle(extraplanets)
         planetnames += extraplanets
 
-    print(len(planetnames))
+    Logger().log("debug", len(planetnames))
 
     template_data = {}
     template_data["&TAG&"] = tag
