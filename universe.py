@@ -358,7 +358,12 @@ class Universe:
         random_event_keys = []
         for event_key in sorted(self.event_strings):
             if "Random" in event_key:
-                random_event_keys.append(event_key)
+                if not "MaxYear" in event_key:
+                    random_event_keys.append(event_key)
+                elif "MaxYear" in event_key:
+                    max_year = int(event_key.split("MaxYear")[1].split(":")[0])
+                    if start_year <= max_year:
+                        random_event_keys.append(event_key)
 
         random_events = []
         skips = 0
