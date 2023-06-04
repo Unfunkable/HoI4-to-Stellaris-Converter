@@ -306,14 +306,21 @@ class Universe:
             if tag_def in country_names:
                 name = country_names[tag_def]
             else:
-                name = country_names[tag_blank]
+                try:
+                    name = country_names[tag_blank]
+                except KeyError:
+                    Logger().log("warning", "Key error encountered trying to access blank tag name")
             name = name.replace("The", "the")
             tag_to_name[empire.tag] = name
 
             if tag_adj in country_names:
                 adj = country_names[tag_adj]
             else:
-                adj = country_names[tag_blank]
+                try:
+                    adj = country_names[tag_blank]
+                except KeyError:
+                    Logger().log("warning", "Key error encountered trying to access blank tag adjective")
+                
             tag_to_adj[empire.tag] = adj
 
         numpy.random.seed(self.seed)
