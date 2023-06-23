@@ -12,7 +12,7 @@ StellarisModdirectory = "C:\Users\faris\Documents\Paradox Interactive\Stellaris\
 # NOTE: Modded government mods need to be downloaded seperately
 # Available options:
 # vanilla - Vanilla stellaris governments
-# eac_classic - Ethics and Civics Classic 3.7 by petruxa | NOTE: Not updated for Stellaris 3.8 yet.
+# eac_classic - Ethics and Civics Classic 3.8
 government_mapping = "vanilla"
 
 # The name of the converted mod.
