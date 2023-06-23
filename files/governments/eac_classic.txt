@@ -216,5 +216,166 @@ governments = {
 			"civic_idealistic_foundation", "civic_beacon_of_liberty"
 		}
 	}
+
+	
+	### MILLENIUM DAWN ###
+
+	### Western outlook
+
+	Western_Autocracy = {
+		authority = "auth_dictatorial"
+		ethics = {
+			"ethic_fanatic_authoritarian","ethic_capitalism","ethic_industrial"
+		}
+		civics = {
+			"civic_cutthroat_politics","civic_police_state"
+		}
+	}
+
+	### Emerging outlook
+
+	Communist-State = {
+		authority = "auth_dictatorial"
+		ethics = {
+			"ethic_xenophobe","ethic_fanatic_authoritarian","ethic_materialist","ethic_socialism"
+		}
+		civics = {
+			"civic_police_state","civic_cutthroat_politics","civic_welfare_state"
+		}
+	}
+
+	Conservative = {
+		authority = "auth_democratic"
+		ethics = {
+			"ethic_militarist","ethic_xenophobe","ethic_capitalism","ethic_fanatic_industrial"
+		}
+		civics = {
+			"civic_nationalistic_zeal", "civic_shadow_council"
+		}
+	}
+
+	Autocracy = {
+		authority = "auth_dictatorial"
+		ethics = {
+			"ethic_militarist","ethic_xenophobe","ethic_authoritarian"
+		}
+		civics = {
+			"civic_cutthroat_politics","civic_police_state"
+		}
+	}
+
+	Vilayat_e_Faqih = {
+		authority = "auth_dictatorial"
+		ethics = {
+			"ethic_fanatic_spiritualist","ethic_xenophobe","ethic_socialism","ethic_authoritarian"
+		}
+		civics = {
+			"civic_police_state","civic_exalted_priesthood"
+		}
+	}
+
+	Mod_Vilayat_e_Faqih = {
+		authority = "auth_dictatorial"
+		ethics = {
+			"ethic_fanatic_spiritualist","ethic_xenophobe","ethic_socialism","ethic_authoritarian"
+		}
+		civics = {
+			"civic_police_state","civic_exalted_priesthood"
+		}
+	}
+
+	### Salafist outlook
+
+	Kingdom = {
+		authority = "auth_imperial"
+		ethics = {
+			"ethic_fanatic_spiritualist","ethic_militarist","ethic_fanatic_authoritarian"
+		}
+		civics = {
+			"civic_police_state","civic_exalted_priesthood"
+		}
+	}
+
+	Caliphate = {
+		authority = "auth_dictatorial"
+		ethics = {
+			"ethic_fanatic_spiritualist","ethic_fanatic_militarist","ethic_authoritarian"
+		}
+		civics = {
+			"civic_nationalistic_zeal","civic_exalted_priesthood","civic_defenders_faith"
+		}
+	}
+
+	### Neutral outlook
+	Neutral_conservatism = {
+		authority = "auth_democratic"
+		ethics = {
+			"ethic_militarist","ethic_xenophobe","ethic_capitalism","ethic_fanatic_industrial"
+		}
+		civics = {
+			"civic_nationalistic_zeal", "civic_meritocratic_capitalism"
+		}
+	}
+
+	neutral_Social = {
+		authority = "auth_democratic"
+		ethics = {
+			"ethic_egalitarian","ethic_materialist","ethic_fanatic_xenophile","ethic_socialism"
+		}
+		civics = {
+			"civic_labour_unions","civic_welfare_state","civic_parliamentary_system"
+		}
+	}
+
+	Neutral_Libertarian = {
+		authority = "auth_democratic"
+		ethics = {
+			"ethic_egalitarian","ethic_xenophile","ethic_capitalism"
+		}
+		civics = {
+			"civic_meritocratic_capitalism", "civic_globalism", "civic_diplomatic_corps"
+		}
+	}
+
+	Neutral_Autocracy = {
+		authority = "auth_dictatorial"
+		ethics = {
+			"ethic_fanatic_authoritarian","ethic_industrial"
+		}
+		civics = {
+			"civic_cutthroat_politics","civic_police_state"
+		}
+	}
+
+	Neutral_Communism = {
+		authority = "auth_dictatorial"
+		ethics = {
+			"ethic_xenophobe","ethic_fanatic_authoritarian","ethic_materialist","ethic_socialism"
+		}
+		civics = {
+			"civic_police_state","civic_cutthroat_politics","civic_welfare_state"
+		}
+	}
+
+	Neutral_Muslim_Brotherhood = {
+		authority = "auth_dictatorial"
+		ethics = {
+			"ethic_fanatic_spiritualist","ethic_xenophobe"
+		}
+		civics = {
+			"civic_cutthroat_politics","civic_police_state"
+		}
+	}
+
+	#i'm not actually sure what this is
+	Neutral_green = {
+		authority = "auth_democratic"
+		ethics = {
+			"ethic_egalitarian","ethic_xenophile","ethic_capitalism"
+		}
+		civics = {
+			"civic_meritocratic_capitalism", "civic_globalism", "civic_diplomatic_corps"
+		}
+	}
 }
 
