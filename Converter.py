@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import shutil
+import os
 
 from config import Config
 import makeNameList
@@ -45,14 +46,14 @@ class Converter:
 
         for top_nation in top_nations:
             Logger().log("info", f"Creating flag for {top_nation.tag}...")
-            sourcepath = f"{hoi4flagpath}{top_nation.tag}_{top_nation.government}.tga"
+            sourcepath = os.path.join(hoi4flagpath, f"{top_nation.tag}_{top_nation.government}.tga")
             source_flag_tga = Config().get_modded_hoi4_file(sourcepath)
             if not source_flag_tga:
-                basesourcepath = hoi4flagpath + top_nation.tag + ".tga"
+                basesourcepath = os.path.join(hoi4flagpath, f"{top_nation.tag}.tga")
                 Logger().log("warning",
                              f"Could not find \"{sourcepath}\". Falling back to \"{basesourcepath}\"")
                 source_flag_tga = Config().get_modded_hoi4_file(basesourcepath)
-            dest_flag_folder = f"{Config().get_output_path()}flags/convertedflags/"
+            dest_flag_folder = os.path.join(Config().get_output_path(), "flags", "convertedflags")
             flagconvert.compile_flag(source_flag_tga, dest_flag_folder)
         Logger().log("progress", "63%")
 
@@ -60,7 +61,7 @@ class Converter:
         top_nations = Config().get_parser().get_top_nations()
         for top_nation in top_nations:
             Logger().log("info", f"Creating name list for {top_nation.tag}...")
-            dest_name_list_folder = f"output/{Config().get_mod_name()}/common/name_lists/"
+            dest_name_list_folder = os.path.join("output", Config().get_mod_name(), "common", "name_lists")
             makeNameList.make_name_list(top_nation.tag, dest_name_list_folder)
         Logger().log("progress", "72%")
 

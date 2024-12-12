@@ -44,7 +44,7 @@ class Config(BorgSingleton):
             naive_parser.drill(self.configfile, "targetGameModPath"))
         government_mapping = naive_parser.unquote(
             naive_parser.drill(self.configfile, "government_mapping"))
-        self.government_mapping_file = f"files/governments/{government_mapping}.txt"
+        self.government_mapping_file = os.path.join("files", "governments", f"{government_mapping}.txt")
 
         # HoI4 to DEFCON is busted, so might as well keep this off to make fronter stuff easier for now.
         self.defcon_results = False
@@ -59,14 +59,14 @@ class Config(BorgSingleton):
             naive_parser.drill(self.configfile, "output_name"))
         self.mod_name = self.mod_name_human.replace(" ", "_")
 
-        self.base_mod_path = self.converter_dir + "outputMod_base/"
-        self.output_path = self.converter_dir + "output/" + self.mod_name + "/"
-        self.output_mod_file = self.converter_dir + "output/outputMod.mod"
-        self.output_descriptor = self.converter_dir + "files/descriptor.mod"
+        self.base_mod_path = os.path.join(self.converter_dir, "outputMod_base")
+        self.output_path = os.path.join(self.converter_dir, "output", self.mod_name)
+        self.output_mod_file = os.path.join(self.converter_dir, "output", "outputMod.mod")
+        self.output_descriptor = os.path.join(self.converter_dir, "files", "descriptor.mod")
 
         shutil.copyfile("files/outputMod.mod", "output/outputMod.mod")
         # Renames the mod and the path inside the modfile, and then renames the modfile.
-        with open(self.output_mod_file, "r") as tempfile:
+        with open(self.output_mod_file, "r", encoding="utf-8") as tempfile:
             filedata = tempfile.read()
         filedata = filedata.replace(
             "name=\"ConverterOutput\"", "name=\"" + self.mod_name_human + "\"")
@@ -74,7 +74,7 @@ class Config(BorgSingleton):
             "path=\"mod/outputMod\"", "path=\"mod/" + self.mod_name + "\"")
         with open(self.output_mod_file, "w") as tempfile:
             tempfile.write(filedata)
-        os.replace("output/outputMod.mod", "output/" + self.mod_name + ".mod")
+        os.replace("output/outputMod.mod", os.path.join("output", f"{self.mod_name}.mod"))
         # Renames the mod inside the descriptor
         with open(self.output_descriptor, "r") as tempfile:
             filedata = tempfile.read()
@@ -86,8 +86,8 @@ class Config(BorgSingleton):
         if self.stellaris_mod_path:
             self.stellaris_mod_path = self.make_sane_path(
                 self.stellaris_mod_path)
-            self.final_path = self.stellaris_mod_path + self.mod_name + "/"
-            self.final_mod_file = self.stellaris_mod_path + self.mod_name + ".mod"
+            self.final_path = os.path.join(self.stellaris_mod_path, self.mod_name)
+            self.final_mod_file = os.path.join(self.stellaris_mod_path, f"{self.mod_name}.mod")
         else:
             self.final_path = ""
             self.final_mod_file = ""

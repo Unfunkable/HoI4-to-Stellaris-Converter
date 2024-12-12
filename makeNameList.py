@@ -5,6 +5,7 @@ import naive_parser
 import unicodedata
 from config import Config
 from logToFile import Logger
+import os
 
 
 def remove_accents(inputNames):
@@ -148,5 +149,6 @@ def make_name_list(tag, destFolder):
     template_data["&FEMALENAMES&"] = femalenames
     template_data["&SURNAMES&"] = surnames
 
-    template_fill(template_data, "files/stellaris_name_list_template.txt",
-                 destFolder + tag + "_test.txt")
+    template_fill(template_data, 
+                 os.path.join("files", "stellaris_name_list_template.txt"),
+                 os.path.join(destFolder, f"{tag}_test.txt"))

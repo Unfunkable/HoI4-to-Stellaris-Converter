@@ -239,9 +239,9 @@ class Parser:
                 buildingcount = rawbuildingcount.split(" ")
                 for building in buildingcount:
                     if owner in self.factories:
-                        self.factories[owner] += int(building)
+                        self.factories[owner] += int(float(building))
                     else:
-                        self.factories[owner] = int(building)
+                        self.factories[owner] = int(float(building))
 
             wars = savefile["previous_peace"]
             for war in wars:
