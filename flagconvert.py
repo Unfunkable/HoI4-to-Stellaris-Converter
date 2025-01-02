@@ -1,9 +1,7 @@
-#!/usr/bin/python
-
-# This entire script is a mess for now, but it works ok, at least.
-
 import os
 import shutil
+import sys
+
 from wand.image import Image
 from wand.color import Color
 from wand.drawing import Drawing
@@ -13,24 +11,17 @@ from logToFile import Logger
 
 MAX_RGB = 256
 
+def get_magick_path():
+    if getattr(sys, "frozen", False):
+        return os.path.join(getattr(sys, "_MEIPASS"), 'magick.exe')
+    return os.path.join(os.path.dirname(__file__), "ImageMagick/magick.exe")
+
+os.environ["MAGICK_HOME"] = get_magick_path()
 
 def color_to_rgb_array(color):
     return [int(color.red_quantum() / MAX_RGB),
             int(color.green_quantum() / MAX_RGB),
             int(color.blue_quantum() / MAX_RGB)]
-
-
-# def colorSet(image):
-#     colorset = {}
-#     for x in range(image.width):
-#         for y in range(image.height):
-#             color = (image[x, y].string)
-#             color.removeprefix("srgb(")
-#             if color not in colorset:
-#                 colorset[color] = 1
-#             else:
-#                 colorset[color] += 1
-#     return colorset
 
 
 def compile_flag(sourcepath, dest_folder):
@@ -83,64 +74,13 @@ def compile_flag(sourcepath, dest_folder):
     shutil.move(filename + ".dds", os.path.join(os.getcwd(),
                 f"output/{Config().get_mod_name()}/flags/convertedflags/small/"))
 
-    #mapflag = Image(Drawing(256, 256), nonecolor)
-
-    # colorFrequencies = colorSet(image2)
-    # sortedcolors = [(k, colorFrequencies[k]) for k in sorted(
-    #     colorFrequencies, key=colorFrequencies.get, reverse=True)]
-
-    ### Commented out temporarily until I can figure out how to get it to work via wand. ###
-
-    # maxIntensity = 0
-    # minIntensity = 255
-    # for i in range(10):
-    #     if i >= len(sortedcolors):
-    #         break
-    #     sortedcolor = sortedcolors[i][0][1:-1].split(',')
-    #     intensity = int(sortedcolor[0]) + int(1.2 * float(sortedcolor[1])) + \
-    #         int(0.5 * float(sortedcolor[2]))
-
-    #     if intensity > maxIntensity:
-    #         maxIntensity = intensity
-    #     if intensity < minIntensity:
-    #         minIntensity = intensity
-
-    # for x in range(image2.width):
-    #     for y in range(image2.height):
-    #         c = colorToRGBArray(image2.pixelColor(x, y))
-    #         intensity = c[0] + (1.2 * float(c[1])) + (0.5 * float(c[2]))
-    #         actualIntensity = (intensity - minIntensity) / (maxIntensity - minIntensity)
-    #         if (actualIntensity < 0.0):
-    #             actualIntensity = 0
-    #         elif (actualIntensity > 1.0):
-    #             actualIntensity = 255 * MaxRGB
-    #         else:
-    #             actualIntensity = int(actualIntensity * 255 * MaxRGB)
-    #         newcolor = Color(min(actualIntensity + MaxRGB, 255 * MaxRGB), actualIntensity, actualIntensity, 1 * MaxRGB)
-    #         image2.pixelColor(x, y, newcolor)
-
     image2.resize(186, 118)
-
-    # dropshadow2 = Image(Drawing(256, 256), nonecolor)
-    # dropshadow2.type = imagetype
-    # dropshadow2.fillColor(Color('rgba(0, 0, 0, 6400'))
-    # dropshadow2.draw(wand.DrawableRectangle((256 / 2) - (186 / 2) - 1, (256 / 2) - (118 / 2) - 1,
-    #                                                 (256 / 2) + (186 / 2) + 1, (256 / 2) + (118 / 2) + 1))
-    # dropshadow2.blur(10, 10)
 
     geom = Image(width=256, height=256)
     geom.composite(image2, 35, 69, 'over')
     geom.type = 'grayscale'
     if os.name == "nt":
         geom.flip()
-    # dropshadow2 = geom
-    # dropshadow2.type = imagetype
-
-    # dropshadow2.fillColor(Color('rgba(0, 0, 0, 1)'))
-    # dropshadow2.strokeColor(Color('rgba(255, 255, 255, 0'))
-    # dropshadow2.strokeWidth(2)
-    # dropshadow2.draw(wand.DrawableRectangle((256 / 2) - (186 / 2) - 1, (256 / 2) - (118 / 2) - 1,
-    #                                                 (256 / 2) + (186 / 2) + 1, (256 / 2) + (118 / 2) + 1))'
 
     geom.save(filename=filename+".dds")
     shutil.move(filename + ".dds", os.path.join(os.getcwd(),

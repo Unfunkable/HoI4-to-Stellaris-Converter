@@ -5,4 +5,4 @@ tags={
 	"Galaxy Generation"
 	"Leaders"
 }
-supported_version="3.8.*"
+supported_version="3.14.*"

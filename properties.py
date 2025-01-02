@@ -95,7 +95,7 @@ def get_states():
 
     statepath = config.Config().get_modded_hoi4_file("history/states/")
     for filename in os.listdir(statepath):
-        state_data = open(statepath + filename).read()
+        state_data = open(os.path.join(statepath, filename)).read()
 
         state_data = state_data.replace("=\n{", "={")
         state_data = state_data.replace("=\n\t{", "={")
@@ -138,7 +138,7 @@ def get_climates():
     strategic_regions_path = config.Config().get_modded_hoi4_file("map/strategicregions/")
     for filename in os.listdir(strategic_regions_path):
         climate_data = naive_parser.parse_save_file(
-            strategic_regions_path + filename)
+            os.path.join(strategic_regions_path, filename))
         provinces = naive_parser.drill(
             climate_data, "strategic_region", "provinces", "").split(" ")
         periodses = naive_parser.drill(

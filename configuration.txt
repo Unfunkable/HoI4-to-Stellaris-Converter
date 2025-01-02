@@ -1,18 +1,18 @@
 
 # The path to the save file to be converted.
-savefile = "D:\Users\faris\Documents\Paradox Interactive\Hearts of Iron IV\save games\stellaris38.hoi4"
+savefile = "D:\Users\user\Documents\Paradox Interactive\Hearts of Iron IV\save games\FRA_1936_01_01_12.hoi4"
 
 # The path to your Hearts of Iron 4 installation, if you're not using a total conversion mod - or the path to your mod files, if you are.
 HoI4directory = "C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV"
 
 # The path to your Stellaris mod folder, to copy the new mod into.
-StellarisModdirectory = "C:\Users\faris\Documents\Paradox Interactive\Stellaris\mod"
+StellarisModdirectory = "C:\Users\user\Documents\Paradox Interactive\Stellaris\mod"
 
 # How Hearts of Iron 4 governments get converted to Stellaris authorities/ethics/civics
 # NOTE: Modded government mods need to be downloaded seperately
 # Available options:
 # vanilla - Vanilla stellaris governments
-# eac_classic - Ethics and Civics Classic 3.8
+# eac_classic - Ethics and Civics Classic
 government_mapping = "vanilla"
 
 # The name of the converted mod.
