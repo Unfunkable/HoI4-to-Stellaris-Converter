@@ -64,15 +64,26 @@ def compile_flag(sourcepath, dest_folder):
     dropshadow.type = imagetype
 
     dropshadow.save(filename=filename + ".dds")
-    shutil.move(filename + ".dds", os.path.join(Config().converter_dir,
-                f"output/{Config().get_mod_name()}/flags/convertedflags/"))
+    shutil.move(filename + ".dds", os.path.join(
+        Config().converter_dir,
+        "output",
+        Config().get_mod_name(),
+        "flags",
+        "convertedflags"
+    ))
 
     tiny = Image(dropshadow)
     tiny.type = imagetype
     tiny.resize(24, 24)
     tiny.save(filename=filename + ".dds")
-    shutil.move(filename + ".dds", os.path.join(Config().converter_dir,
-                f"output/{Config().get_mod_name()}/flags/convertedflags/small/"))
+    shutil.move(filename + ".dds", os.path.join(
+        Config().converter_dir,
+        "output",
+        Config().get_mod_name(),
+        "flags",
+        "convertedflags",
+        "small"
+    ))
 
     image2.resize(186, 118)
 
@@ -83,5 +94,11 @@ def compile_flag(sourcepath, dest_folder):
         geom.flip()
 
     geom.save(filename=filename+".dds")
-    shutil.move(filename + ".dds", os.path.join(Config().converter_dir,
-                f"output/{Config().get_mod_name()}/flags/convertedflags/map/"))
+    shutil.move(filename + ".dds", os.path.join(
+        Config().converter_dir,
+        "output",
+        Config().get_mod_name(),
+        "flags",
+        "convertedflags",
+        "map"
+    ))

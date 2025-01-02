@@ -75,7 +75,7 @@ class Converter:
         top_nations = Config().get_parser().get_top_nations()
         for top_nation in top_nations:
             Logger().log("info", f"Creating name list for {top_nation.tag}...")
-            dest_name_list_folder = os.path.join("output", Config().get_mod_name(), "common", "name_lists")
+            dest_name_list_folder = os.path.join(Config().converter_dir, "output", Config().get_mod_name(), "common", "name_lists")
             makeNameList.make_name_list(top_nation.tag, dest_name_list_folder)
         Logger().log("progress", "72%")
 
