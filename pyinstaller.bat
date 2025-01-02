@@ -1,1 +1,0 @@
-python -m PyInstaller --onefile --console Converter.py --name HoI4ToStellaris
