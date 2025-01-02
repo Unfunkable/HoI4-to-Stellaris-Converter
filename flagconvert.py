@@ -26,6 +26,17 @@ def color_to_rgb_array(color):
 
 def compile_flag(sourcepath, dest_folder):
 
+    flag_base = os.path.join(
+        Config().converter_dir,
+        "output",
+        Config().get_mod_name(),
+        "flags",
+        "convertedflags"
+    )
+    os.makedirs(flag_base, exist_ok=True)
+    os.makedirs(os.path.join(flag_base, "small"), exist_ok=True)
+    os.makedirs(os.path.join(flag_base, "map"), exist_ok=True)
+
     if not dest_folder:
         dest_folder = os.path.join(Config().converter_dir, "output")
     filename = os.path.splitext(os.path.basename(sourcepath))[0]

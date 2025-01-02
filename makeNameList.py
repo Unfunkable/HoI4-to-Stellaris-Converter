@@ -71,6 +71,7 @@ def template_fill(data, filename, writefilename):
 
 
 def make_name_list(tag, destFolder):
+    os.makedirs(destFolder, exist_ok=True)
 
     include_generic_unit_names = True
 

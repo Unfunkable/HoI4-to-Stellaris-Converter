@@ -29,6 +29,9 @@ class Events:
         self.text_starbase = open(os.path.join(Config().converter_dir, "files", "converter_events_starbase.txt")).read()
 
     def makeEvents(self):
+        events_dir = os.path.join(Config().converter_dir, "output", Config().get_mod_name(), "events")
+        os.makedirs(events_dir, exist_ok=True)
+        
         event = self.text_start
 
         empires = self.universe.get_empires()
