@@ -187,11 +187,19 @@ def parse_save_data(alllines, debug=False):
                 stack[-2][keystack[-1]].append(stack[-1])
                 stack.pop()
                 keystack.pop()
-            # Having trouble figuring out what's going on here,
-            # it's only happening with newer versions of HoI4.
-            # For now I'll tactically ignore it, as it doesn't really affect conversion results.
+            # Likely caused by the all_playthrough_data block at the end of a savefile
             except IndexError:
-                Logger().log("warning", "IndexError occured while parsing save data.")
+                context = "\n".join([
+                    "--- Context of parsing error ---",
+                    "Previous 3 lines:",
+                    *[f"  {lines[j]}" for j in range(max(0, i-3), i)],
+                    f"Current line ({i}):",
+                    f"  {line}",
+                    "Next 3 lines:",
+                    *[f"  {lines[j]}" for j in range(i+1, min(len(lines), i+4))],
+                    "-------- End context --------"
+                ])
+                Logger().log("debug", f"IndexError occurred while parsing save data:\n{context}")
 
     savefile = stack[0]
 
