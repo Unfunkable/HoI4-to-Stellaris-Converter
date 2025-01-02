@@ -21,8 +21,6 @@ class Config(BorgSingleton):
             return
         self.loaded = True
 
-        self.configfile = naive_parser.parse_save_file("configuration.txt")
-
         if getattr(sys, 'frozen', False):
             # running in a bundle
             self.converter_dir = self.make_sane_path(
@@ -33,6 +31,8 @@ class Config(BorgSingleton):
                 os.path.dirname(os.path.realpath(__file__)))
 
         Logger().log("debug", "Running from: "+self.converter_dir)
+
+        self.configfile = naive_parser.parse_save_file(os.path.join(self.converter_dir, "configuration.txt"))
 
         self.save_file_name = naive_parser.unquote(
             naive_parser.drill(self.configfile, "savefile"))
@@ -61,10 +61,15 @@ class Config(BorgSingleton):
 
         self.base_mod_path = os.path.join(self.converter_dir, "outputMod_base")
         self.output_path = os.path.join(self.converter_dir, "output", self.mod_name)
-        self.output_mod_file = os.path.join(self.converter_dir, "output", "outputMod.mod")
+        self.output_mod_file = os.path.join(self.converter_dir, "output", f"{self.mod_name}.mod")
         self.output_descriptor = os.path.join(self.converter_dir, "files", "descriptor.mod")
 
-        shutil.copyfile("files/outputMod.mod", "output/outputMod.mod")
+        os.makedirs(os.path.join(self.converter_dir, "output"), exist_ok=True)
+        shutil.copyfile(os.path.join(self.converter_dir, "files", "outputMod.mod"), os.path.join(self.converter_dir, "output", "outputMod.mod"))
+        os.replace(os.path.join(self.converter_dir, "output", "outputMod.mod"), self.output_mod_file)
+
+        Logger().log("debug", f"output_mod_file = {self.output_mod_file}")
+
         # Renames the mod and the path inside the modfile, and then renames the modfile.
         with open(self.output_mod_file, "r", encoding="utf-8") as tempfile:
             filedata = tempfile.read()
@@ -74,7 +79,7 @@ class Config(BorgSingleton):
             "path=\"mod/outputMod\"", "path=\"mod/" + self.mod_name + "\"")
         with open(self.output_mod_file, "w") as tempfile:
             tempfile.write(filedata)
-        os.replace("output/outputMod.mod", os.path.join("output", f"{self.mod_name}.mod"))
+        #os.replace(os.path.join(self.converter_dir, "output", "outputMod.mod"), os.path.join(self.converter_dir, "output", f"{self.mod_name}.mod"))
         # Renames the mod inside the descriptor
         with open(self.output_descriptor, "r") as tempfile:
             filedata = tempfile.read()
@@ -136,7 +141,7 @@ class Config(BorgSingleton):
     def create_directories(self):
         os.makedirs(self.output_path, exist_ok=True)
         shutil.rmtree(self.output_path, True)
-        shutil.copytree(self.base_mod_path, outputPath)
+        shutil.copytree(self.base_mod_path, self.output_path)
 
     def get_modded_hoi4_file(self, targetPath):
         # TODO make this work with multiple mods at the same time

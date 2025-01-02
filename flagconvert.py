@@ -27,7 +27,7 @@ def color_to_rgb_array(color):
 def compile_flag(sourcepath, dest_folder):
 
     if not dest_folder:
-        dest_folder = "output/"
+        dest_folder = os.path.join(Config().converter_dir, "output")
     filename = os.path.splitext(os.path.basename(sourcepath))[0]
 
     if not os.path.exists(sourcepath):
@@ -64,14 +64,14 @@ def compile_flag(sourcepath, dest_folder):
     dropshadow.type = imagetype
 
     dropshadow.save(filename=filename + ".dds")
-    shutil.move(filename + ".dds", os.path.join(os.getcwd(),
+    shutil.move(filename + ".dds", os.path.join(Config().converter_dir,
                 f"output/{Config().get_mod_name()}/flags/convertedflags/"))
 
     tiny = Image(dropshadow)
     tiny.type = imagetype
     tiny.resize(24, 24)
     tiny.save(filename=filename + ".dds")
-    shutil.move(filename + ".dds", os.path.join(os.getcwd(),
+    shutil.move(filename + ".dds", os.path.join(Config().converter_dir,
                 f"output/{Config().get_mod_name()}/flags/convertedflags/small/"))
 
     image2.resize(186, 118)
@@ -83,5 +83,5 @@ def compile_flag(sourcepath, dest_folder):
         geom.flip()
 
     geom.save(filename=filename+".dds")
-    shutil.move(filename + ".dds", os.path.join(os.getcwd(),
+    shutil.move(filename + ".dds", os.path.join(Config().converter_dir,
                 f"output/{Config().get_mod_name()}/flags/convertedflags/map/"))

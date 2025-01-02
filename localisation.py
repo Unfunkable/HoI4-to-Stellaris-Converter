@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+import os
 import numpy
 import getCountryNames
 from config import Config
@@ -82,7 +82,7 @@ class Localisation:
             self.empire_names[longtag] = empire_name
 
     def write_localisation(self):
-        base = open("files/convertertest_l_english.yml",
+        base = open(os.path.join(Config().converter_dir, "files", "convertertest_l_english.yml"),
                     encoding="utf-8").read()
         localisation = base
         for tag in self.empire_names:

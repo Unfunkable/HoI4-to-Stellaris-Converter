@@ -150,5 +150,5 @@ def make_name_list(tag, destFolder):
     template_data["&SURNAMES&"] = surnames
 
     template_fill(template_data, 
-                 os.path.join("files", "stellaris_name_list_template.txt"),
+                 os.path.join(Config().converter_dir, "files", "stellaris_name_list_template.txt"),
                  os.path.join(destFolder, f"{tag}_test.txt"))

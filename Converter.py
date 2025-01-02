@@ -23,6 +23,20 @@ class Converter:
         self.convert_name_lists()
         self.convert_localisation()
         self.convert_events()
+    
+    def copy_mod(self):
+        created_mod_path = Config().get_output_path()
+        final_path = Config().get_final_path()
+        created_mod_file = Config().get_output_mod_file()
+        final_mod_file = Config().get_final_mod_file()
+        if not final_path:
+            return
+
+        shutil.rmtree(final_path, True)
+        Logger().log("info", f"Copying {created_mod_path} to {final_path}...")
+        shutil.copytree(created_mod_path, final_path)
+        Logger().log("info", f"Copying {created_mod_file} to {final_mod_file}...")
+        shutil.copyfile(created_mod_file, final_mod_file)
 
     def make_folders(self):
         Logger().log("info", "Laying out folder structure...")
@@ -86,8 +100,9 @@ class Converter:
 if __name__ == "__main__":
     Logger().log("info", "Beginning conversion...")
 
-    #converter = Converter()
-    Converter().convert_everything()
+    converter = Converter()
+    converter.convert_everything()
+    converter.copy_mod()
 
     Logger().log("info", "Conversion successful")
     Logger().log("progress", "100%")

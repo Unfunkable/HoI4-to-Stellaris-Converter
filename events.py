@@ -1,5 +1,4 @@
-#!/usr/bin/python3
-
+import os
 import naive_parser
 from config import Config
 from logToFile import Logger
@@ -18,16 +17,16 @@ class Events:
         self.universe = the_universe
         self.parser = Config().get_parser()
 
-        self.text_start = open("files/converter_events_start.txt").read()
-        self.text_planet = open("files/converter_events_planet.txt").read()
+        self.text_start = open(os.path.join(Config().converter_dir, "files", "converter_events_start.txt")).read()
+        self.text_planet = open(os.path.join(Config().converter_dir, "files", "converter_events_planet.txt")).read()
         self.text_give_earth = open(
-            "files/converter_events_give_earth.txt").read()
+            os.path.join(Config().converter_dir, "files", "converter_events_give_earth.txt")).read()
         self.text_opinion_penalty = open(
-            "files/converter_events_opinionpenalty.txt").read()
+            os.path.join(Config().converter_dir, "files", "converter_events_opinionpenalty.txt")).read()
         self.text_new_human = open(
-            "files/converter_events_newhuman.txt").read()
-        self.text_option = open("files/converter_events_option.txt").read()
-        self.text_starbase = open("files/converter_events_starbase.txt").read()
+            os.path.join(Config().converter_dir, "files", "converter_events_newhuman.txt")).read()
+        self.text_option = open(os.path.join(Config().converter_dir, "files", "converter_events_option.txt")).read()
+        self.text_starbase = open(os.path.join(Config().converter_dir, "files", "converter_events_starbase.txt")).read()
 
     def makeEvents(self):
         event = self.text_start
