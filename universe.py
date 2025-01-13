@@ -53,21 +53,27 @@ class Empire:
         return self.tag + "_" + self.government
 
     def go_into_space(self):
-        if self.industry > 0.6:
-            self.planet_class = "pc_continental"
-        elif self.industry > 0.4:
-            if self.climate in ["pc_arid", "pc_desert", "pc_savannah"]:
-                self.planet_class = "pc_tropical"
-            else:
-                self.planet_class = "pc_ocean"
+        if Config().use_habitats:
+            self.planet_class = "pc_habitat"
+            self.tile_blockers = 0
         else:
-            self.planet_class = self.climate
+            if self.industry > 0.6:
+                self.planet_class = "pc_continental"
+            elif self.industry > 0.4:
+                if self.climate in ["pc_arid", "pc_desert", "pc_savannah"]:
+                    self.planet_class = "pc_tropical"
+                else:
+                    self.planet_class = "pc_ocean"
+            else:
+                self.planet_class = self.climate
 
         popweight = (self.population + self.population + self.industry) / 3.0
         indweight = (self.population + self.industry + self.industry) / 3.0
         self.planet_size = 10 + math.floor(10 * popweight)
         self.planet_population = max(1, math.floor(8 * self.population))
-        self.tile_blockers = 10 - (9 * math.floor(indweight))
+
+        if not Config().use_habitats:
+            self.tile_blockers = 10 - (9 * math.floor(indweight))
 
         if self.score < 0.1:
             self.penalty = 4

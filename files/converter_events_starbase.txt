@@ -1,14 +1,7 @@
-            solar_system = {
-                create_starbase = {
-                    size = starbase_starport
-                    module = shipyard
-                    owner = last_created_country
-                }
-            }
-
-            last_created_country = {
-                # Spawn ships
-                country_event = { id = game_start.9 }
-                # Populate home system
-                country_event = { id = game_start.33 }
-            }
+            # solar_system = {
+            #     create_starbase = {
+            #         size = starbase_starport
+            #         module = shipyard
+            #         owner = last_created_country
+            #     }
+            # }

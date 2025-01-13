@@ -1,4 +1,3 @@
-
 # The path to the save file to be converted.
 savefile = "D:\Users\user\Documents\Paradox Interactive\Hearts of Iron IV\save games\FRA_1936_01_01_12.hoi4"
 
@@ -16,7 +15,11 @@ StellarisModdirectory = "C:\Users\user\Documents\Paradox Interactive\Stellaris\m
 government_mapping = "vanilla"
 
 # The name of the converted mod.
-output_name = "ConverterOutput"
+output_name = "ConverterHabTest"
+
+# Whether empires should start on habitats orbiting Earth instead of on exoplanets
+# Available options: yes, no
+use_habitats = "yes"
 
 # Whether you'd like to include the results from a HoI4 to DEFCON converter game. Valid values: "yes" or "no".
 # NOTE: The HoI4 to DEFCON converter does not currently seem to be functional, so I (funk) have not been able to test this.

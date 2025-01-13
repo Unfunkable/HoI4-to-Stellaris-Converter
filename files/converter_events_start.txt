@@ -24,6 +24,8 @@ country_event = {
 &PLANETS&
 
 &OPINION_PENALTIES&
+
+    
     }
 
 &OPTIONS&
@@ -233,13 +235,13 @@ planet_event = {
         event_target:un_earth = {
             set_name = "Earth"
         }
-        solar_system = {
-            create_starbase = {
-                size = starbase_starport
-                module = shipyard
-                owner = last_created_country
-            }
-        }
+        # solar_system = {
+        #     create_starbase = {
+        #         size = starbase_starport
+        #         module = shipyard
+        #         owner = last_created_country
+        #     }
+        # }
 
         last_created_country = {
             # Spawn ships
@@ -274,11 +276,11 @@ planet_event = {
     }
     immediate = {
         solar_system = {
-            create_starbase = {
-                size = starbase_starport
-                module = shipyard
-                owner = ROOT
-            }
+            # create_starbase = {
+            #     size = starbase_starport
+            #     module = shipyard
+            #     owner = ROOT
+            # }
             space_owner = {
                 # Spawn ships
                 country_event = { id = game_start.9 }

@@ -42,14 +42,9 @@
 				ethos = { &ETHICS& }
                 name_list = "&OWNER_TAG&_names"
 			}
-			add_district = district_city
-			add_district = district_generator
-			add_district = district_mining
-			add_district = district_farming
-			add_district = district_industrial
-			add_building = building_capital
-			add_building = building_bureaucratic_1
-			add_building = building_research_lab_1
+
+&DISTRICTS&
+
 			while = {
 				count = 9
 				create_pop = { 
@@ -62,6 +57,13 @@
 &NEW_HUMANS&
 
 &STARBASE&
+
+			last_created_country = {
+                # Spawn ships
+                country_event = { id = game_start.9 }
+                # Populate home system
+                country_event = { id = game_start.33 }
+            }
 
 			last_created_country = { 
 				add_resource = { 

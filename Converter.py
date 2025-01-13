@@ -45,6 +45,14 @@ class Converter:
                         Config().get_output_path())
         shutil.copy(Config().get_descriptor_file(), Config().get_output_path())
         Logger().log("progress", "36%")
+    
+        solar_system_initializer_dir = os.path.join(Config().get_converter_dir(), "output", Config().get_mod_name(), "common", "solar_system_initializers")
+        os.makedirs(solar_system_initializer_dir, exist_ok=True)
+
+        if Config().use_habitats:
+            shutil.copy(os.path.join(Config().get_converter_dir(), "files", "solar_system_initializers", "converter_systems_habitat.txt"), solar_system_initializer_dir)
+        else:
+            shutil.copy(os.path.join(Config().get_converter_dir(), "files", "solar_system_initializers", "converter_systems.txt"), solar_system_initializer_dir)
 
     def get_universe(self):
         Logger().log("info", "Creating the universe...")

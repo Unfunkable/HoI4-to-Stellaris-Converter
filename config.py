@@ -46,6 +46,8 @@ class Config(BorgSingleton):
             naive_parser.drill(self.configfile, "government_mapping"))
         self.government_mapping_file = os.path.join("files", "governments", f"{government_mapping}.txt")
 
+        self.use_habitats = naive_parser.unquote(naive_parser.drill(self.configfile, "use_habitats")) in ["y", "yes"]
+
         # HoI4 to DEFCON is busted, so might as well keep this off to make fronter stuff easier for now.
         self.defcon_results = False
 

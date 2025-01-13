@@ -27,6 +27,8 @@ class Events:
             os.path.join(Config().converter_dir, "files", "converter_events_newhuman.txt")).read()
         self.text_option = open(os.path.join(Config().converter_dir, "files", "converter_events_option.txt")).read()
         self.text_starbase = open(os.path.join(Config().converter_dir, "files", "converter_events_starbase.txt")).read()
+        self.text_districts = open(os.path.join(Config().converter_dir, "files", "converter_events_districts.txt")).read()
+        self.text_hab_districts = open(os.path.join(Config().converter_dir, "files", "converter_events_districts_habitat.txt")).read()
 
     def makeEvents(self):
         events_dir = os.path.join(Config().converter_dir, "output", Config().get_mod_name(), "events")
@@ -82,28 +84,6 @@ class Events:
             return ""
         planet = self.text_planet
 
-        '''
-            &PLANET_ID& : planet_1_1
-            &PLANET_SIZE_DELTA& : -2
-            &PLANET_PC_TYPE& : pc_continental
-            &OWNER_TAG& : SOV
-            &OWNER_LONGTAG& : SOV_communism
-
-            &AUTHORITY& : auth_dictatorial
-            &ETHICS& : ethic = "ethic_xenophobe" \n ethic = "ethic_authoritarian" \n ethic = "ethic_materialist"
-            &CIVICS& : civic = civic_police_state \n civic = civic_functional_architecture
-
-            &COLOUR& : red
-            &MODIFIER& : converted_2_nuclear
-            &NEW_HUMANS& : converter_events_newhuman.txt repeated
-            &STARBASE& : converter_events_starbase.txt
-
-            &MINERALS& : 1000
-            &ENERGY& : 1000
-            &FOOD& : 150
-            &INFLUENCE& : 500
-        '''
-
         planet_id = "planet_" + \
             str(1 + (idnumber // 3)) + "_" + str(1 + (idnumber % 3))
         planet_size_delta = str(empire.planet_size - 16)
@@ -147,6 +127,12 @@ class Events:
         starbase_string = ""
         if self.earth_owner != empire.long_tag():
             starbase_string += self.text_starbase
+        
+        district_string = ""
+        if Config().use_habitats:
+            district_string += self.text_hab_districts
+        else:
+            district_string += self.text_districts
 
         planet = planet.replace("&PLANET_ID&", planet_id)
         planet = planet.replace("&PLANET_SIZE_DELTA&", planet_size_delta)
@@ -162,6 +148,7 @@ class Events:
             planet = planet.replace("&CULTURE&", "")
         else:
             planet = planet.replace("&CULTURE&", culture)
+        planet = planet.replace("&DISTRICTS&", district_string)
         planet = planet.replace("&NEW_HUMANS&", human_string)
         planet = planet.replace("&STARBASE&", starbase_string)
         planet = planet.replace("&MINERALS&", minerals)
